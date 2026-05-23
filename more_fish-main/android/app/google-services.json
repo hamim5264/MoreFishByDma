@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1026525000107",
+    "project_id": "morefish-2026",
+    "storage_bucket": "morefish-2026.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1026525000107:android:549c385f8639060681e2ee",
+        "android_client_info": {
+          "package_name": "com.dmatechnologies.more_fish"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTO4K6k0p6vBGq0qWwVux71sOHJ5yucGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
