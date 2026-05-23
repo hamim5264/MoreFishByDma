@@ -983,24 +983,24 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
       );
     } else if (name == 'nh3') {
       return Image.asset(
-        'assets/icons/nh3.jpeg',
-        height: 40,
-        width: 40,
-        fit: BoxFit.contain,
+        'assets/icons/nh3.PNG',
+        height: 70,
+        width: 80,
+        fit: BoxFit.cover,
       );
     } else if (name == 'tds') {
       return Image.asset(
-        'assets/icons/tds.jpeg',
-        height: 40,
-        width: 40,
+        'assets/icons/tds.PNG',
+        height: 60,
+        width: 60,
         fit: BoxFit.contain,
       );
     } else if (name == 'salinity') {
       return Image.asset(
-        'assets/icons/salinity.jpeg',
-        height: 40,
-        width: 40,
-        fit: BoxFit.contain,
+        'assets/icons/salinity.png',
+        height: 70,
+        width: 80,
+        fit: BoxFit.cover,
       );
     } else {
       return Image.network(
@@ -1008,11 +1008,8 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
         height: 40,
         width: 40,
         fit: BoxFit.contain,
-        errorBuilder: (context, error, stackTrace) => const Icon(
-          Icons.sensors,
-          size: 40,
-          color: Colors.grey,
-        ),
+        errorBuilder: (context, error, stackTrace) =>
+            const Icon(Icons.sensors, size: 40, color: Colors.grey),
       );
     }
   }
@@ -1416,10 +1413,13 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                   child: Column(
                                                     children: [
                                                       Expanded(
-                                                        child: _getSensorIconWidget(
-                                                          sensorData?.sensorName,
-                                                          sensorData?.sensorIcon,
-                                                        ),
+                                                        child:
+                                                            _getSensorIconWidget(
+                                                              sensorData
+                                                                  ?.sensorName,
+                                                              sensorData
+                                                                  ?.sensorIcon,
+                                                            ),
                                                       ),
                                                       Expanded(
                                                         child: Column(
