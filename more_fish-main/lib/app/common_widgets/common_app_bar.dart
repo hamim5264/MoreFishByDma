@@ -171,6 +171,7 @@ class CommonAppBar extends StatelessWidget{
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../modules/cattle_index/controllers/cattle_header_controller.dart';
+import '../service/local_storage.dart';
 import 'common_text.dart';
 
 class CommonAppBar extends StatelessWidget {
@@ -209,14 +210,20 @@ class CommonAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final storage = Get.find<LoginTokenStorage>();
+
     return Obx(() {
+      // 🔹 Ensuring Obx always has an observable to track.
+      // This prevents "Improper use of GetX" error when CattleHeaderController is not registered.
+      final bool loggedIn = storage.isCattleLoggedIn.value;
+
       String finalCityName = cityName;
       String? finalTemp = temp;
       String? finalHumidity = humidity;
       String? finalDescription;
       String? finalSunlight;
 
-      if (Get.isRegistered<CattleHeaderController>()) {
+      if (loggedIn && Get.isRegistered<CattleHeaderController>()) {
         final cattleHeader = Get.find<CattleHeaderController>();
         if (cattleHeader.isUsingBackendData.value) {
           finalCityName = cattleHeader.district.value;

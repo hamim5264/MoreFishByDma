@@ -109,6 +109,7 @@ class CattleLoginController extends GetxController {
           // ✅ Store Cattle-specific session separately
           await loginTokenStorage.setCattleToken(token);
           await loginTokenStorage.setCattleUserId(userId);
+          loginTokenStorage.isCattleLoggedIn.value = true;
           
           // Initialize global cattle header data if not already present
           if (!Get.isRegistered<CattleHeaderController>()) {

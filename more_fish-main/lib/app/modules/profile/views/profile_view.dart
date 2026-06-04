@@ -32,9 +32,10 @@ class ProfileView extends GetView<ProfileController> {
                   cityName: "dhaka".tr,
                   date: '${homeController.formattedDate}',
                   time: '${homeController.formattedTime}',
-                  temp: '${homeController.weatherData['main']['temp']}°C',
+                  temp:
+                      '${homeController.weatherData.isEmpty ? "" : homeController.weatherData['main']['temp']}°C',
                   humidity:
-                      '${homeController.weatherData['main']['humidity']}%',
+                      '${homeController.weatherData.isEmpty ? "" : homeController.weatherData['main']['humidity']}%',
                 );
               }),
               Expanded(
@@ -125,7 +126,7 @@ class ProfileView extends GetView<ProfileController> {
                                         await controller.loginTokenStorage
                                             .clearMoreFishSession();
                                         controller.isLoggedIn.value = '';
-                                        Get.offAllNamed(Routes.INDEX);
+                                        Get.offAllNamed(Routes.DMA_TECHNOLOGIES);
                                       },
                                       child: const CommonContainer(
                                         height: 50,

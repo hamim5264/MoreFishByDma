@@ -1,9 +1,14 @@
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginTokenStorage {
   LoginTokenStorage(this.sharedPreferences);
 
   final SharedPreferences sharedPreferences;
+  
+  // Reactive state for UI updates across different modules
+  final isCattleLoggedIn = false.obs;
+
   static const _moreFishTokenKey = 'token';
   static const _pharmaTokenKey = 'pharmaToken';
   static const _poultryTokenKey = 'poultryToken';

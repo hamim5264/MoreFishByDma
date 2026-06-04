@@ -115,7 +115,7 @@ class _LoggedInDashboard extends StatelessWidget {
                     deviceName: live.deviceId,
                     deviceStatus: live.deviceStatus,
                     timestampIso: live.timestamp,
-                  ),
+                   ),
                 const SizedBox(height: 10),
                 Wrap(
                   spacing: 12,

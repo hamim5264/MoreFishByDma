@@ -328,9 +328,9 @@ class HomeView extends GetView<HomeController> {
                   ],
                 );
               }),
-              Obx(() {
-                return Expanded(
-                  child: SingleChildScrollView(
+              Expanded(
+                child: Obx(() {
+                  return SingleChildScrollView(
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
@@ -349,9 +349,9 @@ class HomeView extends GetView<HomeController> {
                         const SizedBox(height: 16),
                       ],
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
             ],
           ),
         ),

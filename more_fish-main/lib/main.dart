@@ -18,7 +18,9 @@ Future<void> main() async {
   ]);
 
   final prefs = await SharedPreferences.getInstance();
-  Get.put(LoginTokenStorage(prefs));
+  final storage = LoginTokenStorage(prefs);
+  storage.isCattleLoggedIn.value = storage.hasValidCattleToken();
+  Get.put(storage);
 
   // ✅ Proper Firebase initialization (Android + Web)
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

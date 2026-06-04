@@ -104,6 +104,7 @@ class CattleProfileView extends GetView<CattleIndexController> {
                               // ✅ Logout only from Cattle Care
                               await cattleProfileController.loginTokenStorage
                                   .clearCattleSession();
+                              cattleProfileController.loginTokenStorage.isCattleLoggedIn.value = false;
                               cattleProfileController.isLoggedIn.value = '';
 
                               // Clear global header controllers if they exist
@@ -114,7 +115,7 @@ class CattleProfileView extends GetView<CattleIndexController> {
                                 Get.delete<CattleLiveMonitoringController>();
                               }
 
-                              Get.offAllNamed(Routes.CATTLE_INDEX);
+                              Get.offAllNamed(Routes.DMA_TECHNOLOGIES);
                             },
                             child: const CommonContainer(
                               height: 50,
