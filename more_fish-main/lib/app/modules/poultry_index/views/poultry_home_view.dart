@@ -50,12 +50,12 @@ class PoultryHomeView extends GetView<PoultryIndexController> {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(12),
                   child: GridView.count(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 1.1,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.85,
                     children: [
                       _HomeFeatureTile(
                         title: 'Live Data\nmonitoring',
@@ -217,17 +217,17 @@ class _HomeFeatureTile extends StatelessWidget {
               ),
             ],
           ),
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(8),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(iconAssetPath, height: 52, fit: BoxFit.contain),
-              const SizedBox(height: 8),
+              Image.asset(iconAssetPath, height: 40, fit: BoxFit.contain),
+              const SizedBox(height: 6),
               Text(
                 title,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 15,
+                  fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: Colors.black87,
                 ),
