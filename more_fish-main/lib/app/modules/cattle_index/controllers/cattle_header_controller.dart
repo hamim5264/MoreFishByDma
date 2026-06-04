@@ -21,6 +21,7 @@ class CattleHeaderController extends GetxController {
 
   final isLoadingWeather = false.obs;
   final weatherError = ''.obs;
+  final isUsingBackendData = false.obs;
 
   Timer? _timer;
 
@@ -49,6 +50,7 @@ class CattleHeaderController extends GetxController {
   void updateFromDashboard(Weather? weather) {
     if (weather == null) return;
 
+    isUsingBackendData.value = true;
     district.value = weather.weatherDistrict?.district ?? 'Dhaka';
     description.value = weather.weatherDescription ?? '';
     sunlight.value = weather.sunlightLevel ?? '';

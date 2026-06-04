@@ -6,6 +6,7 @@ import '../../../common_widgets/common_container.dart';
 import '../../../common_widgets/common_text.dart';
 import '../../home/controllers/home_controller.dart';
 import '../../water_quality_device/controllers/water_quality_device_controller.dart';
+import '../../cattle_index/controllers/cattle_header_controller.dart';
 
 class NanoBubbleView extends GetView<WaterQualityDeviceController> {
   const NanoBubbleView({super.key});

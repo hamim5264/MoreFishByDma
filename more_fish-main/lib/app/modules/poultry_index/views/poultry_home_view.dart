@@ -9,6 +9,7 @@ import 'poultry_live_monitoring_view.dart';
 // NOTE: app_routes.dart is a `part of` file (part of app_pages.dart),
 // so it should not be imported directly. Import app_pages.dart instead.
 import '../../../routes/app_pages.dart';
+import '../../cattle_index/controllers/cattle_header_controller.dart';
 
 class PoultryHomeView extends GetView<PoultryIndexController> {
   const PoultryHomeView({super.key});

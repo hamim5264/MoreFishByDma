@@ -6,6 +6,8 @@ import '../../../common_widgets/common_text.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/cattle_index_controller.dart';
 import '../controllers/cattle_profile_controller.dart';
+import '../controllers/cattle_header_controller.dart';
+import '../controllers/cattle_live_monitoring_controller.dart';
 
 class CattleProfileView extends GetView<CattleIndexController> {
   const CattleProfileView({super.key});
@@ -103,6 +105,15 @@ class CattleProfileView extends GetView<CattleIndexController> {
                               await cattleProfileController.loginTokenStorage
                                   .clearCattleSession();
                               cattleProfileController.isLoggedIn.value = '';
+
+                              // Clear global header controllers if they exist
+                              if (Get.isRegistered<CattleHeaderController>()) {
+                                Get.delete<CattleHeaderController>();
+                              }
+                              if (Get.isRegistered<CattleLiveMonitoringController>()) {
+                                Get.delete<CattleLiveMonitoringController>();
+                              }
+
                               Get.offAllNamed(Routes.CATTLE_INDEX);
                             },
                             child: const CommonContainer(

@@ -5,6 +5,8 @@ import '../../../response/login_response.dart';
 import '../../../routes/app_pages.dart';
 import '../../../service/local_storage.dart';
 import '../../../service/fcm_service.dart';
+import '../../cattle_index/controllers/cattle_header_controller.dart';
+import '../../cattle_index/controllers/cattle_live_monitoring_controller.dart';
 
 class CattleLoginController extends GetxController {
 
@@ -107,6 +109,14 @@ class CattleLoginController extends GetxController {
           // ✅ Store Cattle-specific session separately
           await loginTokenStorage.setCattleToken(token);
           await loginTokenStorage.setCattleUserId(userId);
+          
+          // Initialize global cattle header data if not already present
+          if (!Get.isRegistered<CattleHeaderController>()) {
+            Get.put(CattleHeaderController());
+          }
+          if (!Get.isRegistered<CattleLiveMonitoringController>()) {
+            Get.put(CattleLiveMonitoringController());
+          }
           
           debugPrint(
             'Saved Cattle token in SharedPreferences: ${loginTokenStorage.getCattleToken() != null}',

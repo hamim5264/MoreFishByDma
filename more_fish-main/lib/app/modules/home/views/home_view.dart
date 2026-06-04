@@ -285,6 +285,7 @@ import '../../../common_widgets/common_text.dart';
 import '../../../res/colors/colors.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
+import '../../cattle_index/controllers/cattle_header_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
