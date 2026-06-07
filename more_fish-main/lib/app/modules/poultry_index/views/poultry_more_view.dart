@@ -4,11 +4,28 @@ import 'package:get/get.dart';
 
 import '../../../common_widgets/common_app_bar.dart';
 import '../../../routes/app_pages.dart';
+import '../controllers/poultry_live_monitoring_controller.dart';
 import '../controllers/poultry_header_controller.dart';
 import '../controllers/poultry_index_controller.dart';
 
 class PoultryMoreView extends GetView<PoultryIndexController> {
   const PoultryMoreView({super.key});
+
+  void _handleAutomationNavigation() {
+    if (Get.isRegistered<PoultryLiveMonitoringController>()) {
+      final ctrl = Get.find<PoultryLiveMonitoringController>();
+      final farmId = ctrl.selectedDeviceId.value;
+
+      if (farmId.isNotEmpty) {
+        Get.toNamed(Routes.POULTRY_AUTOMATION_SETTINGS,
+            arguments: {'farmId': farmId});
+      } else {
+        debugPrint('Automation error: Farm ID is null');
+      }
+    } else {
+      debugPrint('Automation error: PoultryLiveMonitoringController not registered');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +74,11 @@ class PoultryMoreView extends GetView<PoultryIndexController> {
                     _SimpleMoreTile(
                       title: 'About Device',
                       onTap: () => Get.toNamed(Routes.ABOUT_DEVICES),
+                    ),
+                    const SizedBox(height: 10),
+                    _SimpleMoreTile(
+                      title: 'Automation Settings',
+                      onTap: _handleAutomationNavigation,
                     ),
                   ],
                 ),

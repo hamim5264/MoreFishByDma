@@ -43,11 +43,20 @@ class PoultryLiveMonitoringView extends StatelessWidget {
               // Poultry Pulse live monitoring UI is visible even when a device isn't connected yet.
               // (No login-gating for now; backend/device integration will be added later.)
               child: Builder(
+                // builder: (_) {
+                //   final ctrl = Get.put(PoultryLiveMonitoringController());
+                //   WidgetsBinding.instance.addPostFrameCallback((_) {
+                //     ctrl.refreshWhenPageVisible();
+                //   });
+                //   return _LoggedInDashboard(controller: ctrl);
+                // },
                 builder: (_) {
-                  final ctrl = Get.put(PoultryLiveMonitoringController());
+                  final ctrl = Get.find<PoultryLiveMonitoringController>();
+
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     ctrl.refreshWhenPageVisible();
                   });
+
                   return _LoggedInDashboard(controller: ctrl);
                 },
               ),
@@ -441,13 +450,14 @@ class _SwitchCard extends StatelessWidget {
     return Obx(() {
       final busy = controller.switchBusy[item.switchId] ?? false;
       final value = controller.switchUiState[item.switchId] ?? item.isOn;
+      final bool automationActive = controller.liveData.value?.automationEnabled ?? false;
 
-      final bool canInteract = isDeviceOnline && item.isActive && !busy;
+      final bool canInteract = isDeviceOnline && item.isActive && !busy && !automationActive;
 
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isDeviceOnline
+          color: (isDeviceOnline && !automationActive)
               ? const Color.fromARGB(255, 216, 226, 180)
               : Colors.grey.shade300,
           borderRadius: BorderRadius.circular(12),
@@ -456,7 +466,7 @@ class _SwitchCard extends StatelessWidget {
             width: value ? 1.5 : 1,
           ),
           boxShadow: [
-            if (value && isDeviceOnline)
+            if (value && isDeviceOnline && !automationActive)
               BoxShadow(
                 color: Colors.green.withOpacity(0.2),
                 blurRadius: 10,
@@ -467,13 +477,27 @@ class _SwitchCard extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Text(
-                item.switchName.isEmpty ? item.switchId : item.switchName,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: isDeviceOnline ? Colors.black : Colors.grey.shade600,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.switchName.isEmpty ? item.switchId : item.switchName,
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: (isDeviceOnline && !automationActive) ? Colors.black : Colors.grey.shade600,
+                    ),
+                  ),
+                  if (automationActive)
+                    const Text(
+                      'Auto Mode',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                ],
               ),
             ),
             CommonSwitch(
@@ -481,13 +505,32 @@ class _SwitchCard extends StatelessWidget {
               activeColor: Colors.green,
               inactiveColor: Colors.red,
               onChanged: !canInteract
-                  ? null
+                  ? (v) {
+                      if (automationActive) {
+                        _showAutomationSnackbar();
+                      }
+                    }
                   : (v) {
                       controller.onSwitchChanged(item: item, nextValue: v);
                     },
             ),
           ],
         ),
+      );
+    });
+  }
+
+  void _showAutomationSnackbar() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Get.snackbar(
+        'Automation Active',
+        'Manual control is disabled while automation is ON. Turn off automation in Settings to control manually.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.orange.withOpacity(0.9),
+        colorText: Colors.white,
+        margin: const EdgeInsets.all(10),
+        borderRadius: 10,
+        duration: const Duration(seconds: 4),
       );
     });
   }

@@ -13,10 +13,18 @@ class CattleLiveMonitoringController extends GetxController {
 
   final cattleFarmListResponse = Rxn<CattleFarmListResponse>();
   final cattleFarmDashboardResponse = Rxn<CattleFarmDashboardResponse>();
+  //
+  // final selectedDeviceId = ''.obs;
+  // final isLoading = false.obs;
+  // final error = ''.obs;
 
   final selectedDeviceId = ''.obs;
   final isLoading = false.obs;
   final error = ''.obs;
+
+// ✅ Instant switch UI state
+  final switchUiState = <String, bool>{}.obs;
+  final switchBusy = <String, bool>{}.obs;
 
   Timer? _refreshTimer;
 
@@ -42,6 +50,19 @@ class CattleLiveMonitoringController extends GetxController {
         refreshLiveData(showLoader: false);
       }
     });
+  }
+
+  void _syncSwitchUiState() {
+    final switches =
+        cattleFarmDashboardResponse.value?.data?.device?.switches;
+
+    if (switches == null) return;
+
+    for (final item in switches) {
+      if (item.switchId != null) {
+        switchUiState[item.switchId!] = item.isOn ?? false;
+      }
+    }
   }
 
   Future<void> fetchFarmList() async {
@@ -100,7 +121,9 @@ class CattleLiveMonitoringController extends GetxController {
         },
         (r) {
           debugPrint('CattleMonitoring: fetchFarmDashboard() success');
+          // cattleFarmDashboardResponse.value = r;
           cattleFarmDashboardResponse.value = r;
+          _syncSwitchUiState();
           if (Get.isRegistered<CattleHeaderController>()) {
             Get.find<CattleHeaderController>().updateFromDashboard(
               r.data?.weather,
@@ -134,19 +157,53 @@ class CattleLiveMonitoringController extends GetxController {
     }
   }
 
+  // Future<void> toggleSwitch(String switchId, bool turnOn) async {
+  //   var result = await cattleLiveDataRepository.setSwitchState(
+  //     switchId: switchId,
+  //     turnOn: turnOn,
+  //   );
+  //   result.fold(
+  //     (l) {
+  //       debugPrint('Cattle Switch Error: ${l.message}');
+  //     },
+  //     (r) {
+  //       refreshLiveData(showLoader: false);
+  //     },
+  //   );
+  // }
   Future<void> toggleSwitch(String switchId, bool turnOn) async {
-    var result = await cattleLiveDataRepository.setSwitchState(
+    if (switchId.trim().isEmpty) return;
+
+    if (switchBusy[switchId] == true) return;
+
+    switchBusy[switchId] = true;
+
+    // ✅ Instant UI update
+    switchUiState[switchId] = turnOn;
+    switchUiState.refresh();
+
+    final result = await cattleLiveDataRepository.setSwitchState(
       switchId: switchId,
       turnOn: turnOn,
     );
+
     result.fold(
-      (l) {
+          (l) {
         debugPrint('Cattle Switch Error: ${l.message}');
+
+        // rollback if failed
+        switchUiState[switchId] = !turnOn;
+        switchUiState.refresh();
       },
-      (r) {
-        refreshLiveData(showLoader: false);
+          (r) {
+        Future.delayed(
+          const Duration(seconds: 2),
+              () => refreshLiveData(showLoader: false),
+        );
       },
     );
+
+    switchBusy[switchId] = false;
   }
 
   Sensor? getSensor(String name) {

@@ -23,6 +23,7 @@ class PoultryLiveData {
   final int pm10UgM3;
   final int noiseDb;
   final int lightLux;
+  final bool automationEnabled;
   final List<PoultrySensorMetric> metrics;
   final List<PoultrySwitch> switches;
 
@@ -45,6 +46,7 @@ class PoultryLiveData {
     required this.pm10UgM3,
     required this.noiseDb,
     required this.lightLux,
+    this.automationEnabled = false,
     this.metrics = const <PoultrySensorMetric>[],
     this.switches = const <PoultrySwitch>[],
   });
@@ -92,6 +94,7 @@ class PoultryLiveData {
       pm10UgM3: _intVal(json['pm10']),
       noiseDb: _intVal(json['noise']),
       lightLux: _intVal(json['lightLux']),
+      automationEnabled: _boolVal(json['automation_enabled'] ?? false),
       metrics: ((json['metrics'] as List?) ?? const <dynamic>[])
           .whereType<Map>()
           .map(
@@ -124,6 +127,7 @@ class PoultryLiveData {
     'pm10': pm10UgM3,
     'noise': noiseDb,
     'lightLux': lightLux,
+    'automation_enabled': automationEnabled,
     'metrics': metrics.map((e) => e.toJson()).toList(),
     'switches': switches.map((e) => e.toJson()).toList(),
   };

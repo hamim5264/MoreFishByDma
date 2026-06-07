@@ -584,7 +584,10 @@ class _SwitchTile extends StatelessWidget {
     final bool canToggle =
         isOnline && (switchItem.isActive ?? false) && !automationEnabled;
 
-    final bool isOn = switchItem.isOn ?? false;
+    //final bool isOn = switchItem.isOn ?? false;
+    final bool isOn =
+        controller.switchUiState[switchItem.switchId ?? ''] ??
+            (switchItem.isOn ?? false);
 
     return Container(
       width: w,
@@ -633,11 +636,21 @@ class _SwitchTile extends StatelessWidget {
               ),
             ),
           const SizedBox(height: 8),
-          CommonSwitch(
-            value: switchItem.isOn ?? false,
-            onChanged: canToggle ? onChanged : null,
-            activeColor: Colors.green,
-            inactiveColor: Colors.red,
+          // CommonSwitch(
+          //   value: switchItem.isOn ?? false,
+          //   onChanged: canToggle ? onChanged : null,
+          //   activeColor: Colors.green,
+          //   inactiveColor: Colors.red,
+          // ),
+          Obx(
+                () => CommonSwitch(
+              value:
+              controller.switchUiState[switchItem.switchId ?? ''] ??
+                  (switchItem.isOn ?? false),
+              onChanged: canToggle ? onChanged : null,
+              activeColor: Colors.green,
+              inactiveColor: Colors.red,
+            ),
           ),
         ],
       ),

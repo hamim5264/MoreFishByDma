@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 // loader removed
 import 'package:get/get.dart';
@@ -219,6 +220,45 @@ class PoultryLiveMonitoringController extends GetxController
   // =========================
   // ✅ UPDATED SWITCH METHOD
   // =========================
+  // Future<void> onSwitchChanged({
+  //   required PoultrySwitch item,
+  //   required bool nextValue,
+  // }) async {
+  //   if (item.switchId.trim().isEmpty) return;
+  //
+  //   final busy = switchBusy[item.switchId] ?? false;
+  //   if (busy) return;
+  //
+  //   switchBusy[item.switchId] = true;
+  //
+  //   try {
+  //     // loader removed
+  //
+  //     debugPrint(
+  //       'Switch POST: ${item.switchId} -> ${nextValue ? "ON" : "OFF"}',
+  //     );
+  //
+  //     /// STEP 1: POST to backend
+  //     await _repo.setSwitchState(switchId: item.switchId, turnOn: nextValue);
+  //
+  //     /// STEP 2: wait + refresh
+  //     await Future.delayed(const Duration(seconds: 2));
+  //     await refreshLiveData(silent: true);
+  //
+  //     // loader removed
+  //   } catch (e) {
+  //     error.value = e.toString();
+  //     Get.snackbar(
+  //       'Error',
+  //       'Failed to update switch',
+  //       snackPosition: SnackPosition.BOTTOM,
+  //     );
+  //     await refreshLiveData(silent: true);
+  //   } finally {
+  //     switchBusy[item.switchId] = false;
+  //   }
+  // }
+
   Future<void> onSwitchChanged({
     required PoultrySwitch item,
     required bool nextValue,
@@ -230,28 +270,42 @@ class PoultryLiveMonitoringController extends GetxController
 
     switchBusy[item.switchId] = true;
 
-    try {
-      // loader removed
+    // ✅ Instant UI update
+    switchUiState[item.switchId] = nextValue;
+    switchUiState.refresh();
 
+    try {
       debugPrint(
         'Switch POST: ${item.switchId} -> ${nextValue ? "ON" : "OFF"}',
       );
 
-      /// STEP 1: POST to backend
-      await _repo.setSwitchState(switchId: item.switchId, turnOn: nextValue);
+      // Send command immediately
+      await _repo.setSwitchState(
+        switchId: item.switchId,
+        turnOn: nextValue,
+      );
 
-      /// STEP 2: wait + refresh
-      await Future.delayed(const Duration(seconds: 2));
-      await refreshLiveData(silent: true);
-
-      // loader removed
+      // Refresh silently after backend processes command
+      Future.delayed(
+        const Duration(seconds: 2),
+            () => refreshLiveData(silent: true),
+      );
     } catch (e) {
       error.value = e.toString();
-      Get.snackbar(
-        'Error',
-        'Failed to update switch',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+
+      // ❌ Rollback UI if API fails
+      switchUiState[item.switchId] = !nextValue;
+      switchUiState.refresh();
+
+      final context = Get.context;
+      if (context != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to update switch'),
+          ),
+        );
+      }
+
       await refreshLiveData(silent: true);
     } finally {
       switchBusy[item.switchId] = false;
