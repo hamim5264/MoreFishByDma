@@ -208,6 +208,8 @@ class _DeviceDropdown extends StatelessWidget {
                     value: d.id,
                     child: Text(
                       d.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -321,6 +323,8 @@ class _DeviceHeader extends StatelessWidget {
         Expanded(
           child: Text(
             deviceName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
           ),
         ),
