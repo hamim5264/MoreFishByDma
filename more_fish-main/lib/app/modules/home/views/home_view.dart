@@ -303,29 +303,20 @@ class HomeView extends GetView<HomeController> {
           body: Column(
             children: [
               Obx(() {
+                final weather = controller.weatherData;
+                final main = (weather != null && weather.isNotEmpty)
+                    ? weather['main']
+                    : null;
+                final temp = main != null ? (main['temp'] ?? '--') : '--';
+                final humidity = main != null ? (main['humidity'] ?? '--') : '--';
+
                 return CommonAppBar(
                   title: 'title'.tr,
                   cityName: "dhaka".tr,
                   date: '${controller.formattedDate}',
                   time: '${controller.formattedTime}',
-                  temp:
-                      '${controller.weatherData.isEmpty ? "" : controller.weatherData['main']['temp']}°C',
-                  humidity:
-                      '${controller.weatherData.isEmpty ? "" : controller.weatherData['main']['humidity']}%',
-                  actions: [
-                    IconButton(
-                      icon: const Icon(Icons.language, color: Colors.black),
-                      onPressed: () {
-                        Locale currentLocale =
-                            Get.locale ?? const Locale('en', 'US');
-                        if (currentLocale.languageCode == 'en') {
-                          Get.updateLocale(const Locale('bn', 'BD'));
-                        } else {
-                          Get.updateLocale(const Locale('en', 'US'));
-                        }
-                      },
-                    ),
-                  ],
+                  temp: '$temp°C',
+                  humidity: '$humidity%',
                 );
               }),
               Expanded(

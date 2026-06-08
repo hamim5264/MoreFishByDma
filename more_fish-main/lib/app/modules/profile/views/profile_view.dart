@@ -27,15 +27,20 @@ class ProfileView extends GetView<ProfileController> {
           body: Column(
             children: [
               Obx(() {
+                final weather = homeController.weatherData;
+                final main = (weather != null && weather.isNotEmpty)
+                    ? weather['main']
+                    : null;
+                final temp = main != null ? (main['temp'] ?? '--') : '--';
+                final humidity = main != null ? (main['humidity'] ?? '--') : '--';
+
                 return CommonAppBar(
                   title: 'title'.tr,
                   cityName: "dhaka".tr,
                   date: '${homeController.formattedDate}',
                   time: '${homeController.formattedTime}',
-                  temp:
-                      '${homeController.weatherData.isEmpty ? "" : homeController.weatherData['main']['temp']}°C',
-                  humidity:
-                      '${homeController.weatherData.isEmpty ? "" : homeController.weatherData['main']['humidity']}%',
+                  temp: '$temp°C',
+                  humidity: '$humidity%',
                 );
               }),
               Expanded(

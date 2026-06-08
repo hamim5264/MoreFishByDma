@@ -441,6 +441,75 @@ class WaterQualityDeviceController extends GetxController {
     );
   }
 
+  // aeratorCommand({
+  //   id,
+  //   command,
+  //   int? index,
+  //   bool? isOnline,
+  //   int? aeratorPk,
+  // }) async {
+  //   if (isOnline == false) {
+  //     try {
+  //       Get.rawSnackbar(
+  //         title: 'Error',
+  //         message: 'This aerator is offline',
+  //         snackPosition: SnackPosition.BOTTOM,
+  //         backgroundColor: Colors.red.withOpacity(0.8),
+  //         margin: const EdgeInsets.all(10),
+  //         borderRadius: 10,
+  //       );
+  //     } catch (_) {}
+  //     return;
+  //   }
+  //
+  //   final pk = aeratorPk;
+  //   if (pk != null && busyAeratorPks.contains(pk)) return;
+  //
+  //   if (pk != null) {
+  //     busyAeratorPks.add(pk);
+  //     commandInProgress.value = true;
+  //   }
+  //
+  //   // loader removed
+  //
+  //   debugPrint(
+  //     '[API] setAeratorCommand() requested -> id: $id, command: $command',
+  //   );
+  //   var response = await devicesRepository.setAeratorCommand(
+  //     id: id,
+  //     command: command,
+  //   );
+  //
+  //   response.fold(
+  //     (l) {
+  //       // Error case (e.g. "it is not connected", device offline, etc.)
+  //       String errorMsg = l.message;
+  //       debugPrint('[API] setAeratorCommand() failed -> $errorMsg');
+  //
+  //       // No optimistic update, so no need to revert switch
+  //       if (pk != null) {
+  //         busyAeratorPks.remove(pk);
+  //         commandInProgress.value = busyAeratorPks.isNotEmpty;
+  //       } else {
+  //         commandInProgress.value = false;
+  //       }
+  //     },
+  //     (r) {
+  //       // Success case
+  //       debugPrint('[API] setAeratorCommand() success -> ${r.msg}');
+  //       aeratorCommandResponse.value = r;
+  //
+  //       // Refresh pond data to get latest is_running state from server
+  //       pondData(id: selectedAstId.value);
+  //       if (pk != null) {
+  //         busyAeratorPks.remove(pk);
+  //         commandInProgress.value = busyAeratorPks.isNotEmpty;
+  //       } else {
+  //         commandInProgress.value = false;
+  //       }
+  //     },
+  //   );
+  // }
   aeratorCommand({
     id,
     command,
@@ -463,50 +532,79 @@ class WaterQualityDeviceController extends GetxController {
     }
 
     final pk = aeratorPk;
-    if (pk != null && busyAeratorPks.contains(pk)) return;
+
+    if (pk != null && busyAeratorPks.contains(pk)) {
+      return;
+    }
+
+    // ==========================
+    // INSTANT UI UPDATE
+    // ==========================
+    int switchIndex = -1;
+
+    if (pk != null) {
+      switchIndex = aeratorIds.indexOf(pk);
+
+      if (switchIndex >= 0 &&
+          switchIndex < aeratorSwitch.length) {
+        aeratorSwitch[switchIndex] = command == 1;
+      }
+    }
 
     if (pk != null) {
       busyAeratorPks.add(pk);
       commandInProgress.value = true;
     }
 
-    // loader removed
-
     debugPrint(
       '[API] setAeratorCommand() requested -> id: $id, command: $command',
     );
+
     var response = await devicesRepository.setAeratorCommand(
       id: id,
       command: command,
     );
 
     response.fold(
-      (l) {
-        // Error case (e.g. "it is not connected", device offline, etc.)
-        String errorMsg = l.message;
-        debugPrint('[API] setAeratorCommand() failed -> $errorMsg');
+          (l) {
+        debugPrint(
+          '[API] setAeratorCommand() failed -> ${l.message}',
+        );
 
-        // No optimistic update, so no need to revert switch
+        // ==========================
+        // REVERT IF API FAILS
+        // ==========================
+        if (switchIndex >= 0 &&
+            switchIndex < aeratorSwitch.length) {
+          aeratorSwitch[switchIndex] =
+          !(command == 1);
+        }
+
         if (pk != null) {
           busyAeratorPks.remove(pk);
-          commandInProgress.value = busyAeratorPks.isNotEmpty;
+          commandInProgress.value =
+              busyAeratorPks.isNotEmpty;
         } else {
           commandInProgress.value = false;
         }
       },
-      (r) {
-        // Success case
-        debugPrint('[API] setAeratorCommand() success -> ${r.msg}');
+          (r) {
+        debugPrint(
+          '[API] setAeratorCommand() success -> ${r.msg}',
+        );
+
         aeratorCommandResponse.value = r;
 
-        // Refresh pond data to get latest is_running state from server
-        pondData(id: selectedAstId.value);
         if (pk != null) {
           busyAeratorPks.remove(pk);
-          commandInProgress.value = busyAeratorPks.isNotEmpty;
+          commandInProgress.value =
+              busyAeratorPks.isNotEmpty;
         } else {
           commandInProgress.value = false;
         }
+
+        // Keep backend sync
+        pondData(id: selectedAstId.value);
       },
     );
   }

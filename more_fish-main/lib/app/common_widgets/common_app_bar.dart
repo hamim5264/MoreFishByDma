@@ -62,39 +62,41 @@ class CommonAppBar extends StatelessWidget {
         }
       }
 
-      // Consistent height to prevent UI jumping
-      const double appBarHeight = 128;
+      // Reduced height and made it more compact
+      const double minAppBarHeight = 110;
 
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        height: appBarHeight,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        constraints: const BoxConstraints(minHeight: minAppBarHeight),
         decoration: BoxDecoration(
           color: backgroundColor ?? const Color(0xffd4fcfd),
+          border: const Border(bottom: BorderSide(color: Colors.black12, width: 0.5)),
         ),
         child: SafeArea(
           bottom: false,
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // 🔹 Left side: Logo + Title + Date/Time + Language button
               Expanded(
-                flex: 12,
+                flex: 13,
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     leading ??
                         ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: Image.asset(
                             logoAssetPath ?? "assets/icons/logo_trade_mark.jpg",
-                            height: 50,
-                            width: 50,
+                            height: 48,
+                            width: 48,
                             fit: BoxFit.contain,
                           ),
                         ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -104,83 +106,30 @@ class CommonAppBar extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: textColor,
+                              color: textColor ?? Colors.black,
                             ),
                           ),
                           const SizedBox(height: 2),
-                          FittedBox(
-                            fit: BoxFit.scaleDown,
-                            alignment: Alignment.centerLeft,
-                            child: Row(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      date ?? "",
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w600,
-                                        color: textColor,
-                                      ),
-                                    ),
-                                    Text(
-                                      time ?? "",
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w500,
-                                        color: textColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(width: 8),
-                                PopupMenuButton<String>(
-                                  onSelected: (value) {
-                                    if (value == 'bn') {
-                                      Get.updateLocale(const Locale('bn', 'BD'));
-                                      return;
-                                    }
-                                    Get.updateLocale(const Locale('en', 'US'));
-                                  },
-                                  itemBuilder: (context) => const [
-                                    PopupMenuItem<String>(
-                                      value: 'en',
-                                      child: Text('Eng'),
-                                    ),
-                                    PopupMenuItem<String>(
-                                      value: 'bn',
-                                      child: Text('বাংলা'),
-                                    ),
-                                  ],
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  offset: const Offset(0, 34),
-                                  child: Container(
-                                    height: 26,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xff8beeef),
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        (Get.locale?.languageCode ?? 'en') == 'bn'
-                                            ? 'বাংলা'
-                                            : 'Eng',
-                                        style: const TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          if (date != null && date!.isNotEmpty)
+                            Text(
+                              date!,
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: textColor ?? Colors.black87,
+                              ),
                             ),
-                          ),
+                          if (time != null && time!.isNotEmpty)
+                            Text(
+                              time!,
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w500,
+                                color: textColor ?? Colors.black54,
+                              ),
+                            ),
+                          const SizedBox(height: 4),
+                          const _LanguageButton(),
                         ],
                       ),
                     ),
@@ -194,8 +143,8 @@ class CommonAppBar extends StatelessWidget {
               Expanded(
                 flex: 10,
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -212,61 +161,67 @@ class CommonAppBar extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 14,
                               fontWeight: FontWeight.bold,
-                              color: textColor,
+                              color: textColor ?? Colors.black,
                             ),
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 4),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Column(
-                          children: [
-                            CommonText(
-                              tempLabel ?? 'Air Temp',
-                              fontSize: 9,
-                              fontWeight: FontWeight.w500,
-                              color: textColor,
-                            ),
-                            CommonText(
-                              finalTemp ?? '',
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                              color: textColor,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(width: 8),
-                        Column(
-                          children: [
-                            CommonText(
-                              humidityLabel ?? 'Humidity',
-                              fontSize: 9,
-                              fontWeight: FontWeight.w500,
-                              color: textColor,
-                            ),
-                            CommonText(
-                              finalHumidity ?? '',
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                              color: textColor,
-                            ),
-                          ],
-                        ),
-                      ],
+                    FittedBox(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              CommonText(
+                                tempLabel ?? 'Air Temp',
+                                fontSize: 9,
+                                fontWeight: FontWeight.w500,
+                                color: textColor ?? Colors.black54,
+                              ),
+                              CommonText(
+                                finalTemp ?? '',
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: textColor ?? Colors.black87,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              CommonText(
+                                humidityLabel ?? 'Humidity',
+                                fontSize: 9,
+                                fontWeight: FontWeight.w500,
+                                color: textColor ?? Colors.black54,
+                              ),
+                              CommonText(
+                                finalHumidity ?? '',
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: textColor ?? Colors.black87,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 4),
-                    CommonText(
-                      finalDescription ?? '',
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.blueGrey,
-                      maxLines: 1,
-                    ),
+                    if (finalDescription != null && finalDescription!.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      CommonText(
+                        finalDescription,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blueGrey,
+                        maxLines: 1,
+                      ),
+                    ],
                     if (finalSunlight != null && finalSunlight!.isNotEmpty)
                       CommonText(
                         "Sunlight: $finalSunlight",
@@ -274,16 +229,69 @@ class CommonAppBar extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         color: Colors.orange,
                         maxLines: 1,
-                      )
-                    else
-                      const SizedBox(height: 12),
+                      ),
                   ],
                 ),
               ),
+              if (actions != null && actions!.isNotEmpty)
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: actions!,
+                ),
             ],
           ),
         ),
       );
     });
+  }
+}
+
+class _LanguageButton extends StatelessWidget {
+  const _LanguageButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      onSelected: (value) {
+        if (value == 'bn') {
+          Get.updateLocale(const Locale('bn', 'BD'));
+          return;
+        }
+        Get.updateLocale(const Locale('en', 'US'));
+      },
+      itemBuilder: (context) => const [
+        PopupMenuItem<String>(
+          value: 'en',
+          child: Text('Eng'),
+        ),
+        PopupMenuItem<String>(
+          value: 'bn',
+          child: Text('বাংলা'),
+        ),
+      ],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      offset: const Offset(0, 30),
+      child: Container(
+        height: 24,
+        width: 50,
+        decoration: BoxDecoration(
+          color: const Color(0xff8beeef),
+          borderRadius: BorderRadius.circular(100),
+          border: Border.all(color: Colors.black12),
+        ),
+        child: Center(
+          child: Text(
+            (Get.locale?.languageCode ?? 'en') == 'bn' ? 'বাংলা' : 'Eng',
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -27,14 +27,23 @@ class MoreView extends GetView<MoreController> {
         backgroundColor: AppColors.backGround,
           body: Column(
             children: [
-              Obx((){
+              Obx(() {
+                final weather = homeController.weatherData;
+                final main = (weather != null && weather.isNotEmpty)
+                    ? weather['main']
+                    : null;
+                final temp = main != null ? (main['temp'] ?? '--') : '--';
+                final humidity = main != null ? (main['humidity'] ?? '--') : '--';
+
                 return CommonAppBar(
                   title: 'title'.tr,
                   cityName: "dhaka".tr,
-                  date: '${homeController.formattedDate}',
-                  time: '${homeController.formattedTime}',
-                  temp: '${homeController.weatherData['main']['temp']}°C',
-                  humidity: '${homeController.weatherData['main']['humidity']}%',
+                  logoAssetPath: 'assets/icons/dma_more_fish.png',
+                  backgroundColor: const Color(0xffd4fcfd),
+                  date: homeController.formattedDate.value,
+                  time: homeController.formattedTime.value,
+                  temp: '$temp°C',
+                  humidity: '$humidity%',
                 );
               }),
               Expanded(

@@ -29,6 +29,9 @@ class CattleHeaderController extends GetxController {
   Timer? _timer;
   String _lastRoute = '';
   
+  // Track the active "dashboard" module (Cattle, Poultry, MoreFish, Pharma)
+  final activeModule = 'more_fish'.obs; // Default
+  
   // Cache to prevent flickering and excessive OWM calls
   String _lastCityFetched = '';
   DateTime? _lastOWMFetch;
@@ -54,9 +57,22 @@ class CattleHeaderController extends GetxController {
     formattedTime.value = DateFormat('h:mm:ss a').format(now);
 
     // Refresh weather if user navigated to a different module
-    final currentRoute = Get.currentRoute;
+    final currentRoute = Get.currentRoute.toLowerCase();
     if (currentRoute != _lastRoute) {
       log("Route changed from '$_lastRoute' to '$currentRoute'. Refreshing weather...");
+      
+      // Update active module based on route before we lose context (e.g. going to FAQ)
+      if (currentRoute.contains('cattle')) {
+        activeModule.value = 'cattle';
+      } else if (currentRoute.contains('poultry')) {
+        activeModule.value = 'poultry';
+      } else if (currentRoute.contains('pharma') || currentRoute.contains('clean_air')) {
+        activeModule.value = 'pharma';
+      } else if (currentRoute.contains('more_fish') || currentRoute.contains('index') || currentRoute.contains('home')) {
+        // Only set more_fish if it's one of the primary fish routes
+        activeModule.value = 'more_fish';
+      }
+
       _lastRoute = currentRoute;
       refreshWeather();
     }
