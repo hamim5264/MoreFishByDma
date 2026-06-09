@@ -46,6 +46,10 @@ class NotificationsController extends GetxController {
 
   checkLogin() {
     loginTokenStorage = Get.find<LoginTokenStorage>();
+    
+    // ✅ Reset unread count when user opens notifications screen
+    loginTokenStorage.unreadNotificationCount.value = 0;
+
     final token = loginTokenStorage.getMoreFishToken();
     final id = loginTokenStorage.getMoreFishUserId();
     print(id);

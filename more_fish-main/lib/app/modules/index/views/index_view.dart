@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:more_fish/app/common_widgets/common_alert_dialog.dart';
+import 'package:more_fish/app/service/local_storage.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../home/views/home_view.dart';
@@ -69,7 +70,38 @@ class IndexView extends GetView<IndexController> {
               label: 'home'.tr,
             ),
             BottomNavigationBarItem(
-              icon: const Icon(Icons.notifications),
+              icon: Stack(
+                children: [
+                  const Icon(Icons.notifications),
+                  Obx(() {
+                    final count = Get.find<LoginTokenStorage>().unreadNotificationCount.value;
+                    if (count == 0) return const SizedBox.shrink();
+                    return Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 14,
+                          minHeight: 14,
+                        ),
+                        child: Text(
+                          '$count',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
               label: 'notifications'.tr,
             ),
             BottomNavigationBarItem(

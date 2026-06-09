@@ -19,6 +19,13 @@ class PoultryNotificationsController extends GetxController {
   static const String _cacheNotificationsKey = 'poultry_notifications_cache';
 
   @override
+  void onReady() {
+    super.onReady();
+    // ✅ Reset unread count when user opens notifications screen
+    Get.find<LoginTokenStorage>().unreadNotificationCount.value = 0;
+  }
+
+  @override
   void onInit() {
     super.onInit();
     _bootstrap();

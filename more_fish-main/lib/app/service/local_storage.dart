@@ -8,6 +8,7 @@ class LoginTokenStorage {
   
   // Reactive state for UI updates across different modules
   final isCattleLoggedIn = false.obs;
+  final unreadNotificationCount = 0.obs;
 
   static const _moreFishTokenKey = 'token';
   static const _pharmaTokenKey = 'pharmaToken';

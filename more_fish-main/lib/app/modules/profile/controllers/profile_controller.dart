@@ -18,6 +18,12 @@ class ProfileController extends GetxController {
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+    checkLogin();
+  }
+
   checkLogin() {
     loginTokenStorage = Get.find<LoginTokenStorage>();
     final token = loginTokenStorage.getMoreFishToken();

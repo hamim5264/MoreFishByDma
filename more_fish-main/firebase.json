@@ -1,1 +1,21 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"morefish-2026","appId":"1:1026525000107:android:549c385f8639060681e2ee","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"morefish-2026","configurations":{"android":"1:1026525000107:android:549c385f8639060681e2ee"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "morefish-2026",
+          "appId": "1:1026525000107:android:549c385f8639060681e2ee",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "morefish-2026",
+          "configurations": {
+            "android": "1:1026525000107:android:549c385f8639060681e2ee"
+          }
+        }
+      }
+    }
+  }
+}

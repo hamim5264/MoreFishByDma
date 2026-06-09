@@ -297,6 +297,52 @@ class AuthRepository {
     }
   }
 
+  // Future<Either<Failure, void>> updateFcmToken({
+  //   required String fcmToken,
+  //   bool isPoultryFlow = false,
+  //   bool isPharmaFlow = false,
+  //   bool isCattleFlow = false,
+  // }) async {
+  //   try {
+  //     final baseUrl = isPoultryFlow
+  //         ? ApiService.poultryBaseUrl
+  //         : isCattleFlow
+  //         ? ApiService.moreFishBaseUrl
+  //         : ApiService.moreFishBaseUrl;
+  //
+  //     final token = isPoultryFlow
+  //         ? loginTokenStorage.getPoultryToken()
+  //         : isPharmaFlow
+  //         ? loginTokenStorage.getPharmaToken()
+  //         : isCattleFlow
+  //         ? loginTokenStorage.getCattleToken()
+  //         : loginTokenStorage.getMoreFishToken();
+  //
+  //     var headers = {
+  //       'Authorization': 'Bearer $token',
+  //       'Content-Type': 'application/json',
+  //     };
+  //
+  //     final response = await http.post(
+  //       Uri.parse("$baseUrl/auth/user/fcm/token/update/"),
+  //       headers: headers,
+  //       body: jsonEncode({"fcm_token": fcmToken}),
+  //     );
+  //
+  //     debugPrint("FCM token update status code: ${response.statusCode}");
+  //
+  //     if (response.statusCode == 200) {
+  //       debugPrint("FCM token updated successfully");
+  //       return Right(null);
+  //     } else {
+  //       return Left(
+  //         Failure('Failed to update FCM token: ${response.statusCode}'),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     return Left(Failure('Error updating FCM token: $e'));
+  //   }
+  // }
   Future<Either<Failure, void>> updateFcmToken({
     required String fcmToken,
     bool isPoultryFlow = false,
@@ -318,6 +364,13 @@ class AuthRepository {
           ? loginTokenStorage.getCattleToken()
           : loginTokenStorage.getMoreFishToken();
 
+      debugPrint("====================================");
+      debugPrint("Uploading FCM Token:");
+      debugPrint(fcmToken);
+      debugPrint("Endpoint:");
+      debugPrint("$baseUrl/auth/user/fcm/token/update/");
+      debugPrint("====================================");
+
       var headers = {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
@@ -326,21 +379,39 @@ class AuthRepository {
       final response = await http.post(
         Uri.parse("$baseUrl/auth/user/fcm/token/update/"),
         headers: headers,
-        body: jsonEncode({"fcm_token": fcmToken}),
+        body: jsonEncode({
+          "fcm_token": fcmToken,
+        }),
       );
 
-      debugPrint("FCM token update status code: ${response.statusCode}");
+      debugPrint(
+        "FCM token update status code: ${response.statusCode}",
+      );
+
+      debugPrint(
+        "FCM token update response: ${response.body}",
+      );
 
       if (response.statusCode == 200) {
         debugPrint("FCM token updated successfully");
-        return Right(null);
+        return const Right(null);
       } else {
         return Left(
-          Failure('Failed to update FCM token: ${response.statusCode}'),
+          Failure(
+            'Failed to update FCM token: ${response.statusCode}',
+          ),
         );
       }
     } catch (e) {
-      return Left(Failure('Error updating FCM token: $e'));
+      debugPrint(
+        "FCM token update error: $e",
+      );
+
+      return Left(
+        Failure(
+          'Error updating FCM token: $e',
+        ),
+      );
     }
   }
 }

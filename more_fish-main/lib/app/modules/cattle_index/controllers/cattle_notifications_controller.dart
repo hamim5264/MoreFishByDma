@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:more_fish/app/service/local_storage.dart';
 import '../../../repo/cattle_live_repo.dart';
 import '../../../response/cattle_notifications_response.dart';
 
@@ -13,6 +14,13 @@ class CattleNotificationsController extends GetxController {
   void onInit() {
     super.onInit();
     fetchNotifications();
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    // ✅ Reset unread count when user opens notifications screen
+    Get.find<LoginTokenStorage>().unreadNotificationCount.value = 0;
   }
 
   Future<void> fetchNotifications() async {

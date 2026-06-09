@@ -8,6 +8,7 @@ import 'firebase_options.dart';
 import 'app/app_translations.dart';
 import 'app/routes/app_pages.dart';
 import 'app/service/local_storage.dart';
+import 'app/service/fcm_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,14 @@ Future<void> main() async {
 
   // ✅ Proper Firebase initialization (Android + Web)
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  
+  // ✅ Initialize FCM Service
+  await FcmService.initialize();
+  final token = await FcmService.getFcmToken();
+
+  debugPrint("========== REAL FCM TOKEN ==========");
+  debugPrint(token);
+  debugPrint("====================================");
 
   runApp(const MyApp());
 }

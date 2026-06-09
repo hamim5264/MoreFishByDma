@@ -25,6 +25,10 @@ class CleanAirNotificationsController extends GetxController {
 
   void checkLogin() {
     loginTokenStorage = Get.find<LoginTokenStorage>();
+    
+    // ✅ Reset unread count when user opens notifications screen
+    loginTokenStorage.unreadNotificationCount.value = 0;
+
     final token = loginTokenStorage.getPharmaToken();
 
     if (token != null) {

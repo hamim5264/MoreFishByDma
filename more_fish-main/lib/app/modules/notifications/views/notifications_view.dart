@@ -14,7 +14,6 @@ class NotificationsView extends GetView<NotificationsController> {
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
-    controller.checkLogin();
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
         statusBarColor: Color(0xffd4fcfd),
