@@ -9,13 +9,13 @@ class CattleIndexBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<CattleIndexController>(() => CattleIndexController());
-    Get.lazyPut<CattleHeaderController>(() => CattleHeaderController());
+    Get.put(CattleHeaderController(), permanent: true);
     Get.lazyPut<CattleProfileController>(() => CattleProfileController());
     Get.lazyPut<CattleNotificationsController>(
       () => CattleNotificationsController(),
     );
 
     // ✅ Put it immediately so it can start polling/caching in background
-    Get.put(CattleLiveMonitoringController());
+    Get.put(CattleLiveMonitoringController(), permanent: true);
   }
 }

@@ -47,8 +47,10 @@ class CattleHeaderController extends GetxController {
     _tick();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
 
-    // Initial weather fetch
-    refreshWeather();
+    // Initial weather fetch with a slight delay to ensure storage is ready after login
+    Future.delayed(const Duration(milliseconds: 300), () {
+      refreshWeather();
+    });
   }
 
   void _tick() {

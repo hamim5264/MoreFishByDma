@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
 import '../controllers/cattle_index_controller.dart';
+import '../controllers/cattle_live_monitoring_controller.dart';
 
 class CattleMoreView extends GetView<CattleIndexController> {
   const CattleMoreView({super.key});
@@ -14,6 +15,22 @@ class CattleMoreView extends GetView<CattleIndexController> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         children: [
+          _SimpleMoreTile(
+            title: 'Automation Settings',
+            onTap: () {
+              final monitoringCtrl = Get.find<CattleLiveMonitoringController>();
+              final farmId = monitoringCtrl.selectedDeviceId.value;
+              if (farmId.isNotEmpty) {
+                Get.toNamed(
+                  Routes.CATTLE_AUTOMATION_SETTINGS,
+                  arguments: {'farmId': farmId},
+                );
+              } else {
+                Get.snackbar('Error', 'No farm selected');
+              }
+            },
+          ),
+          const SizedBox(height: 10),
           _SimpleMoreTile(title: 'FAQ', onTap: () => Get.toNamed(Routes.FAQ)),
           const SizedBox(height: 10),
           _SimpleMoreTile(

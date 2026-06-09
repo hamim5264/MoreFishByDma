@@ -33,13 +33,15 @@ class CattleLiveMonitoringController extends GetxController {
     super.onInit();
     debugPrint('CattleMonitoringController: onInit');
     
-    // Only fetch if we don't have data yet to prevent every-time-loading
-    if (cattleFarmListResponse.value == null) {
-      fetchFarmList();
-    } else {
-      // Silently refresh in background if we already have "cached" data in the controller
-      refreshLiveData(showLoader: false);
-    }
+    // Use a small delay or post-frame callback to ensure dependencies (like token storage) 
+    // are fully settled, especially after a fresh login.
+    Future.delayed(const Duration(milliseconds: 200), () {
+      if (cattleFarmListResponse.value == null) {
+        fetchFarmList();
+      } else {
+        refreshLiveData(showLoader: false);
+      }
+    });
     
     _startBackgroundRefresh();
   }
@@ -209,6 +211,14 @@ class CattleLiveMonitoringController extends GetxController {
         // rollback if failed
         switchUiState[switchId] = !turnOn;
         switchUiState.refresh();
+
+        Get.snackbar(
+          'Command Failed',
+          l.message,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent,
+          colorText: Colors.white,
+        );
       },
           (r) {
         Future.delayed(

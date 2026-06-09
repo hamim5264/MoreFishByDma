@@ -12,6 +12,8 @@ import '../modules/automation_settings/bindings/automation_settings_binding.dart
 import '../modules/automation_settings/views/automation_settings_view.dart';
 import '../modules/poultry_automation_settings/bindings/poultry_automation_settings_binding.dart';
 import '../modules/poultry_automation_settings/views/poultry_automation_settings_view.dart';
+import '../modules/cattle_automation_settings/bindings/cattle_automation_settings_binding.dart';
+import '../modules/cattle_automation_settings/views/cattle_automation_settings_view.dart';
 import '../modules/aerator_connection/bindings/aerator_connection_binding.dart';
 import '../modules/aerator_connection/views/aerator_connection_view.dart';
 import '../modules/cattle_index/bindings/cattle_index_binding.dart';
@@ -393,6 +395,11 @@ class AppPages {
       name: _Paths.POULTRY_AUTOMATION_SETTINGS,
       page: () => const PoultryAutomationSettingsView(),
       binding: PoultryAutomationSettingsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CATTLE_AUTOMATION_SETTINGS,
+      page: () => const CattleAutomationSettingsView(),
+      binding: CattleAutomationSettingsBinding(),
     ),
   ];
 }

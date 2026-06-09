@@ -59,6 +59,7 @@ abstract class Routes {
   static const NANO_BUBBLE = _Paths.NANO_BUBBLE;
   static const AUTOMATION_SETTINGS = _Paths.AUTOMATION_SETTINGS;
   static const POULTRY_AUTOMATION_SETTINGS = _Paths.POULTRY_AUTOMATION_SETTINGS;
+  static const CATTLE_AUTOMATION_SETTINGS = _Paths.CATTLE_AUTOMATION_SETTINGS;
 }
 
 abstract class _Paths {
@@ -119,4 +120,5 @@ abstract class _Paths {
   static const NANO_BUBBLE = '/nano-bubble';
   static const AUTOMATION_SETTINGS = '/automation-settings';
   static const POULTRY_AUTOMATION_SETTINGS = '/poultry-automation-settings';
+  static const CATTLE_AUTOMATION_SETTINGS = '/cattle-automation-settings';
 }

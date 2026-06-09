@@ -111,12 +111,18 @@ class CattleLoginController extends GetxController {
           await loginTokenStorage.setCattleUserId(userId);
           loginTokenStorage.isCattleLoggedIn.value = true;
           
-          // Initialize global cattle header data if not already present
-          if (!Get.isRegistered<CattleHeaderController>()) {
-            Get.put(CattleHeaderController());
+          // Clear any stale cattle controllers to ensure fresh state after login
+          if (Get.isRegistered<CattleHeaderController>()) {
+            await Get.delete<CattleHeaderController>();
           }
-          if (!Get.isRegistered<CattleLiveMonitoringController>()) {
-            Get.put(CattleLiveMonitoringController());
+          if (Get.isRegistered<CattleLiveMonitoringController>()) {
+            await Get.delete<CattleLiveMonitoringController>();
+          }
+          
+          // Re-initialize if opened from guard to avoid "Controller not found" in CattleHomeView
+          if (_openedFromGuard) {
+            Get.put(CattleHeaderController(), permanent: true);
+            Get.put(CattleLiveMonitoringController(), permanent: true);
           }
           
           debugPrint(
