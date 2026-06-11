@@ -767,6 +767,95 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                           );
                                         }),
 
+                                        // ==================== CLEANER SECTION ====================
+                                        Obx(() {
+                                          final cleaner =
+                                              controller.cleanerStatusResponse.value;
+                                          if (cleaner == null ||
+                                              cleaner.success == false) {
+                                            return const SizedBox.shrink();
+                                          }
+
+                                          final bool isOn = cleaner.isOn == true;
+
+                                          return Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              CommonContainer(
+                                                margin: const EdgeInsets.only(
+                                                  left: 14,
+                                                  right: 14,
+                                                  bottom: 8,
+                                                ),
+                                                padding: const EdgeInsets.symmetric(
+                                                  horizontal: 16,
+                                                  vertical: 18,
+                                                ),
+                                                border: Border.all(
+                                                  color: isOn
+                                                      ? Colors.green.withOpacity(0.5)
+                                                      : Colors.black12,
+                                                  width: isOn ? 1.5 : 1,
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      width: 18,
+                                                      height: 18,
+                                                      decoration: BoxDecoration(
+                                                        color: isOn
+                                                            ? const Color(0xff2fbf71)
+                                                            : Colors.grey,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 12),
+                                                    const Expanded(
+                                                      child: CommonText(
+                                                        'Auto-Cleaner',
+                                                        fontSize: 20,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    CommonText(
+                                                      isOn ? 'On' : 'Off',
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: isOn
+                                                          ? Colors.green
+                                                          : Colors.grey,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 18),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    if (cleaner.lastRunAt != null)
+                                                      CommonText(
+                                                        'Last Run: ${cleaner.lastRunAt}',
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.black87,
+                                                      ),
+                                                    const SizedBox(height: 6),
+                                                    CommonText(
+                                                      'Every day at 2:00 PM Bangladesh time, the cleaner turns ON.',
+                                                      fontSize: 13,
+                                                      color: Colors.grey.shade700,
+                                                      maxLines: 2,
+                                                      overflow: TextOverflow.visible,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              const SizedBox(height: 16),
+                                            ],
+                                          );
+                                        }),
+
                                         // Warning Messages (unchanged)
                                         controller.pondDataResponse.value ==
                                                 null

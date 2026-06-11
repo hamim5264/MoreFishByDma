@@ -11,6 +11,7 @@ import '../response/pond_data_response.dart';
 import '../response/pond_list_response.dart';
 import '../response/sensor_list_response.dart';
 import '../response/aerator_automation_response.dart';
+import '../response/cleaner_status_response.dart';
 import '../service/failure.dart';
 import '../service/service.dart';
 import 'package:more_fish/app/service/local_storage.dart';
@@ -355,6 +356,32 @@ class DevicesRepository {
         return Right(AeratorAutomationResponse.fromRawJson(response.body));
       } else {
         return Left(Failure('Failed to save automation settings: ${response.statusCode}'));
+      }
+    } catch (e) {
+      return Left(Failure('Error: $e'));
+    }
+  }
+
+  Future<Either<Failure, CleanerStatusResponse>> getCleanerStatus({
+    required dynamic assetId,
+    bool isPharmaFlow = false,
+  }) async {
+    try {
+      var token = _getToken(isPharmaFlow: isPharmaFlow);
+      var headers = {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      };
+
+      var url = Uri.parse("${ApiService.baseUrl}/devices/cleaner/status/?asset_id=$assetId");
+      debugPrint('Cleaner Status GET: $url');
+
+      var response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return Right(CleanerStatusResponse.fromRawJson(response.body));
+      } else {
+        return Left(Failure('Failed to fetch cleaner status: ${response.statusCode}'));
       }
     } catch (e) {
       return Left(Failure('Error: $e'));

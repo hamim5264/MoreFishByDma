@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../../../common_widgets/common_text.dart';
 import '../controllers/weather_forecast_controller.dart';
 
@@ -32,6 +33,7 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildLocationDropdown(),
                 const SizedBox(height: 20),
@@ -109,6 +111,7 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
     final city = weather['name'];
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         glassCard(
           child: Column(
@@ -148,6 +151,66 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
                 color: Colors.grey[700],
               ),
             ],
+          ),
+        ),
+        const SizedBox(height: 24),
+        const CommonText(
+          "Hourly Forecast",
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 150,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.forecastData.length > 8
+                ? 8
+                : controller.forecastData.length, // Next 24 hours (8 * 3h)
+            itemBuilder: (context, index) {
+              final forecast = controller.forecastData[index];
+              final fTemp = forecast['main']['temp'].toDouble();
+              final fIcon = forecast['weather'][0]['icon'];
+              final fTime = DateTime.parse(forecast['dt_txt']);
+              final formattedTime = DateFormat('ha').format(fTime);
+
+              return Container(
+                width: 80,
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Colors.blue.shade100),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CommonText(
+                      formattedTime,
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
+                    const SizedBox(height: 8),
+                    Image.network(
+                      "https://openweathermap.org/img/wn/$fIcon.png",
+                      width: 40,
+                      height: 40,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.wb_cloudy, color: Colors.blue),
+                    ),
+                    const SizedBox(height: 8),
+                    CommonText(
+                      "$fTemp°C",
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
         const SizedBox(height: 30),

@@ -97,34 +97,74 @@ class DmaTechnologiesGrid extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
           child: Column(
             children: [
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 18),
+                decoration: BoxDecoration(
+                  color: tileBg,
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 8,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                  border: Border.all(color: Colors.black12),
+                ),
+                child: const Center(
+                  child: Text(
+                    'DMA Technologies',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                      fontFamily: 'Times New Roman',
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 14),
               InkWell(
                 onTap: () => Get.toNamed(Routes.WEATHER_FORECAST),
                 borderRadius: BorderRadius.circular(14),
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                   decoration: BoxDecoration(
                     color: tileBg,
                     borderRadius: BorderRadius.circular(14),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black12,
-                        blurRadius: 8,
+                        blurRadius: 6,
                         offset: Offset(0, 2),
                       ),
                     ],
                     border: Border.all(color: Colors.black12),
                   ),
-                  child: const Center(
-                    child: Text(
-                      'DMA Technologies',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                        fontFamily: 'Times New Roman',
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        'assets/icons/weather_forecast.png',
+                        height: 40,
+                        width: 40,
                       ),
-                    ),
+                      const SizedBox(width: 16),
+                      const Text(
+                        'Weather Forecast',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                          fontFamily: 'Times New Roman',
+                        ),
+                      ),
+                      const Spacer(),
+                      const Icon(Icons.arrow_forward_ios,
+                          size: 16, color: Colors.black54),
+                    ],
                   ),
                 ),
               ),

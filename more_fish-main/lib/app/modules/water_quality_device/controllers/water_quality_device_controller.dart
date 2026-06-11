@@ -9,6 +9,7 @@ import '../../../response/company_list_response.dart';
 import '../../../response/pond_data_response.dart';
 import '../../../response/pond_list_response.dart';
 import '../../../response/sensor_list_response.dart';
+import '../../../response/cleaner_status_response.dart';
 
 class WaterQualityDeviceController extends GetxController {
   DevicesRepository devicesRepository = DevicesRepository();
@@ -18,6 +19,7 @@ class WaterQualityDeviceController extends GetxController {
   var sensorListResponse = Rxn<SensorListResponse>();
   var companyListResponse = Rxn<CompanyListResponse>();
   var aeratorCommandResponse = Rxn<AeratorCommandResponse>();
+  var cleanerStatusResponse = Rxn<CleanerStatusResponse>();
 
   var aeratorSwitch = [].obs;
   var selectedAstName = ''.obs;
@@ -26,6 +28,7 @@ class WaterQualityDeviceController extends GetxController {
 
   Timer? _pollTimer;
   Timer? _aeratorPollTimer;
+  Timer? _cleanerPollTimer;
   var isFetching = false.obs;
   var commandInProgress = false.obs;
   var busyAeratorPks = <int>{}.obs;
@@ -42,6 +45,7 @@ class WaterQualityDeviceController extends GetxController {
   String get _cachePondDataKey => '${cachePrefix}_pond_data_cache';
   String get _cacheSensorListKey => '${cachePrefix}_sensor_list_cache';
   String get _cacheCompanyListKey => '${cachePrefix}_company_list_cache';
+  String get _cacheCleanerStatusKey => '${cachePrefix}_cleaner_status_cache';
   String get _cacheSelectedAstIdKey => '${cachePrefix}_selected_ast_id';
   String get _cacheSelectedAstNameKey => '${cachePrefix}_selected_ast_name';
 
@@ -56,6 +60,7 @@ class WaterQualityDeviceController extends GetxController {
   void onClose() {
     _pollTimer?.cancel();
     _aeratorPollTimer?.cancel();
+    _cleanerPollTimer?.cancel();
     super.onClose();
   }
 
@@ -80,12 +85,37 @@ class WaterQualityDeviceController extends GetxController {
     });
   }
 
+  void _startCleanerPolling() {
+    debugPrint('[WaterQuality] Cleaner polling started (every 10 seconds)');
+    _cleanerPollTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      if (selectedAstId.value == 0) return;
+      fetchCleanerStatus(selectedAstId.value);
+    });
+  }
+
   Future<void> _bootstrap() async {
     await _loadCachedState();
     pondList();
     CompanyList();
+    // Instant fetch if we have a cached asset ID
+    if (selectedAstId.value != 0) {
+      fetchCleanerStatus(selectedAstId.value);
+    }
     _startPolling();
     _startAeratorPolling();
+    _startCleanerPolling();
+  }
+
+  Future<void> fetchCleanerStatus(dynamic assetId) async {
+    if (assetId == null || assetId == 0) return;
+    final response = await devicesRepository.getCleanerStatus(assetId: assetId);
+    response.fold(
+      (l) => debugPrint('Cleaner Status fetch failed: ${l.message}'),
+      (r) {
+        cleanerStatusResponse.value = r;
+        _cacheCleanerStatus(r);
+      },
+    );
   }
 
   void _pollAeratorState() async {
@@ -171,6 +201,7 @@ class WaterQualityDeviceController extends GetxController {
 
         // Fetch sensor list for graph
         try {
+          fetchCleanerStatus(selectedAstId.value);
           final deviceId = r.data.devices[0].deviceId;
           if (deviceId != null && deviceId.toString().isNotEmpty) {
             debugPrint('[Flow] sensorList() triggered -> device_id: $deviceId');
@@ -267,6 +298,12 @@ class WaterQualityDeviceController extends GetxController {
       final cachedAstName = prefs.getString(_cacheSelectedAstNameKey);
       if (cachedAstName != null && cachedAstName.isNotEmpty) {
         selectedAstName.value = cachedAstName;
+      }
+
+      final cachedCleaner = prefs.getString(_cacheCleanerStatusKey);
+      if (cachedCleaner != null && cachedCleaner.isNotEmpty) {
+        cleanerStatusResponse.value =
+            CleanerStatusResponse.fromRawJson(cachedCleaner);
       }
 
       // Load cached aerator states (if any). This populates the local arrays so
@@ -368,6 +405,11 @@ class WaterQualityDeviceController extends GetxController {
   Future<void> _cacheCompanyList(CompanyListResponse response) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_cacheCompanyListKey, response.toRawJson());
+  }
+
+  Future<void> _cacheCleanerStatus(CleanerStatusResponse response) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_cacheCleanerStatusKey, response.toRawJson());
   }
 
   Future<void> _cacheSelectedAstId(int id) async {
