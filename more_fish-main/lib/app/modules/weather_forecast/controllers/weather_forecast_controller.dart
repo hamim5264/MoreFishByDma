@@ -12,12 +12,27 @@ class WeatherForecastController extends GetxController {
   var isLoading = false.obs;
   var errorMessage = ''.obs;
 
+  final List<String> locations = [
+    'Dhaka',
+    'Chittagong',
+    'Sylhet',
+    'Rajshahi',
+    'Khulna',
+    'Barisal',
+    'Rangpur',
+    'Mymensingh',
+    'Gazipur',
+    'Narayanganj',
+    'Comilla',
+  ];
+
+  var selectedLocation = 'Dhaka'.obs;
+
   @override
   void onInit() {
     super.onInit();
-
+    fetchWeatherData(selectedLocation.value);
   }
-
 
   Future<void> fetchWeatherData(String city) async {
     isLoading.value = true;
