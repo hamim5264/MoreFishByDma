@@ -70,7 +70,7 @@ class CattleLiveMonitoringView extends StatelessWidget {
                           ElevatedButton.icon(
                             onPressed: () => ctrl.fetchFarmList(),
                             icon: const Icon(Icons.refresh_rounded),
-                            label: const Text('Try Again'),
+                            label: Text('try_again'.tr),
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 24,
@@ -122,7 +122,7 @@ class _LoggedInDashboard extends StatelessWidget {
                 if (dashboard?.device != null) ...[
                   _DeviceHeader(
                     deviceName: dashboard!.device!.deviceName ?? '--',
-                    deviceStatus: dashboard.device!.deviceStatus ?? 'Offline',
+                    deviceStatus: dashboard.device!.deviceStatus ?? 'off'.tr,
                     lastSync: dashboard.device!.sensors?.isNotEmpty == true
                         ? dashboard.device!.sensors!.first.dataTime ?? '--'
                         : '--',
@@ -162,9 +162,9 @@ class _LoggedInDashboard extends StatelessWidget {
                     dashboard!.device!.switches!.isNotEmpty) ...[
                   Row(
                     children: [
-                      const Text(
-                        'Switches',
-                        style: TextStyle(
+                      Text(
+                        'switch_controls'.tr,
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -204,14 +204,14 @@ class _LoggedInDashboard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.blueGrey.shade100),
                   ),
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(Icons.info_outline, color: Colors.blueGrey),
-                      SizedBox(width: 12),
+                      const Icon(Icons.info_outline, color: Colors.blueGrey),
+                      const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          'Note: The parameters are changeable according to installation of device.',
-                          style: TextStyle(
+                          'cattle_param_note'.tr,
+                          style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             color: Colors.blueGrey,
@@ -288,7 +288,7 @@ class _DeviceDropdown extends StatelessWidget {
             value: controller.selectedDeviceId.value.isEmpty
                 ? null
                 : controller.selectedDeviceId.value,
-            hint: const Text('Select farm'),
+            hint: Text('select_farm'.tr),
             icon: const Icon(Icons.keyboard_arrow_down),
             items: farms
                 .map(
@@ -486,11 +486,11 @@ class _SwitchTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           if (automationEnabled)
-            const Padding(
-              padding: EdgeInsets.only(top: 2),
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
               child: Text(
-                'Auto Mode',
-                style: TextStyle(
+                'auto_mode'.tr,
+                style: const TextStyle(
                   fontSize: 10,
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,

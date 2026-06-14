@@ -43,7 +43,7 @@ class PoultryIndexView extends GetView<PoultryIndexController> {
           elevation: 4,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
           items: [
-            const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: const Icon(Icons.home), label: 'home'.tr),
             BottomNavigationBarItem(
               icon: Stack(
                 children: [
@@ -77,10 +77,10 @@ class PoultryIndexView extends GetView<PoultryIndexController> {
                   }),
                 ],
               ),
-              label: 'Notifications',
+              label: 'notifications'.tr,
             ),
-            const BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-            const BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'More'),
+            BottomNavigationBarItem(icon: const Icon(Icons.person), label: 'profile'.tr),
+            BottomNavigationBarItem(icon: const Icon(Icons.menu), label: 'more'.tr),
           ],
         ),
       );

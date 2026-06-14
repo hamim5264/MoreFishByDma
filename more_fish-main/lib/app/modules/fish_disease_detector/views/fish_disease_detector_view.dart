@@ -14,7 +14,7 @@ class FishDiseaseDetectorView extends GetView<FishDiseaseDetectorController> {
     return Scaffold(
       backgroundColor: AppColors.backGround,
       appBar: AppBar(
-        title: const Text('Fish Disease Detector'),
+        title: Text('fish_disease_detector'.tr),
         backgroundColor: const Color(0xffd4fcfd),
         foregroundColor: Colors.black,
         elevation: 0,
@@ -33,10 +33,10 @@ class FishDiseaseDetectorView extends GetView<FishDiseaseDetectorController> {
                   border: Border.all(color: Colors.black12),
                 ),
                 child: controller.selectedImage.value == null
-                    ? const Center(
+                    ? Center(
                         child: Text(
-                          'No image selected',
-                          style: TextStyle(fontSize: 16),
+                          'no_image_selected'.tr,
+                          style: const TextStyle(fontSize: 16),
                         ),
                       )
                     : ClipRRect(
@@ -57,7 +57,7 @@ class FishDiseaseDetectorView extends GetView<FishDiseaseDetectorController> {
                           ? null
                           : controller.pickFromCamera,
                       icon: const Icon(Icons.camera_alt_outlined),
-                      label: const Text('Camera'),
+                      label: Text('camera'.tr),
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -67,7 +67,7 @@ class FishDiseaseDetectorView extends GetView<FishDiseaseDetectorController> {
                           ? null
                           : controller.pickFromGallery,
                       icon: const Icon(Icons.photo_library_outlined),
-                      label: const Text('Gallery'),
+                      label: Text('gallery'.tr),
                     ),
                   ),
                 ],
@@ -80,8 +80,8 @@ class FishDiseaseDetectorView extends GetView<FishDiseaseDetectorController> {
                 icon: const Icon(Icons.search),
                 label: Text(
                   controller.isLoading.value
-                      ? 'Detecting...'
-                      : 'Detect Disease',
+                      ? 'detecting'.tr
+                      : 'detect_disease'.tr,
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff2f7d8b),
@@ -119,7 +119,7 @@ class FishDiseaseDetectorView extends GetView<FishDiseaseDetectorController> {
                   onPressed: controller.isLoading.value
                       ? null
                       : controller.clearSelection,
-                  child: const Text('Clear'),
+                  child: Text('clear'.tr),
                 ),
             ],
           ),

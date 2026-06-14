@@ -8,10 +8,10 @@ import '../../../../app/response/pond_data_response.dart';
 
 class MoreController extends GetxController {
   var items = [
-    "FAQ",
-    "About App",
-    "About Device",
-    "Automation Settings",
+    "faq_menu",
+    "about_app_menu",
+    "about_device_menu",
+    "automation_settings_menu",
   ];
 
   void navigateToItem(int index) {

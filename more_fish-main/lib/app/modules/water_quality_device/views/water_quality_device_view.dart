@@ -154,7 +154,7 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                 child: Obx(() {
                   var data = controller.pondDataResponse.value;
                   return data == null
-                      ? const Center(child: Text('Waiting for live data...'))
+                      ? Center(child: Text('waiting_for_live_data'.tr))
                       : Column(
                           children: [
                             Center(
@@ -510,7 +510,7 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                 CommonText(
                                                                   sensorData?.dangerStatus ==
                                                                           "invalid"
-                                                                      ? "No Data"
+                                                                      ? "no_data".tr
                                                                       : _formatSensorValue(
                                                                           sensorName:
                                                                               sensorData?.sensorName,
@@ -690,8 +690,8 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                   if (controller
                                                                       .isAutomationEnabled
                                                                       .value)
-                                                                    const CommonText(
-                                                                      'Auto Mode',
+                                                                    CommonText(
+                                                                      'auto_mode'.tr,
                                                                       fontSize: 12,
                                                                       color: Colors
                                                                           .blue,
@@ -733,11 +733,11 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
                                                             ScaffoldMessenger.of(context).showSnackBar(
-                                                              const SnackBar(
+                                                              SnackBar(
                                                                 content: Text(
-                                                                  'Manual control is disabled while Automation is ON.',
+                                                                  'manual_control_disabled'.tr,
                                                                 ),
-                                                                duration: Duration(seconds: 2),
+                                                                duration: const Duration(seconds: 2),
                                                               ),
                                                             );
 
@@ -810,15 +810,15 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                       ),
                                                     ),
                                                     const SizedBox(width: 12),
-                                                    const Expanded(
+                                                    Expanded(
                                                       child: CommonText(
-                                                        'Auto-Cleaner',
+                                                        'auto_cleaner'.tr,
                                                         fontSize: 20,
                                                         fontWeight: FontWeight.bold,
                                                       ),
                                                     ),
                                                     CommonText(
-                                                      isOn ? 'On' : 'Off',
+                                                      isOn ? 'on'.tr : 'off'.tr,
                                                       fontSize: 18,
                                                       fontWeight: FontWeight.bold,
                                                       color: isOn
@@ -835,14 +835,14 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                   children: [
                                                     if (cleaner.lastRunAt != null)
                                                       CommonText(
-                                                        'Last Run: ${cleaner.lastRunAt}',
+                                                        '${'last_run'.tr}: ${cleaner.lastRunAt}',
                                                         fontSize: 14,
                                                         fontWeight: FontWeight.bold,
                                                         color: Colors.black87,
                                                       ),
                                                     const SizedBox(height: 6),
                                                     CommonText(
-                                                      'Every day at 2:00 PM Bangladesh time, the cleaner turns ON.',
+                                                      'cleaner_schedule_note'.tr,
                                                       fontSize: 13,
                                                       color: Colors.grey.shade700,
                                                       maxLines: 2,
@@ -899,13 +899,13 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
 
                                                       if (data == "pH" &&
                                                           value < 7) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              "⚠️ Warning: ",
+                                                              "⚠️ ${'warning'.tr}: ",
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
@@ -925,13 +925,13 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                       }
                                                       if (data == "pH" &&
                                                           value > 8.5) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              "⚠️ Warning: ",
+                                                              "⚠️ ${'warning'.tr}: ",
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
@@ -951,13 +951,13 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                       }
                                                       if (data == "DO" &&
                                                           value < 3) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              "⚠️ Warning: ",
+                                                              "⚠️ ${'warning'.tr}: ",
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
@@ -977,13 +977,13 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                       }
                                                       if (data == "TDS" &&
                                                           value < 100) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              "⚠️ Warning: ",
+                                                              "⚠️ ${'warning'.tr}: ",
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
@@ -1003,13 +1003,13 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                       }
                                                       if (data == "TDS" &&
                                                           value > 1000) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              "⚠️ Warning: ",
+                                                              "⚠️ ${'warning'.tr}: ",
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
@@ -1030,13 +1030,13 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                       if (data ==
                                                               "Temperature" &&
                                                           value > 34) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              "⚠️ Warning: ",
+                                                              "⚠️ ${'warning'.tr}: ",
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
@@ -1056,13 +1056,13 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                       }
                                                       if (data == "NH3" &&
                                                           value > 0.5) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              "⚠️ Warning: ",
+                                                              "⚠️ ${'warning'.tr}: ",
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight

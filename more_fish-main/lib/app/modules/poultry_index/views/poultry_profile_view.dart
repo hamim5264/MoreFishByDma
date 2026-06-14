@@ -189,6 +189,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import 'package:more_fish/app/service/fcm_service.dart';
 import '../../../common_widgets/common_app_bar.dart';
 import '../../../routes/app_pages.dart';
 import '../../../service/local_storage.dart';
@@ -238,6 +239,9 @@ class PoultryProfileView extends StatelessWidget {
                           onPressed: () async {
                             final loginTokenStorage =
                                 Get.find<LoginTokenStorage>();
+
+                            /// ✅ FIX: clear FCM token before removing session
+                            await FcmService.clearFcmTokenOnLogout();
 
                             /// ✅ FIX: poultry token properly remove
                             await loginTokenStorage.removePoultryToken();

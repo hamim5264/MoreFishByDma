@@ -60,12 +60,13 @@ class CattleLoginController extends GetxController {
   }
 
   login(context, email, password) async {
-    debugPrint('Cattle care login email: $email');
+    final trimmedEmail = email.toString().trim();
+    debugPrint('Cattle care login email: $trimmedEmail');
     debugPrint('Cattle care login endpoint: /auth/login/');
 
     try {
       var response = await authRepository.setLogin(
-        email: email,
+        email: trimmedEmail,
         password: password,
       );
 

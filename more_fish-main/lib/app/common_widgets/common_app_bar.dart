@@ -157,7 +157,7 @@ class CommonAppBar extends StatelessWidget {
                         const SizedBox(width: 2),
                         Flexible(
                           child: Text(
-                            finalCityName,
+                            finalCityName.tr,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -178,7 +178,7 @@ class CommonAppBar extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               CommonText(
-                                tempLabel ?? 'Air Temp',
+                                tempLabel ?? 'air_temp'.tr,
                                 fontSize: 9,
                                 fontWeight: FontWeight.w500,
                                 color: textColor ?? Colors.black54,
@@ -196,7 +196,7 @@ class CommonAppBar extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               CommonText(
-                                humidityLabel ?? 'Humidity',
+                                humidityLabel ?? 'humidity'.tr,
                                 fontSize: 9,
                                 fontWeight: FontWeight.w500,
                                 color: textColor ?? Colors.black54,
@@ -215,7 +215,7 @@ class CommonAppBar extends StatelessWidget {
                     if (finalDescription != null && finalDescription!.isNotEmpty) ...[
                       const SizedBox(height: 2),
                       CommonText(
-                        finalDescription,
+                        finalDescription.tr,
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                         color: Colors.blueGrey,
@@ -224,7 +224,7 @@ class CommonAppBar extends StatelessWidget {
                     ],
                     if (finalSunlight != null && finalSunlight!.isNotEmpty)
                       CommonText(
-                        "Sunlight: $finalSunlight",
+                        "${'sunlight'.tr}: ${finalSunlight.tr}",
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
                         color: Colors.orange,
@@ -259,14 +259,14 @@ class _LanguageButton extends StatelessWidget {
         }
         Get.updateLocale(const Locale('en', 'US'));
       },
-      itemBuilder: (context) => const [
+      itemBuilder: (context) => [
         PopupMenuItem<String>(
           value: 'en',
-          child: Text('Eng'),
+          child: Text('english'.tr),
         ),
         PopupMenuItem<String>(
           value: 'bn',
-          child: Text('বাংলা'),
+          child: Text('bangla'.tr),
         ),
       ],
       shape: RoundedRectangleBorder(
@@ -275,7 +275,7 @@ class _LanguageButton extends StatelessWidget {
       offset: const Offset(0, 30),
       child: Container(
         height: 24,
-        width: 50,
+        width: 60,
         decoration: BoxDecoration(
           color: const Color(0xff8beeef),
           borderRadius: BorderRadius.circular(100),
@@ -283,7 +283,7 @@ class _LanguageButton extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            (Get.locale?.languageCode ?? 'en') == 'bn' ? 'বাংলা' : 'Eng',
+            (Get.locale?.languageCode ?? 'en') == 'bn' ? 'bangla'.tr : 'Eng',
             style: const TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.bold,

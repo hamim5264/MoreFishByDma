@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:more_fish/app/service/fcm_service.dart';
 import '../../../common_widgets/common_container.dart';
 import '../../../common_widgets/common_text.dart';
 import '../../../routes/app_pages.dart';
@@ -102,6 +103,7 @@ class CattleProfileView extends GetView<CattleIndexController> {
                           child: InkWell(
                             onTap: () async {
                               // ✅ Logout only from Cattle Care
+                              await FcmService.clearFcmTokenOnLogout();
                               await cattleProfileController.loginTokenStorage
                                   .clearCattleSession();
                               cattleProfileController.loginTokenStorage.isCattleLoggedIn.value = false;

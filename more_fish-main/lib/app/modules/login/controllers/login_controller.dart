@@ -50,13 +50,14 @@ class LoginController extends GetxController {
   }
 
   login(context, email, password) async {
-    debugPrint('Poultry live login email: $email');
+    final trimmedEmail = email.toString().trim();
+    debugPrint('Poultry live login email: $trimmedEmail');
     debugPrint('Poultry live login endpoint: /auth/login/');
     // loader removed
 
     try {
       var response = await authRepository.setLogin(
-        email: email,
+        email: trimmedEmail,
         password: password,
       );
 
@@ -66,8 +67,8 @@ class LoginController extends GetxController {
           isActiveLoginButton.value = true;
           if (context != null && context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Oops! Invalid login credentials.'),
+              SnackBar(
+                content: Text('invalid_credentials'.tr),
                 backgroundColor: Colors.red,
                 behavior: SnackBarBehavior.floating,
               ),
@@ -115,8 +116,8 @@ class LoginController extends GetxController {
           isActiveLoginButton.value = true;
           if (context != null && context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Welcome back.'),
+              SnackBar(
+                content: Text('welcome_back'.tr),
                 backgroundColor: Colors.green,
                 behavior: SnackBarBehavior.floating,
               ),

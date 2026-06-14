@@ -30,23 +30,23 @@ class AboutDevicesView extends GetView<AboutDevicesController> {
 
             switch (module) {
               case 'cattle':
-                title = 'Cattle Care';
+                title = 'cattle_care'.tr;
                 logo = 'assets/icons/dma_cattle_care.png';
                 bgColor = Colors.white;
                 break;
               case 'poultry':
-                title = 'Poultry Care';
+                title = 'poultry_care'.tr;
                 logo = 'assets/icons/dma_poultry_pulse.png';
                 bgColor = const Color(0xffdbcc68);
                 break;
               case 'pharma':
-                title = 'Pharma Care';
+                title = 'pharma_care'.tr;
                 logo = 'assets/icons/dma_pharmaceutical.png';
                 bgColor = const Color(0xffe0f2f1);
                 break;
               case 'more_fish':
               default:
-                title = 'More Fish';
+                title = 'title'.tr;
                 logo = 'assets/icons/dma_more_fish.png';
                 bgColor = const Color(0xffd4fcfd);
                 break;

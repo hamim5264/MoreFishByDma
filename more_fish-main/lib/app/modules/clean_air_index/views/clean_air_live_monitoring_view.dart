@@ -95,7 +95,7 @@ class CleanAirLiveMonitoringView
                 child: Obx(() {
                   final data = controller.pondDataResponse.value;
                   return data == null
-                      ? const Center(child: Text('Waiting for live data...'))
+                      ? Center(child: Text('waiting_for_live_data'.tr))
                       : Column(
                           children: [
                             Center(
@@ -448,7 +448,7 @@ class CleanAirLiveMonitoringView
                                                                 CommonText(
                                                                   sensorData?.dangerStatus ==
                                                                           'invalid'
-                                                                      ? 'No Data'
+                                                                      ? 'no_data'.tr
                                                                       : _formatSensorValue(
                                                                           sensorName:
                                                                               sensorData?.sensorName,
@@ -685,19 +685,19 @@ class CleanAirLiveMonitoringView
 
                                                       if (data == 'pH' &&
                                                           value < 7) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              'Warning: ',
+                                                              '${'warning'.tr}: ',
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 'Apply lime.',
                                                                 fontWeight:
@@ -711,19 +711,19 @@ class CleanAirLiveMonitoringView
                                                       }
                                                       if (data == 'pH' &&
                                                           value > 8.5) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              'Warning: ',
+                                                              '${'warning'.tr}: ',
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 'Add TSP, gypsum, vinegar, or deep tube-well water.',
                                                                 fontWeight:
@@ -737,19 +737,19 @@ class CleanAirLiveMonitoringView
                                                       }
                                                       if (data == 'DO' &&
                                                           value < 3) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              'Warning: ',
+                                                              '${'warning'.tr}: ',
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 'Run the aerator or add deep tube-well water.',
                                                                 fontWeight:
@@ -763,19 +763,19 @@ class CleanAirLiveMonitoringView
                                                       }
                                                       if (data == 'TDS' &&
                                                           value < 100) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              'Warning: ',
+                                                              '${'warning'.tr}: ',
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 'Add lime, gypsum, or salt.',
                                                                 fontWeight:
@@ -789,19 +789,19 @@ class CleanAirLiveMonitoringView
                                                       }
                                                       if (data == 'TDS' &&
                                                           value > 1000) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              'Warning: ',
+                                                              '${'warning'.tr}: ',
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 'Add deep tube-well water.',
                                                                 fontWeight:
@@ -816,19 +816,19 @@ class CleanAirLiveMonitoringView
                                                       if (data ==
                                                               'Temperature' &&
                                                           value > 34) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              'Warning: ',
+                                                              '${'warning'.tr}: ',
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 'Add deep tube-well water.',
                                                                 fontWeight:
@@ -842,19 +842,19 @@ class CleanAirLiveMonitoringView
                                                       }
                                                       if (data == 'NH3' &&
                                                           value > 0.5) {
-                                                        return const Row(
+                                                        return Row(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
                                                                   .start,
                                                           children: [
                                                             CommonText(
-                                                              'Warning: ',
+                                                              '${'warning'.tr}: ',
                                                               color: Colors.red,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 'Use a net or drag net.',
                                                                 fontWeight:

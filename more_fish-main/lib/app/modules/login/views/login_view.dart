@@ -41,8 +41,8 @@ class LoginView extends GetView<LoginController> {
                       ),
                       const SizedBox(height: 30),
 
-                      const CommonText(
-                        "Login",
+                      CommonText(
+                        "login".tr,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.green,
@@ -52,7 +52,7 @@ class LoginView extends GetView<LoginController> {
                       TextFormField(
                         controller: controller.emailController,
                         decoration: InputDecoration(
-                          labelText: "Email",
+                          labelText: "email".tr,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -60,12 +60,12 @@ class LoginView extends GetView<LoginController> {
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty)
-                            return "Enter your email";
+                            return "enter_email".tr;
                           String emailPattern =
                               r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
                           if (!RegExp(emailPattern).hasMatch(value) &&
                               value.length < 6) {
-                            return "Enter a valid email or phone";
+                            return "enter_valid_email".tr;
                           }
                           return null;
                         },
@@ -76,7 +76,7 @@ class LoginView extends GetView<LoginController> {
                         () => TextFormField(
                           controller: controller.passwordController,
                           decoration: InputDecoration(
-                            labelText: "Password",
+                            labelText: "password".tr,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -93,9 +93,9 @@ class LoginView extends GetView<LoginController> {
                           obscureText: !controller.showPassword.value,
                           validator: (value) {
                             if (value == null || value.isEmpty)
-                              return "Enter your password";
+                              return "enter_password".tr;
                             if (value.length < 5)
-                              return "Password must be at least 5 characters";
+                              return "password_length_error".tr;
                             return null;
                           },
                         ),
@@ -111,7 +111,7 @@ class LoginView extends GetView<LoginController> {
                                 Get.toNamed(Routes.FORGET_PASSWORD);
                               },
                               child: CommonText(
-                                "Forgot Password?",
+                                "forgot_password_q".tr,
                                 color: Colors.blueGrey.shade700,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -152,9 +152,9 @@ class LoginView extends GetView<LoginController> {
                                       );
                                     }
                                   },
-                                  child: const Text(
-                                    "Login",
-                                    style: TextStyle(
+                                  child: Text(
+                                    "login".tr,
+                                    style: const TextStyle(
                                       fontSize: 18,
                                       color: Colors.white,
                                     ),
@@ -174,12 +174,12 @@ class LoginView extends GetView<LoginController> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                "Don't have an account?",
-                                style: TextStyle(color: Colors.blueGrey),
+                              Text(
+                                "dont_have_account".tr,
+                                style: const TextStyle(color: Colors.blueGrey),
                               ),
                               Text(
-                                " Register",
+                                "register".tr,
                                 style: TextStyle(
                                   color: Colors.red.shade700,
                                   fontWeight: FontWeight.bold,

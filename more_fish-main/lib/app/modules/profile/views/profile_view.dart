@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'package:more_fish/app/common_widgets/common_text.dart';
+import 'package:more_fish/app/service/fcm_service.dart';
 import '../../../common_widgets/common_app_bar.dart';
 import '../../../common_widgets/common_container.dart';
 import '../../../res/colors/colors.dart';
@@ -98,9 +99,9 @@ class ProfileView extends GetView<ProfileController> {
                                       onTap: () async {
                                         Get.toNamed(Routes.PASSWORD_CHANGE);
                                       },
-                                      child: const CommonContainer(
+                                      child: CommonContainer(
                                         height: 50,
-                                        margin: EdgeInsets.symmetric(
+                                        margin: const EdgeInsets.symmetric(
                                           horizontal: 0,
                                           vertical: 16,
                                         ),
@@ -109,9 +110,9 @@ class ProfileView extends GetView<ProfileController> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Text(
-                                              "Change Password",
-                                              style: TextStyle(
+                                              Text(
+                                              "change_password".tr,
+                                              style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -127,14 +128,15 @@ class ProfileView extends GetView<ProfileController> {
                                   Expanded(
                                     child: InkWell(
                                       onTap: () async {
+                                        await FcmService.clearFcmTokenOnLogout();
                                         await controller.loginTokenStorage
                                             .clearMoreFishSession();
                                         controller.isLoggedIn.value = '';
                                         Get.offAllNamed(Routes.DMA_TECHNOLOGIES);
                                       },
-                                      child: const CommonContainer(
+                                      child: CommonContainer(
                                         height: 50,
-                                        margin: EdgeInsets.symmetric(
+                                        margin: const EdgeInsets.symmetric(
                                           horizontal: 0,
                                           vertical: 16,
                                         ),
@@ -143,9 +145,9 @@ class ProfileView extends GetView<ProfileController> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                            Text(
-                                              "Logout",
-                                              style: TextStyle(
+                                              Text(
+                                              "logout".tr,
+                                              style: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,

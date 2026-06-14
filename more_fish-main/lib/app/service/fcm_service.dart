@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../firebase_options.dart';
 import '../repo/auth.dart';
@@ -28,6 +29,22 @@ Future<void> _firebaseMessagingBackgroundHandler(
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token');
+  final pharmaToken = prefs.getString('pharmaToken');
+  final poultryToken = prefs.getString('poultryToken');
+  final cattleToken = prefs.getString('cattleToken');
+
+  bool isLoggedIn = (token != null && token.isNotEmpty && token != 'null') ||
+      (pharmaToken != null && pharmaToken.isNotEmpty && pharmaToken != 'null') ||
+      (poultryToken != null && poultryToken.isNotEmpty && poultryToken != 'null') ||
+      (cattleToken != null && cattleToken.isNotEmpty && cattleToken != 'null');
+
+  if (!isLoggedIn) {
+    debugPrint("User not logged in. Ignoring background message.");
+    return;
+  }
 
   debugPrint(
     "Handling a background message: ${message.messageId}",
@@ -148,17 +165,28 @@ class FcmService {
           body,
         );
 
-        Get.snackbar(
-          title,
-          body,
-          snackPosition: SnackPosition.TOP,
-          backgroundColor:
-          const Color(0xffd4fcfd).withOpacity(0.9),
-          colorText: Colors.black,
-          duration: const Duration(seconds: 6),
-          onTap: (_) =>
-              _handleMessageNavigation(message),
-        );
+        // Get.snackbar(
+        //   title,
+        //   body,
+        //   snackPosition: SnackPosition.TOP,
+        //   backgroundColor:
+        //   const Color(0xffd4fcfd).withOpacity(0.9),
+        //   colorText: Colors.black,
+        //   duration: const Duration(seconds: 6),
+        //   onTap: (_) =>
+        //       _handleMessageNavigation(message),
+        // );
+            if (Get.overlayContext != null) {
+              Get.snackbar(
+                title,
+                body,
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: const Color(0xffd4fcfd).withOpacity(0.9),
+                colorText: Colors.black,
+                duration: const Duration(seconds: 6),
+                onTap: (_) => _handleMessageNavigation(message),
+              );
+            }
       },
     );
 
@@ -265,6 +293,11 @@ class FcmService {
     storage
         .unreadNotificationCount
         .value++;
+  }
+
+  static Future<void> clearFcmTokenOnLogout() async {
+    debugPrint("Clearing FCM token on server before logout");
+    _updateTokenOnServer("");
   }
 
   static void _updateTokenOnServer(

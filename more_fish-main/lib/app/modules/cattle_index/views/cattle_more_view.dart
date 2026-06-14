@@ -15,8 +15,20 @@ class CattleMoreView extends GetView<CattleIndexController> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         children: [
+          _SimpleMoreTile(title: 'faq_menu'.tr, onTap: () => Get.toNamed(Routes.FAQ)),
+          const SizedBox(height: 10),
           _SimpleMoreTile(
-            title: 'Automation Settings',
+            title: 'about_app_menu'.tr,
+            onTap: () => Get.toNamed(Routes.ABOUT_APP),
+          ),
+          const SizedBox(height: 10),
+          _SimpleMoreTile(
+            title: 'about_device_menu'.tr,
+            onTap: () => Get.toNamed(Routes.ABOUT_DEVICES),
+          ),
+          const SizedBox(height: 10),
+          _SimpleMoreTile(
+            title: 'automation_settings_menu'.tr,
             onTap: () {
               final monitoringCtrl = Get.find<CattleLiveMonitoringController>();
               final farmId = monitoringCtrl.selectedDeviceId.value;
@@ -29,18 +41,6 @@ class CattleMoreView extends GetView<CattleIndexController> {
                 Get.snackbar('Error', 'No farm selected');
               }
             },
-          ),
-          const SizedBox(height: 10),
-          _SimpleMoreTile(title: 'FAQ', onTap: () => Get.toNamed(Routes.FAQ)),
-          const SizedBox(height: 10),
-          _SimpleMoreTile(
-            title: 'About App',
-            onTap: () => Get.toNamed(Routes.ABOUT_APP),
-          ),
-          const SizedBox(height: 10),
-          _SimpleMoreTile(
-            title: 'About Device',
-            onTap: () => Get.toNamed(Routes.ABOUT_DEVICES),
           ),
           const SizedBox(height: 10),
           _LanguageTile(),
@@ -61,10 +61,10 @@ class _LanguageTile extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Row(
           children: [
-            const Expanded(
+            Expanded(
               child: Text(
-                'Language',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                'language'.tr,
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
               ),
             ),
             PopupMenuButton<String>(
@@ -75,9 +75,9 @@ class _LanguageTile extends StatelessWidget {
                   Get.updateLocale(const Locale('en', 'US'));
                 }
               },
-              itemBuilder: (context) => const [
-                PopupMenuItem<String>(value: 'en', child: Text('English')),
-                PopupMenuItem<String>(value: 'bn', child: Text('বাংলা')),
+              itemBuilder: (context) => [
+                PopupMenuItem<String>(value: 'en', child: Text('english'.tr)),
+                PopupMenuItem<String>(value: 'bn', child: Text('bangla'.tr)),
               ],
               child: Container(
                 padding: const EdgeInsets.symmetric(
@@ -90,8 +90,8 @@ class _LanguageTile extends StatelessWidget {
                 ),
                 child: Text(
                   (Get.locale?.languageCode ?? 'en') == 'bn'
-                      ? 'বাংলা'
-                      : 'English',
+                      ? 'bangla'.tr
+                      : 'english'.tr,
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,

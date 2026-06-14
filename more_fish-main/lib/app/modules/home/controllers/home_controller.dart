@@ -29,7 +29,7 @@ class HomeController extends GetxController {
     "fingerlings_marketplace",
     "grown_fish_sell",
     "fish_medicine_enzyme",
-    "FCR Calculator",
+    "fcr_calculator",
     "nano_bubble_aeration_system",
   ].obs;
 

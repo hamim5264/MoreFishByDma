@@ -78,7 +78,7 @@ class _LoggedInDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       if (controller.isLoading.value && controller.liveData.value == null) {
-        return const Center(child: Text('Waiting for live data...'));
+        return Center(child: Text('waiting_for_live_data'.tr));
       }
 
       if (controller.error.value.isNotEmpty &&
@@ -87,11 +87,11 @@ class _LoggedInDashboard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Failed to load: ${controller.error.value}'),
+              Text('${'failed_to_load'.tr}: ${controller.error.value}'),
               const SizedBox(height: 8),
               ElevatedButton(
                 onPressed: controller.loadDevices,
-                child: const Text('Retry'),
+                child: Text('try_again'.tr),
               ),
             ],
           ),
@@ -158,9 +158,9 @@ class _LoggedInDashboard extends StatelessWidget {
                     color: const Color(0xffdbcc68),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Text(
-                    'Note: The parameters are changeable according to installation of device.',
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                  child: Text(
+                    'poultry_param_note'.tr,
+                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -200,7 +200,7 @@ class _DeviceDropdown extends StatelessWidget {
             value: controller.selectedDeviceId.value.isEmpty
                 ? null
                 : controller.selectedDeviceId.value,
-            hint: const Text('Select device'),
+            hint: Text('select_device'.tr),
             icon: const Icon(Icons.keyboard_arrow_down),
             items: items
                 .map(
@@ -402,9 +402,9 @@ class _SwitchesSection extends StatelessWidget {
                   size: 14,
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  'Switch Controls',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                Text(
+                  'switch_controls'.tr,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                 ),
               ],
             ),
@@ -493,9 +493,9 @@ class _SwitchCard extends StatelessWidget {
                     ),
                   ),
                   if (automationActive)
-                    const Text(
-                      'Auto Mode',
-                      style: TextStyle(
+                    Text(
+                      'auto_mode'.tr,
+                      style: const TextStyle(
                         fontSize: 10,
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,

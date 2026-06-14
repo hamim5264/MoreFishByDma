@@ -29,9 +29,8 @@ class IndexView extends GetView<IndexController> {
           backgroundColor: const Color(0xffebffff),
           currentIndex: controller.selectedIndex.value,
           onTap: (index) {
-            // Block Notifications tab for logged-out users.
-            // Profile tab stays accessible and contains logout option.
-            if (index == 1 && controller.isLoggedIn.isEmpty) {
+            // Block Notifications and Profile tab for logged-out users.
+            if ((index == 1 || index == 2) && !controller.isUserLoggedIn) {
               showDialog(
                 context: context,
                 barrierDismissible: true,

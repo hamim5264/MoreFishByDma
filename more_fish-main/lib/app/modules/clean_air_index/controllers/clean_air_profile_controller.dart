@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 
+import 'package:more_fish/app/service/fcm_service.dart';
 import '../../../repo/auth.dart';
 import '../../../response/profile_response.dart';
 import '../../../service/local_storage.dart';
@@ -78,6 +79,7 @@ class CleanAirProfileController extends GetxController {
   }
 
   Future<void> logout() async {
+    await FcmService.clearFcmTokenOnLogout();
     await loginTokenStorage.removePharmaToken();
     await loginTokenStorage.removePharmaUserId();
     final prefs = loginTokenStorage.sharedPreferences;

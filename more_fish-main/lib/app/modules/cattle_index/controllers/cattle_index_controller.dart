@@ -6,17 +6,17 @@ class CattleIndexController extends GetxController {
   var isLoggedIn = ''.obs;
 
   var listItemsEnglish1 = [
-    'Live Data\nmonitoring',
-    'Farm\nManagement',
-    'Feed\nManagement',
-    'Cattle Disease\nTreatment',
-    'Cattle\nMarketplace',
-    'Cattle Feed\nMarketplace',
-    'Auto Feeder',
-    'Weather\nForecast',
-    'Live\nConsultancy',
-    'Auto Water\nSystem',
-    'Financial\nManagement',
+    'live_data_monitoring',
+    'farm_management',
+    'feed_management',
+    'cattle_disease_treatment',
+    'cattle_marketplace',
+    'cattle_feed_marketplace',
+    'auto_feeder',
+    'weather_forecast',
+    'live_consultancy',
+    'auto_water_system',
+    'financial_management',
   ].obs;
 
   var iconList1 = [

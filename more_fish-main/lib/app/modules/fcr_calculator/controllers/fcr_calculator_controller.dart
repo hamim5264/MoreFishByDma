@@ -174,7 +174,7 @@ class FcrCalculatorController extends GetxController {
       (pondList) {
         if (pondList.data.isEmpty) {
           assetId.value = null;
-          validationMessage.value = 'No assets found for this account.';
+          validationMessage.value = 'no_assets_found';
           return;
         }
 
@@ -188,27 +188,27 @@ class FcrCalculatorController extends GetxController {
     final weightGain = double.tryParse(weightGainController.text.trim());
 
     if (feedAmount == null || weightGain == null) {
-      validationMessage.value = 'Enter valid numeric values.';
+      validationMessage.value = 'enter_numeric_values';
       fcrResult.value = null;
       return;
     }
 
     if (feedAmount <= 0 || weightGain <= 0) {
-      validationMessage.value = 'Values must be greater than zero.';
+      validationMessage.value = 'values_greater_than_zero';
       fcrResult.value = null;
       return;
     }
 
     final selectedAssetId = assetId.value;
     if (selectedAssetId == null) {
-      validationMessage.value = 'Asset not available for calculation.';
+      validationMessage.value = 'asset_not_available';
       fcrResult.value = null;
       return;
     }
 
     final token = _loginTokenStorage.getMoreFishToken();
     if (token == null || token.isEmpty) {
-      validationMessage.value = 'Missing authorization token.';
+      validationMessage.value = 'missing_auth_token';
       fcrResult.value = null;
       return;
     }
@@ -249,13 +249,12 @@ class FcrCalculatorController extends GetxController {
         }
 
         fcrResult.value = null;
-        validationMessage.value = 'FCR value missing in response.';
+        validationMessage.value = 'fcr_value_missing';
         return;
       }
 
       fcrResult.value = null;
-      validationMessage.value =
-          'FCR calculation failed with status: ${response.statusCode}.';
+      validationMessage.value = 'fcr_calc_failed';
     } catch (e) {
       fcrResult.value = null;
       validationMessage.value = 'Error: $e';

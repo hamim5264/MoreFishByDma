@@ -10,6 +10,7 @@ import '../../../response/pond_data_response.dart';
 import '../../../response/pond_list_response.dart';
 import '../../../response/sensor_list_response.dart';
 import '../../../response/cleaner_status_response.dart';
+import '../../../service/local_storage.dart';
 
 class WaterQualityDeviceController extends GetxController {
   DevicesRepository devicesRepository = DevicesRepository();
@@ -89,6 +90,13 @@ class WaterQualityDeviceController extends GetxController {
     debugPrint('[WaterQuality] Cleaner polling started (every 10 seconds)');
     _cleanerPollTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (selectedAstId.value == 0) return;
+
+      final token = Get.find<LoginTokenStorage>().getMoreFishToken();
+      if (token == null || token.isEmpty) {
+        cleanerStatusResponse.value = null;
+        return;
+      }
+
       fetchCleanerStatus(selectedAstId.value);
     });
   }
@@ -107,13 +115,23 @@ class WaterQualityDeviceController extends GetxController {
   }
 
   Future<void> fetchCleanerStatus(dynamic assetId) async {
-    if (assetId == null || assetId == 0) return;
+    if (assetId == null || assetId == 0) {
+      cleanerStatusResponse.value = null;
+      return;
+    }
     final response = await devicesRepository.getCleanerStatus(assetId: assetId);
     response.fold(
-      (l) => debugPrint('Cleaner Status fetch failed: ${l.message}'),
+      (l) {
+        debugPrint('Cleaner Status fetch failed: ${l.message}');
+        cleanerStatusResponse.value = null;
+      },
       (r) {
-        cleanerStatusResponse.value = r;
-        _cacheCleanerStatus(r);
+        if (r.success == true) {
+          cleanerStatusResponse.value = r;
+          _cacheCleanerStatus(r);
+        } else {
+          cleanerStatusResponse.value = null;
+        }
       },
     );
   }
@@ -150,6 +168,8 @@ class WaterQualityDeviceController extends GetxController {
 
   pondList() async {
     debugPrint('[API] getPondList() requested');
+    // Clear cleaner status when fetching new list to avoid showing stale data
+    cleanerStatusResponse.value = null;
     var response = await devicesRepository.getPondList();
     response.fold((l) => print("${l.message}"), (r) {
       debugPrint('[API] getPondList() success -> ponds: ${r.data.length}');

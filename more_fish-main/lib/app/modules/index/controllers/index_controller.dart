@@ -7,23 +7,16 @@ import '../../../service/local_storage.dart';
 
 class IndexController extends GetxController {
   var selectedIndex = 0.obs;
-  var isLoggedIn = '';
+  final loginTokenStorage = Get.find<LoginTokenStorage>();
+  
+  bool get isUserLoggedIn => loginTokenStorage.hasValidMoreFishToken();
+  
   Timer? timer;
 
   @override
   void onInit() {
     super.onInit();
-    checkLogin();
     internetChecker();
-  }
-
-  checkLogin() {
-    final loginTokenStorage = Get.find<LoginTokenStorage>();
-    if (loginTokenStorage.getMoreFishToken() != null) {
-      isLoggedIn = loginTokenStorage.getMoreFishToken()!;
-    }
-
-    print(isLoggedIn);
   }
 
   internetChecker() async {

@@ -44,8 +44,8 @@ class PoultryMoreView extends GetView<PoultryIndexController> {
             children: [
               Obx(
                 () => CommonAppBar(
-                  title: 'Poultry Care',
-                  cityName: 'Dhaka',
+                  title: 'poultry_care'.tr,
+                  cityName: 'dhaka'.tr,
                   date: header.formattedDate.value,
                   time: header.formattedTime.value,
                   temp: header.tempText.value,
@@ -62,29 +62,88 @@ class PoultryMoreView extends GetView<PoultryIndexController> {
                   ),
                   children: [
                     _SimpleMoreTile(
-                      title: 'FAQ',
+                      title: 'faq_menu'.tr,
                       onTap: () => Get.toNamed(Routes.FAQ),
                     ),
                     const SizedBox(height: 10),
                     _SimpleMoreTile(
-                      title: 'About App',
+                      title: 'about_app_menu'.tr,
                       onTap: () => Get.toNamed(Routes.ABOUT_APP),
                     ),
                     const SizedBox(height: 10),
                     _SimpleMoreTile(
-                      title: 'About Device',
+                      title: 'about_device_menu'.tr,
                       onTap: () => Get.toNamed(Routes.ABOUT_DEVICES),
                     ),
                     const SizedBox(height: 10),
                     _SimpleMoreTile(
-                      title: 'Automation Settings',
+                      title: 'automation_settings_menu'.tr,
                       onTap: _handleAutomationNavigation,
                     ),
+                    const SizedBox(height: 10),
+                    _LanguageTile(),
                   ],
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _LanguageTile extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.white,
+      elevation: 1,
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                'language'.tr,
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              ),
+            ),
+            PopupMenuButton<String>(
+              onSelected: (value) {
+                if (value == 'bn') {
+                  Get.updateLocale(const Locale('bn', 'BD'));
+                } else {
+                  Get.updateLocale(const Locale('en', 'US'));
+                }
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem<String>(value: 'en', child: Text('english'.tr)),
+                PopupMenuItem<String>(value: 'bn', child: Text('bangla'.tr)),
+              ],
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xff8beeef),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  (Get.locale?.languageCode ?? 'en') == 'bn'
+                      ? 'bangla'.tr
+                      : 'english'.tr,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

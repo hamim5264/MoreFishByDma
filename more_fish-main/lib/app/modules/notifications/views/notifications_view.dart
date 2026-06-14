@@ -128,8 +128,8 @@ class NotificationsView extends GetView<NotificationsController> {
                             );
                           },
                         )
-                      : const Center(
-                          child: Text('No cached notifications yet.'),
+                      : Center(
+                          child: Text('no_notifications'.tr),
                         );
                 }),
               ),

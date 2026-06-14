@@ -65,7 +65,7 @@ class MoreView extends GetView<MoreController> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  controller.items[index],
+                                  controller.items[index].tr,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,

@@ -390,7 +390,7 @@ class HomeView extends GetView<HomeController> {
           crossAxisCount: 3,
           crossAxisSpacing: 12.0,
           mainAxisSpacing: 12.0,
-          childAspectRatio: 1,
+          childAspectRatio: 0.9,
         ),
         itemBuilder: (context, index) {
           return InkWell(
@@ -483,10 +483,12 @@ class HomeView extends GetView<HomeController> {
                     "${homeController.listItemsEnglish1[index]}".tr,
                     style: const TextStyle(
                       color: Colors.black,
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
@@ -506,7 +508,7 @@ class HomeView extends GetView<HomeController> {
       crossAxisCount: 3, // Number of columns
       crossAxisSpacing: 12.0, // Horizontal space between tiles
       mainAxisSpacing: 12.0, // Vertical space between tiles
-      childAspectRatio: .95, // Width / Height ratio
+      childAspectRatio: 0.85, // Width / Height ratio
     ),
     itemBuilder: (context, index) {
       return InkWell(
@@ -553,10 +555,12 @@ class HomeView extends GetView<HomeController> {
                 "${homeController.listItemsEnglish2[index]}".tr,
                 style: const TextStyle(
                   color: Colors.black,
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),

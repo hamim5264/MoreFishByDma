@@ -148,7 +148,7 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
     return Scaffold(
       backgroundColor: AppColors.backGround,
       appBar: AppBar(
-        title: const Text('FCR Calculator'),
+        title: Text('fcr_calculator'.tr),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -160,20 +160,20 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CommonText(
-                    'Feed Conversion Ratio',
+                  CommonText(
+                    'feed_conversion_ratio'.tr,
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                   ),
                   const SizedBox(height: 14),
                   _numberInputField(
                     controller: controller.feedAmountController,
-                    label: 'Total Feed Amount (kg)',
+                    label: 'total_feed_amount'.tr,
                   ),
                   const SizedBox(height: 12),
                   _numberInputField(
                     controller: controller.weightGainController,
-                    label: 'Total Weight Gain (kg)',
+                    label: 'total_weight_gain'.tr,
                   ),
                   const SizedBox(height: 14),
                   Row(
@@ -181,14 +181,14 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: controller.calculateFcr,
-                          child: const Text('Calculate'),
+                          child: Text('calculate'.tr),
                         ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: OutlinedButton(
                           onPressed: controller.clearAll,
-                          child: const Text('Clear'),
+                          child: Text('clear'.tr),
                         ),
                       ),
                     ],
@@ -197,7 +197,7 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
                   Obx(() {
                     if (controller.validationMessage.value.isNotEmpty) {
                       return Text(
-                        controller.validationMessage.value,
+                        controller.validationMessage.value.tr,
                         style: TextStyle(
                           color: Colors.red.shade700,
                           fontWeight: FontWeight.w600,
@@ -221,8 +221,8 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const CommonText(
-                            'Result',
+                          CommonText(
+                            'result'.tr,
                             fontSize: 15,
                             fontWeight: FontWeight.w700,
                           ),

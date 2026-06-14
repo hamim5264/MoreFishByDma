@@ -84,7 +84,7 @@ class CattleIndexView extends GetView<CattleIndexController> {
           elevation: 4,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
           items: [
-            const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: const Icon(Icons.home), label: 'home'.tr),
             BottomNavigationBarItem(
               icon: Stack(
                 children: [
@@ -118,10 +118,10 @@ class CattleIndexView extends GetView<CattleIndexController> {
                   }),
                 ],
               ),
-              label: 'Notifications',
+              label: 'notifications'.tr,
             ),
-            const BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-            const BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'More'),
+            BottomNavigationBarItem(icon: const Icon(Icons.person), label: 'profile'.tr),
+            BottomNavigationBarItem(icon: const Icon(Icons.menu), label: 'more'.tr),
           ],
         );
       }),
@@ -170,7 +170,7 @@ class _GlobalCattleHeader extends StatelessWidget {
                       children: [
                         Obx(
                           () => Text(
-                            header.district.value,
+                            header.district.value.tr,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -181,7 +181,7 @@ class _GlobalCattleHeader extends StatelessWidget {
                         ),
                         Obx(
                           () => Text(
-                            header.description.value,
+                            header.description.value.toLowerCase().tr,
                             style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
@@ -194,7 +194,7 @@ class _GlobalCattleHeader extends StatelessWidget {
                         Obx(
                           () => header.sunlight.value.isNotEmpty
                               ? Text(
-                                  "Sunlight: ${header.sunlight.value}",
+                                  "sunlight".tr + ": ${header.sunlight.value.tr}",
                                   style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,

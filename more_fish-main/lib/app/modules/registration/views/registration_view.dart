@@ -37,9 +37,9 @@ class RegistrationView extends GetView<RegistrationController> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      "Registration",
-                      style: TextStyle(
+                    Text(
+                      "registration".tr,
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.green,
@@ -53,13 +53,13 @@ class RegistrationView extends GetView<RegistrationController> {
                           child: TextFormField(
                             controller: controller.firstNameController,
                             decoration: InputDecoration(
-                              labelText: "First Name",
+                              labelText: "first_name".tr,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)
                               ),
                             ),
                             validator: (value) =>
-                            (value == null || value.isEmpty) ? "Enter your first name" : null,
+                            (value == null || value.isEmpty) ? "enter_first_name".tr : null,
                           ),
                         ),
                         const SizedBox(width: 12,),
@@ -67,13 +67,13 @@ class RegistrationView extends GetView<RegistrationController> {
                           child: TextFormField(
                             controller: controller.lastNameController,
                             decoration: InputDecoration(
-                              labelText: "Last Name",
+                              labelText: "last_name".tr,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)
                               ),
                             ),
                             validator: (value) =>
-                            (value == null || value.isEmpty) ? "Enter your last name" : null,
+                            (value == null || value.isEmpty) ? "enter_last_name".tr : null,
                           ),
                         ),
                       ],
@@ -83,14 +83,14 @@ class RegistrationView extends GetView<RegistrationController> {
                     TextFormField(
                       controller: controller.addressController,
                       decoration: InputDecoration(
-                        labelText: "Address",
+                        labelText: "address".tr,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10)
                         ),
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Enter your Address";
+                          return "enter_address".tr;
                         }
                         if(value.length > 80){
                           return "Valid range is 80";
@@ -104,16 +104,16 @@ class RegistrationView extends GetView<RegistrationController> {
                     TextFormField(
                       controller: controller.emailController,
                       decoration: InputDecoration(
-                        labelText: "Email",
+                        labelText: "email".tr,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10)
                         ),
                       ),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value == null || value.isEmpty) return "Enter your email";
+                        if (value == null || value.isEmpty) return "enter_email".tr;
                         String pattern = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
-                        if (!RegExp(pattern).hasMatch(value)) return "Enter a valid email";
+                        if (!RegExp(pattern).hasMatch(value)) return "enter_valid_email".tr;
                         return null;
                       },
                     ),
@@ -121,7 +121,7 @@ class RegistrationView extends GetView<RegistrationController> {
 
                     IntlPhoneField(
                       decoration: InputDecoration(
-                        labelText: 'Phone Number',
+                        labelText: 'phone_number'.tr,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -137,7 +137,7 @@ class RegistrationView extends GetView<RegistrationController> {
                       return TextFormField(
                         controller: controller.passwordController,
                         decoration: InputDecoration(
-                          labelText: "Password",
+                          labelText: "password".tr,
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10)
 
@@ -152,8 +152,8 @@ class RegistrationView extends GetView<RegistrationController> {
                         ),
                         obscureText: !controller.showNewPassword.value,
                         validator: (value) {
-                          if (value == null || value.isEmpty) return "Enter your password";
-                          if (value.length < 5) return "Password must be at least 5 characters";
+                          if (value == null || value.isEmpty) return "enter_password".tr;
+                          if (value.length < 5) return "password_length_error".tr;
                           return null;
                         },
                       );
@@ -163,7 +163,7 @@ class RegistrationView extends GetView<RegistrationController> {
                       return TextFormField(
                         controller: controller.confirmPasswordController,
                         decoration: InputDecoration(
-                          labelText: "Confirm Password",
+                          labelText: "confirm_password".tr,
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10)
                           ),
@@ -177,8 +177,8 @@ class RegistrationView extends GetView<RegistrationController> {
                         ),
                         obscureText: !controller.showConfirmPassword.value,
                         validator: (value) {
-                          if (value == null || value.isEmpty) return "Confirm your password";
-                          if (value != controller.passwordController.text) return "Passwords do not match";
+                          if (value == null || value.isEmpty) return "confirm_password_error".tr;
+                          if (value != controller.passwordController.text) return "password_mismatch".tr;
                           return null;
                         },
                       );
@@ -300,9 +300,9 @@ class RegistrationView extends GetView<RegistrationController> {
                             }
 
                           },
-                          child: const Text(
-                            "Submit",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          child: Text(
+                            "submit".tr,
+                            style: const TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ): const CircularProgressIndicator();

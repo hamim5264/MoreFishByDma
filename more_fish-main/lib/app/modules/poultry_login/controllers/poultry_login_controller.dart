@@ -48,12 +48,13 @@ class PoultryLoginController extends GetxController {
   }
 
   Future<void> login({required String email, required String password}) async {
-    debugPrint('Poultry login email: $email');
+    final trimmedEmail = email.trim();
+    debugPrint('Poultry login email: $trimmedEmail');
     // loader removed
 
     try {
       var response = await authRepository.setLogin(
-        email: email,
+        email: trimmedEmail,
         password: password,
         isPoultryFlow: true,
       );

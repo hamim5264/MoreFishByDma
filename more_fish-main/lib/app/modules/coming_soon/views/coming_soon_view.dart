@@ -37,9 +37,9 @@ class ComingSoonView extends GetView<ComingSoonController> {
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Colors.black12),
           ),
-          child: const Text(
-            'Service is coming soon',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          child: Text(
+            'service_coming_soon'.tr,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           ),
         ),
       ),

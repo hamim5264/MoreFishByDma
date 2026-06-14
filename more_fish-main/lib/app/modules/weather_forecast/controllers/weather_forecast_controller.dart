@@ -15,7 +15,7 @@ class WeatherForecastController extends GetxController {
 
   final List<String> locations = [
     'Bagerhat', 'Bandarban', 'Barguna', 'Barisal', 'Bhola', 'Bogra',
-    'Brahmanbaria', 'Chandpur', 'Chapainawabganj', 'Chittagong',
+    'Brahmanbaria', 'Chandpur', 'Chapai Nawabganj', 'Chittagong',
     'Chuadanga', 'Comilla', 'Cox\'s Bazar', 'Dhaka', 'Dinajpur',
     'Faridpur', 'Feni', 'Gaibandha', 'Gazipur', 'Gopalganj',
     'Habiganj', 'Jamalpur', 'Jessore', 'Jhalokati', 'Jhenaidah',
@@ -59,14 +59,28 @@ class WeatherForecastController extends GetxController {
     forecastData.clear();
 
     try {
+      String queryCity = city;
+      // OpenWeatherMap usually recognizes 'Nawabganj' or 'Chapai Nawabganj' with space
+      if (city.toLowerCase().contains('chapainawabganj') || city.toLowerCase().contains('chapai nawabganj')) {
+        queryCity = "Nawabganj";
+      }
+
       // Fetch Current Weather
-      final weatherUrl = Uri.parse(
-          'https://api.openweathermap.org/data/2.5/weather?q=$city,BD&appid=$apiKey&units=metric');
-      final weatherResponse = await http.get(weatherUrl);
+      var weatherUrl = Uri.parse(
+          'https://api.openweathermap.org/data/2.5/weather?q=$queryCity,BD&appid=$apiKey&units=metric');
+      var weatherResponse = await http.get(weatherUrl);
+
+      // If it fails, try the original name as fallback
+      if (weatherResponse.statusCode != 200 && queryCity != city) {
+        queryCity = city;
+        weatherUrl = Uri.parse(
+            'https://api.openweathermap.org/data/2.5/weather?q=$queryCity,BD&appid=$apiKey&units=metric');
+        weatherResponse = await http.get(weatherUrl);
+      }
 
       // Fetch 5-day / 3-hour Forecast
       final forecastUrl = Uri.parse(
-          'https://api.openweathermap.org/data/2.5/forecast?q=$city,BD&appid=$apiKey&units=metric');
+          'https://api.openweathermap.org/data/2.5/forecast?q=$queryCity,BD&appid=$apiKey&units=metric');
       final forecastResponse = await http.get(forecastUrl);
 
       if (weatherResponse.statusCode == 200 &&

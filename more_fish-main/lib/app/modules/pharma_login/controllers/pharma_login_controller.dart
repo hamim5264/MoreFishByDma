@@ -48,11 +48,12 @@ class PharmaLoginController extends GetxController {
   }
 
   Future<void> login({required String email, required String password}) async {
-    debugPrint('Pharma login email: $email');
+    final trimmedEmail = email.trim();
+    debugPrint('Pharma login email: $trimmedEmail');
 
     try {
       final response = await authRepository.setLogin(
-        email: email,
+        email: trimmedEmail,
         password: password,
       );
 
