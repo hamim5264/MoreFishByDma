@@ -106,8 +106,6 @@ import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
 import '../modules/training_and_workshop/bindings/training_and_workshop_binding.dart';
 import '../modules/training_and_workshop/views/training_and_workshop_view.dart';
-import '../modules/version_checker/bindings/version_checker_binding.dart';
-import '../modules/version_checker/views/version_checker_view.dart';
 import '../modules/water_quality_device/bindings/water_quality_device_binding.dart';
 import '../modules/water_quality_device/views/water_quality_device_view.dart';
 import '../modules/weather_forecast/bindings/weather_forecast_binding.dart';
@@ -310,11 +308,6 @@ class AppPages {
       name: _Paths.INTERNET_CHECKER,
       page: () => const InternetCheckerView(),
       binding: InternetCheckerBinding(),
-    ),
-    GetPage(
-      name: _Paths.VERSION_CHECKER,
-      page: () => const VersionCheckerView(),
-      binding: VersionCheckerBinding(),
     ),
     GetPage(
       name: _Paths.HIGH_DENSITY_FISH_FARMING,
