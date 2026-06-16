@@ -36,13 +36,28 @@ Future<void> _firebaseMessagingBackgroundHandler(
   final poultryToken = prefs.getString('poultryToken');
   final cattleToken = prefs.getString('cattleToken');
 
-  bool isLoggedIn = (token != null && token.isNotEmpty && token != 'null') ||
-      (pharmaToken != null && pharmaToken.isNotEmpty && pharmaToken != 'null') ||
-      (poultryToken != null && poultryToken.isNotEmpty && poultryToken != 'null') ||
-      (cattleToken != null && cattleToken.isNotEmpty && cattleToken != 'null');
+  final type = message.data['type']?.toString().toLowerCase();
 
-  if (!isLoggedIn) {
-    debugPrint("User not logged in. Ignoring background message.");
+  bool shouldShow = false;
+
+  bool isValid(String? t) =>
+      t != null && t.isNotEmpty && t != 'null' && t != 'undefined';
+
+  if (type == 'cattle') {
+    shouldShow = isValid(cattleToken);
+  } else if (type == 'poultry') {
+    shouldShow = isValid(poultryToken);
+  } else if (type == 'pharma' || type == 'clean_air') {
+    shouldShow = isValid(pharmaToken);
+  } else {
+    // Default to more fish
+    shouldShow = isValid(token);
+  }
+
+  if (!shouldShow) {
+    debugPrint(
+      "User not logged into the required feature ($type). Ignoring background message.",
+    );
     return;
   }
 
@@ -82,13 +97,20 @@ class FcmService {
       FirebaseMessaging.instance;
 
 
-  static bool _isUserLoggedIn() {
+  static bool _shouldShowNotification(RemoteMessage message) {
     final storage = Get.find<LoginTokenStorage>();
+    final type = message.data['type']?.toString().toLowerCase();
 
-    return storage.hasValidMoreFishToken() ||
-        storage.hasValidPoultryToken() ||
-        storage.hasValidCattleToken() ||
-        storage.hasValidPharmaToken();
+    if (type == 'cattle') {
+      return storage.hasValidCattleToken();
+    } else if (type == 'poultry') {
+      return storage.hasValidPoultryToken();
+    } else if (type == 'pharma' || type == 'clean_air') {
+      return storage.hasValidPharmaToken();
+    } else {
+      // Default to More Fish (or any notification without a specific type)
+      return storage.hasValidMoreFishToken();
+    }
   }
 
   static Future<void> initialize() async {
@@ -133,13 +155,12 @@ class FcmService {
 
     FirebaseMessaging.onMessage.listen(
           (RemoteMessage message) async {
-
-            if (!_isUserLoggedIn()) {
-              debugPrint(
-                'User not logged in. Ignoring notification.',
-              );
-              return;
-            }
+        if (!_shouldShowNotification(message)) {
+          debugPrint(
+            'User not logged into this feature. Ignoring notification.',
+          );
+          return;
+        }
         debugPrint(
           'Got a message whilst in the foreground!',
         );
@@ -192,10 +213,9 @@ class FcmService {
 
     FirebaseMessaging.onMessageOpenedApp.listen(
           (RemoteMessage message) {
-
-            if (!_isUserLoggedIn()) {
-              return;
-            }
+        if (!_shouldShowNotification(message)) {
+          return;
+        }
         debugPrint(
           'A new onMessageOpenedApp event was published!',
         );
@@ -217,10 +237,7 @@ class FcmService {
     //     },
     //   );
     // }
-    if (
-    initialMessage != null &&
-        _isUserLoggedIn()
-    ) {
+    if (initialMessage != null && _shouldShowNotification(initialMessage)) {
       Future.delayed(
         const Duration(seconds: 1),
             () {
@@ -295,9 +312,20 @@ class FcmService {
         .value++;
   }
 
-  static Future<void> clearFcmTokenOnLogout() async {
+  static Future<void> clearFcmTokenOnLogout({
+    bool isPoultryFlow = false,
+    bool isPharmaFlow = false,
+    bool isCattleFlow = false,
+  }) async {
     debugPrint("Clearing FCM token on server before logout");
-    _updateTokenOnServer("");
+
+    final authRepo = AuthRepository();
+    await authRepo.updateFcmToken(
+      fcmToken: "",
+      isPoultryFlow: isPoultryFlow,
+      isPharmaFlow: isPharmaFlow,
+      isCattleFlow: isCattleFlow,
+    );
   }
 
   static void _updateTokenOnServer(

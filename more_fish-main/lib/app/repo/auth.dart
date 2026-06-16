@@ -352,8 +352,6 @@ class AuthRepository {
     try {
       final baseUrl = isPoultryFlow
           ? ApiService.poultryBaseUrl
-          : isCattleFlow
-          ? ApiService.moreFishBaseUrl
           : ApiService.moreFishBaseUrl;
 
       final token = isPoultryFlow

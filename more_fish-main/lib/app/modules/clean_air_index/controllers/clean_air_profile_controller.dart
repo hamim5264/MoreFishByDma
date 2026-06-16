@@ -79,7 +79,7 @@ class CleanAirProfileController extends GetxController {
   }
 
   Future<void> logout() async {
-    await FcmService.clearFcmTokenOnLogout();
+    await FcmService.clearFcmTokenOnLogout(isPharmaFlow: true);
     await loginTokenStorage.removePharmaToken();
     await loginTokenStorage.removePharmaUserId();
     final prefs = loginTokenStorage.sharedPreferences;

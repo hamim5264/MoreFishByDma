@@ -241,7 +241,9 @@ class PoultryProfileView extends StatelessWidget {
                                 Get.find<LoginTokenStorage>();
 
                             /// ✅ FIX: clear FCM token before removing session
-                            await FcmService.clearFcmTokenOnLogout();
+                            await FcmService.clearFcmTokenOnLogout(
+                              isPoultryFlow: true,
+                            );
 
                             /// ✅ FIX: poultry token properly remove
                             await loginTokenStorage.removePoultryToken();

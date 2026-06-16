@@ -103,7 +103,9 @@ class CattleProfileView extends GetView<CattleIndexController> {
                           child: InkWell(
                             onTap: () async {
                               // ✅ Logout only from Cattle Care
-                              await FcmService.clearFcmTokenOnLogout();
+                              await FcmService.clearFcmTokenOnLogout(
+                                isCattleFlow: true,
+                              );
                               await cattleProfileController.loginTokenStorage
                                   .clearCattleSession();
                               cattleProfileController.loginTokenStorage.isCattleLoggedIn.value = false;
