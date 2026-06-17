@@ -213,7 +213,7 @@ const Map<String, String> enUS = {
   'relationship': 'Relationship Between Water & Feed Management',
   'feeding_tips': 'Special Feeding Tips',
   'ration': 'Feed Conversion Ratio (FCR)',
-  'calculator': 'Feed Recruitment Calculator',
+  'calculator': 'Feed Requirement Calculator',
 
   'first_name': 'First Name',
   'last_name': 'Last Name',

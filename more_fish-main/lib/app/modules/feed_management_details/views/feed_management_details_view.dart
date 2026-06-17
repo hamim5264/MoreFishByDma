@@ -44,7 +44,7 @@ class FeedManagementDetailsView
                     padding: const EdgeInsets.all(12.0),
                     child: Column(
                       children: [
-                        if (controller.title.value == "Types of Feed")
+                        if (controller.title.value == "types".tr)
                           Column(
                             children: [
                               CommonContainer(
@@ -54,7 +54,7 @@ class FeedManagementDetailsView
                                 ),
                                 child: Column(
                                   children: [
-                                    title(text: FeedManagementData.title1),
+                                    title(text: controller.title.value),
                                     const SizedBox(height: 10),
                                     section(
                                       text: FeedManagementData.title1Subtitle1,
@@ -76,8 +76,7 @@ class FeedManagementDetailsView
                               const SizedBox(height: 12),
                             ],
                           ),
-                        if (controller.title.value ==
-                            "Feed Selection Guidelines")
+                        if (controller.title.value == "guidelines".tr)
                           Column(
                             children: [
                               CommonContainer(
@@ -87,7 +86,7 @@ class FeedManagementDetailsView
                                 ),
                                 child: Column(
                                   children: [
-                                    title(text: FeedManagementData.title2),
+                                    title(text: controller.title.value),
                                     const SizedBox(height: 10),
                                     Table(
                                       border: TableBorder.all(),
@@ -164,8 +163,7 @@ class FeedManagementDetailsView
                               const SizedBox(height: 12),
                             ],
                           ),
-                        if (controller.title.value ==
-                            "Feeding Time and Quantity")
+                        if (controller.title.value == "quantity".tr)
                           Column(
                             children: [
                               CommonContainer(
@@ -175,7 +173,7 @@ class FeedManagementDetailsView
                                 ),
                                 child: Column(
                                   children: [
-                                    title(text: FeedManagementData.title3),
+                                    title(text: controller.title.value),
                                     const SizedBox(height: 10),
                                     section(
                                       text: FeedManagementData.title3Subtitle1,
@@ -221,7 +219,7 @@ class FeedManagementDetailsView
                               const SizedBox(height: 12),
                             ],
                           ),
-                        if (controller.title.value == "Feeding Methods")
+                        if (controller.title.value == "methods".tr)
                           Column(
                             children: [
                               CommonContainer(
@@ -231,7 +229,7 @@ class FeedManagementDetailsView
                                 ),
                                 child: Column(
                                   children: [
-                                    title(text: FeedManagementData.title4),
+                                    title(text: controller.title.value),
                                     const SizedBox(height: 10),
                                     section(
                                       text: FeedManagementData.title4Subtitle1,
@@ -251,8 +249,7 @@ class FeedManagementDetailsView
                               const SizedBox(height: 12),
                             ],
                           ),
-                        if (controller.title.value ==
-                            "Relationship Between Water & Feed Management")
+                        if (controller.title.value == "relationship".tr)
                           Column(
                             children: [
                               CommonContainer(
@@ -262,7 +259,7 @@ class FeedManagementDetailsView
                                 ),
                                 child: Column(
                                   children: [
-                                    title(text: FeedManagementData.title5),
+                                    title(text: controller.title.value),
                                     const SizedBox(height: 10),
                                     section(
                                       text: FeedManagementData.title5Subtitle1,
@@ -279,7 +276,7 @@ class FeedManagementDetailsView
                               const SizedBox(height: 12),
                             ],
                           ),
-                        if (controller.title.value == "Special Feeding Tips")
+                        if (controller.title.value == "feeding_tips".tr)
                           Column(
                             children: [
                               CommonContainer(
@@ -289,7 +286,7 @@ class FeedManagementDetailsView
                                 ),
                                 child: Column(
                                   children: [
-                                    title(text: FeedManagementData.title6),
+                                    title(text: controller.title.value),
                                     const SizedBox(height: 10),
                                     section(
                                       text: FeedManagementData.title6Subtitle1,
@@ -309,60 +306,7 @@ class FeedManagementDetailsView
                               const SizedBox(height: 12),
                             ],
                           ),
-                        if (controller.title.value ==
-                            "Feed Conversion Ratio (FCR)")
-                          CommonContainer(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 12,
-                            ),
-                            child: Column(
-                              children: [
-                                title(text: FeedManagementData.title7),
-                                const SizedBox(height: 10),
-                                section2(
-                                  text: FeedManagementData.title7Subtitle1,
-                                ),
-                                section(
-                                  text:
-                                      FeedManagementData.title7Subtitle1Value1,
-                                ),
-                                section2(
-                                  text: FeedManagementData.title7Subtitle2,
-                                ),
-                                section(
-                                  text:
-                                      FeedManagementData.title7Subtitle2Value1,
-                                ),
-                                section(
-                                  text:
-                                      FeedManagementData.title7Subtitle2Value2,
-                                ),
-                                const SizedBox(height: 15),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const CommonText(
-                                      "* ",
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    Expanded(
-                                      child: CommonText(
-                                        FeedManagementData.title7Subtitle3,
-                                        color: Colors.red.shade800,
-                                        maxLines: 2,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        const SizedBox(height: 12),
-                        if (controller.title.value ==
-                            "Feed Requirement Calculator")
+                        if (controller.title.value == "ration".tr)
                           Column(
                             children: [
                               CommonContainer(
@@ -372,7 +316,63 @@ class FeedManagementDetailsView
                                 ),
                                 child: Column(
                                   children: [
-                                    title(text: FeedManagementData.title8),
+                                    title(text: controller.title.value),
+                                    const SizedBox(height: 10),
+                                    section2(
+                                      text: FeedManagementData.title7Subtitle1,
+                                    ),
+                                    section(
+                                      text: FeedManagementData
+                                          .title7Subtitle1Value1,
+                                    ),
+                                    section2(
+                                      text: FeedManagementData.title7Subtitle2,
+                                    ),
+                                    section(
+                                      text: FeedManagementData
+                                          .title7Subtitle2Value1,
+                                    ),
+                                    section(
+                                      text: FeedManagementData
+                                          .title7Subtitle2Value2,
+                                    ),
+                                    const SizedBox(height: 15),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const CommonText(
+                                          "* ",
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        Expanded(
+                                          child: CommonText(
+                                            FeedManagementData.title7Subtitle3,
+                                            color: Colors.red.shade800,
+                                            maxLines: 2,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                            ],
+                          ),
+                        if (controller.title.value == "calculator".tr)
+                          Column(
+                            children: [
+                              CommonContainer(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 12,
+                                ),
+                                child: Column(
+                                  children: [
+                                    title(text: controller.title.value),
                                     const SizedBox(height: 10),
                                     section2(
                                       text: FeedManagementData.title8Subtitle1,

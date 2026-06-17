@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../common_widgets/common_container.dart';
+import '../../../common_widgets/safe_network_image.dart';
 import '../../../res/colors/colors.dart';
 import '../../../service/service.dart';
 import '../controllers/product_details_controller.dart';
@@ -36,8 +37,8 @@ class ProductDetailsView extends GetView<ProductDetailsController> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Image.network(
-                          "${ApiService.baseUrl}${data.productimageSet[0].image}",
+                        SafeNetworkImage(
+                          url: "${ApiService.baseUrl}${data.productimageSet[0].image}",
                           height: 180,
                           width: 300,
                         ),
