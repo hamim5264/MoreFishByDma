@@ -1,7 +1,7 @@
 name: more_fish
 description: "A comprehensive smart farming solution for Fish, Poultry, and Cattle, featuring IoT integration and automation."
 publish_to: 'none'
-version: 2.1.4+45
+version: 2.1.4+46
 environment:
   sdk: ^3.9.0
 
