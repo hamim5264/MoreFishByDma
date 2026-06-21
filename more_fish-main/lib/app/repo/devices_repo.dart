@@ -12,6 +12,7 @@ import '../response/pond_list_response.dart';
 import '../response/sensor_list_response.dart';
 import '../response/aerator_automation_response.dart';
 import '../response/cleaner_status_response.dart';
+import '../response/fcr_history_response.dart';
 import '../service/failure.dart';
 import '../service/service.dart';
 import 'package:more_fish/app/service/local_storage.dart';
@@ -23,6 +24,31 @@ class DevicesRepository {
     return isPharmaFlow
         ? loginTokenStorage.getPharmaToken()
         : loginTokenStorage.getMoreFishToken();
+  }
+
+  Future<Either<Failure, FcrHistoryResponse>> getFcrHistory({
+    required dynamic assetId,
+  }) async {
+    try {
+      var token = _getToken();
+      var headers = {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      };
+
+      var url = Uri.parse("${ApiService.baseUrl}/devices/fcr/history/?asset_id=$assetId");
+      debugPrint('FCR History GET: $url');
+
+      var response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return Right(FcrHistoryResponse.fromRawJson(response.body));
+      } else {
+        return Left(Failure('Failed to fetch FCR history: ${response.statusCode}'));
+      }
+    } catch (e) {
+      return Left(Failure('Error: $e'));
+    }
   }
 
   Future<Either<Failure, PondListResponse>> getPondList({
