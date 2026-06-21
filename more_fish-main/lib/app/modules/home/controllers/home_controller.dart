@@ -22,30 +22,32 @@ class HomeController extends GetxController {
     'live_data_monitoring',
     'fish_disease_detector',
     "fcr_calculator",
+    "feed_requirement_calculator",
     "nano_bubble_aeration_system",
     "pond_management",
     "feed_management",
     "fish_disease_treatment",
-    "live_consultancy",
+    "fish_medicine_enzyme",
     "fish_farm_marketplace",
     "fingerlings_marketplace",
     "grown_fish_sell",
-    "fish_medicine_enzyme",
+    "live_consultancy",
   ].obs;
 
   var iconList1 = [
     "assets/icons/water_quality_check.png",
     "assets/icons/fish_disease_treatment.png",
     "assets/icons/feed_management.png",
+    "assets/icons/feed_calculator.png",
     "assets/icons/bubble.png",
     "assets/icons/pond_management.png",
     "assets/icons/feed_management.png",
     "assets/icons/fish_disease_treatment.png",
-    "assets/icons/doctor_service.png",
+    "assets/icons/fish_medicine.png",
     "assets/icons/fish_farm_materials.png",
     "assets/icons/fingerlings.png",
     "assets/icons/grown_fish.png",
-    "assets/icons/fish_medicine.png",
+    "assets/icons/doctor_service.png",
   ].obs;
 
   var listItemsEnglish2 = [

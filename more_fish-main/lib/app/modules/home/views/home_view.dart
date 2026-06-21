@@ -105,6 +105,26 @@ class HomeView extends GetView<HomeController> {
                 ),
                 textAlign: TextAlign.center,
               ),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.green.shade600,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.green.withOpacity(0.3),
+                      blurRadius: 8,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.phone,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              ),
             ],
           ),
         ),
@@ -221,6 +241,8 @@ class HomeView extends GetView<HomeController> {
                 }
               } else if (itemKey == 'fcr_calculator') {
                 Get.toNamed(Routes.FCR_CALCULATOR);
+              } else if (itemKey == 'feed_requirement_calculator') {
+                Get.toNamed(Routes.FEED_REQUIREMENT_CALCULATOR);
               } else if (itemKey == 'nano_bubble_aeration_system') {
                 Get.toNamed(Routes.NANO_BUBBLE);
               } else {

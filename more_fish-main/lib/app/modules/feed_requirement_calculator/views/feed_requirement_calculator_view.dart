@@ -33,11 +33,6 @@ class FeedRequirementCalculatorView
                     fontWeight: FontWeight.w700,
                   ),
                   const SizedBox(height: 14),
-                  _numberInputField(
-                    controller: controller.bodyWeightController,
-                    label: 'total_body_weight'.tr,
-                  ),
-                  const SizedBox(height: 16),
                   CommonText(
                     'select_fish_size'.tr,
                     fontSize: 15,
@@ -68,6 +63,11 @@ class FeedRequirementCalculatorView
                           ),
                         ),
                       )),
+                  const SizedBox(height: 16),
+                  _numberInputField(
+                    controller: controller.bodyWeightController,
+                    label: 'total_body_weight'.tr,
+                  ),
                   const SizedBox(height: 20),
                   Row(
                     children: [
