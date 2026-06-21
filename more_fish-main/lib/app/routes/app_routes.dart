@@ -54,6 +54,7 @@ abstract class Routes {
   static const SMART_KHAMARI = _Paths.SMART_KHAMARI;
   static const GRAPH = _Paths.GRAPH;
   static const FCR_CALCULATOR = _Paths.FCR_CALCULATOR;
+  static const FEED_REQUIREMENT_CALCULATOR = _Paths.FEED_REQUIREMENT_CALCULATOR;
   static const CATTLE_LOGIN = _Paths.CATTLE_LOGIN;
   static const CATTLE_LIVE_DATA = _Paths.CATTLE_LIVE_DATA;
   static const NANO_BUBBLE = _Paths.NANO_BUBBLE;
@@ -115,6 +116,7 @@ abstract class _Paths {
   static const SMART_KHAMARI = '/smart-khamari';
   static const GRAPH = '/graph';
   static const FCR_CALCULATOR = '/fcr-calculator';
+  static const FEED_REQUIREMENT_CALCULATOR = '/feed-requirement-calculator';
   static const CATTLE_LOGIN = '/cattle-login';
   static const CATTLE_LIVE_DATA = '/cattle-live-data';
   static const NANO_BUBBLE = '/nano-bubble';

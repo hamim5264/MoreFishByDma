@@ -43,14 +43,8 @@ class FeedManagementView extends GetView<FeedManagementController> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      if (index == 0) {
-                        Get.toNamed(
-                          Routes.FEED_MANAGEMENT_DETAILS,
-                          arguments: {
-                            "title": controller.titleList[index].tr,
-                            "data": controller.dataList[index],
-                          },
-                        );
+                      if (index == 7) {
+                        Get.toNamed(Routes.FEED_REQUIREMENT_CALCULATOR);
                       } else {
                         Get.toNamed(
                           Routes.FEED_MANAGEMENT_DETAILS,

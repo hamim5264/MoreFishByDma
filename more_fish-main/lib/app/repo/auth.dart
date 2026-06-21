@@ -135,18 +135,27 @@ class AuthRepository {
   Future<Either<Failure, ProfileResponse>> getProfile({
     bool isPharmaFlow = false,
     bool isCattleFlow = false,
+    bool isPoultryFlow = false,
   }) async {
     try {
-      var token = isPharmaFlow
-          ? loginTokenStorage.getPharmaToken()
-          : isCattleFlow
-              ? loginTokenStorage.getCattleToken()
-              : loginTokenStorage.getMoreFishToken();
-      var id = isPharmaFlow
-          ? loginTokenStorage.getPharmaUserId()
-          : isCattleFlow
-              ? loginTokenStorage.getCattleUserId()
-              : loginTokenStorage.getMoreFishUserId();
+      var token = isPoultryFlow
+          ? loginTokenStorage.getPoultryToken()
+          : isPharmaFlow
+              ? loginTokenStorage.getPharmaToken()
+              : isCattleFlow
+                  ? loginTokenStorage.getCattleToken()
+                  : loginTokenStorage.getMoreFishToken();
+      var id = isPoultryFlow
+          ? loginTokenStorage.getPoultryUserId()
+          : isPharmaFlow
+              ? loginTokenStorage.getPharmaUserId()
+              : isCattleFlow
+                  ? loginTokenStorage.getCattleUserId()
+                  : loginTokenStorage.getMoreFishUserId();
+
+      final baseUrl = isPoultryFlow
+          ? ApiService.poultryBaseUrl
+          : ApiService.moreFishBaseUrl;
 
       var headers = {
         'Authorization': 'Bearer $token',
@@ -155,7 +164,7 @@ class AuthRepository {
 
       var request = http.Request(
         'GET',
-        Uri.parse("${ApiService.baseUrl}/auth/user/details/$id"),
+        Uri.parse("$baseUrl/auth/user/details/$id"),
       );
       request.headers.addAll(headers);
 

@@ -40,6 +40,8 @@ import '../modules/farm_management_details/bindings/farm_management_details_bind
 import '../modules/farm_management_details/views/farm_management_details_view.dart';
 import '../modules/fcr_calculator/bindings/fcr_calculator_binding.dart';
 import '../modules/fcr_calculator/views/fcr_calculator_view.dart';
+import '../modules/feed_requirement_calculator/bindings/feed_requirement_calculator_binding.dart';
+import '../modules/feed_requirement_calculator/views/feed_requirement_calculator_view.dart';
 import '../modules/feed_management/bindings/feed_management_binding.dart';
 import '../modules/feed_management/views/feed_management_view.dart';
 import '../modules/feed_management_details/bindings/feed_management_details_binding.dart';
@@ -363,6 +365,11 @@ class AppPages {
       name: _Paths.FCR_CALCULATOR,
       page: () => const FcrCalculatorView(),
       binding: FcrCalculatorBinding(),
+    ),
+    GetPage(
+      name: _Paths.FEED_REQUIREMENT_CALCULATOR,
+      page: () => const FeedRequirementCalculatorView(),
+      binding: FeedRequirementCalculatorBinding(),
     ),
     GetPage(
       name: _Paths.CATTLE_LOGIN,

@@ -144,6 +144,13 @@ class GraphController extends GetxController {
   }
 
   Future<void> _loadDefaultGraph({required String type}) async {
+    debugPrint('====================================');
+    debugPrint('API CALL: GET Graph Data (More Fish/Pharma)');
+    debugPrint('Asset ID: $assetId');
+    debugPrint('Sensor ID: $sensorId');
+    debugPrint('Period Type: $type');
+    debugPrint('====================================');
+
     final response = await devicesRepository.getGraphData(
       comId: comId ?? 39,
       assetId: assetId,
@@ -154,13 +161,15 @@ class GraphController extends GetxController {
 
     response.fold(
       (l) {
-        // Surface error message to the UI instead of throwing.
+        debugPrint('GRAPH API ERROR: ${l.message}');
         error.value = 'Failed to fetch graph: ${l.message}';
         debugPrint('Graph repo failure: ${l.message}');
         sensorValues.clear();
         timeLabels.clear();
       },
       (r) {
+        debugPrint('GRAPH API SUCCESS');
+        debugPrint('RESPONSE BODY: ${r.toRawJson()}');
         graphResponse.value = r;
         _applyChartData(r);
       },
@@ -194,7 +203,10 @@ class GraphController extends GetxController {
   }
 
   Future<void> _fetchGraphAndApply(Uri uri, String token, String flowName) async {
-    debugPrint('$flowName graph GET: $uri');
+    debugPrint('====================================');
+    debugPrint('API CALL: GET $flowName Graph Data');
+    debugPrint('URL: $uri');
+    debugPrint('====================================');
 
     final client = http.Client();
     try {
@@ -231,6 +243,9 @@ class GraphController extends GetxController {
           '$flowName graph API failed with status ${response.statusCode}',
         );
       }
+
+      debugPrint('$flowName GRAPH API SUCCESS');
+      debugPrint('RESPONSE BODY: ${response.body}');
 
       final parsed = GraphResponse.fromRawJson(response.body);
       graphResponse.value = parsed;

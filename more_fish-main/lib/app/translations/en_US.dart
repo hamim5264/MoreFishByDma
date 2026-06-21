@@ -299,6 +299,14 @@ const Map<String, String> enUS = {
   'fcr_value_missing': 'FCR value missing in response.',
   'fcr_calc_failed': 'FCR calculation failed.',
 
+  'feed_requirement_calculator': 'Feed Requirement Calculator',
+  'total_body_weight': 'Total Body Weight (kg)',
+  'select_fish_size': 'Select Fish Size',
+  'fry_fingerling': 'Fry / Fingerling',
+  'medium_size': 'Medium Size',
+  'market_size': 'Market Size',
+  'required_feed': 'Required Feed',
+
   'no_image_selected': 'No image selected',
   'camera': 'Camera',
   'gallery': 'Gallery',

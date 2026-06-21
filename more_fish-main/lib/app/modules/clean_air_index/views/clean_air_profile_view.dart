@@ -30,8 +30,8 @@ class CleanAirProfileView extends GetView<CleanAirProfileController> {
             children: [
               Obx(
                 () => CommonAppBar(
-                  title: 'Pharma Care',
-                  cityName: 'Dhaka',
+                  title: 'pharma_care'.tr,
+                  cityName: 'dhaka'.tr,
                   date: header.formattedDate.value,
                   time: header.formattedTime.value,
                   temp: header.tempText.value,
@@ -58,18 +58,34 @@ class CleanAirProfileView extends GetView<CleanAirProfileController> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(16),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.blue.shade50,
+                                          border: Border.all(color: Colors.blue.shade100),
+                                        ),
+                                        child: const Icon(
+                                          Icons.person,
+                                          size: 60,
+                                          color: Color(0xff0370c3),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
                                       CommonText(
                                         "${data.data?.firstName ?? ''} ${data.data?.lastName ?? ''}",
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 24,
+                                        fontSize: 22,
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                      const SizedBox(height: 4),
+                                      const SizedBox(height: 8),
                                       CommonText(
                                         data.data?.usrEmail ?? '',
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
+                                        color: Colors.blueGrey,
                                       ),
+                                      const SizedBox(height: 20),
                                     ],
                                   ),
                                 ),
@@ -84,21 +100,28 @@ class CleanAirProfileView extends GetView<CleanAirProfileController> {
                                           Routes.DMA_TECHNOLOGIES,
                                         );
                                       },
-                                      child: const CommonContainer(
+                                      child: CommonContainer(
                                         height: 50,
-                                        margin: EdgeInsets.symmetric(
+                                        margin: const EdgeInsets.symmetric(
                                           horizontal: 0,
                                           vertical: 16,
                                         ),
                                         alignment: Alignment.center,
+                                        gradient: const LinearGradient(
+                                          colors: [
+                                            Color(0xffffebee),
+                                            Color(0xffffcdd2),
+                                          ],
+                                        ),
+                                        border: Border.all(color: Colors.red.shade100),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              'Logout',
+                                              'logout'.tr,
                                               style: TextStyle(
-                                                color: Colors.black,
+                                                color: Colors.red.shade700,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
                                               ),

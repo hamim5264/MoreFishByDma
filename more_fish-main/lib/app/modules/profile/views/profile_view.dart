@@ -34,9 +34,15 @@ class ProfileView extends GetView<ProfileController> {
                 final temp = main != null ? (main['temp'] ?? '--') : '--';
                 final humidity = main != null ? (main['humidity'] ?? '--') : '--';
 
+                final isPharma = controller.activeMode.value == 'pharma';
+
                 return CommonAppBar(
-                  title: 'title'.tr,
+                  title: isPharma ? 'pharma_care'.tr : 'title'.tr,
                   cityName: "dhaka".tr,
+                  logoAssetPath: isPharma 
+                      ? 'assets/icons/dma_pharmaceutical.png' 
+                      : 'assets/icons/dma_more_fish.png',
+                  backgroundColor: isPharma ? const Color(0xffe0f2f1) : null,
                   date: '${homeController.formattedDate}',
                   time: '${homeController.formattedTime}',
                   temp: '$temp°C',
@@ -58,36 +64,44 @@ class ProfileView extends GetView<ProfileController> {
                               Expanded(
                                 child: CommonContainer(
                                   width: double.infinity,
-                                  child: Row(
+                                  child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          CommonText(
-                                            "${data.data?.firstName ?? ''} ${data.data?.lastName ?? ''} ",
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 24,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          const SizedBox(height: 4),
-                                          CommonText(
-                                            data.data?.usrEmail ?? '',
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                          ),
-                                          const SizedBox(height: 4),
-                                          data.data?.userPhone == null
-                                              ? CommonText(
-                                                  "${data.data?.userPhone?.phnCell ?? ''}",
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 18,
-                                                )
-                                              : const CommonText(""),
-                                          const SizedBox(height: 50),
-                                        ],
+                                      Container(
+                                        padding: const EdgeInsets.all(16),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.blue.shade50,
+                                          border: Border.all(color: Colors.blue.shade100),
+                                        ),
+                                        child: const Icon(
+                                          Icons.person,
+                                          size: 60,
+                                          color: Color(0xff0370c3),
+                                        ),
                                       ),
+                                      const SizedBox(height: 20),
+                                      CommonText(
+                                        "${data.data?.firstName ?? ''} ${data.data?.lastName ?? ''} ",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      CommonText(
+                                        data.data?.usrEmail ?? '',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Colors.blueGrey,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      if (data.data?.userPhone != null)
+                                        CommonText(
+                                          "${data.data?.userPhone?.phnCell ?? ''}",
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                        ),
+                                      const SizedBox(height: 20),
                                     ],
                                   ),
                                 ),
@@ -129,8 +143,11 @@ class ProfileView extends GetView<ProfileController> {
                                     child: InkWell(
                                       onTap: () async {
                                         await FcmService.clearFcmTokenOnLogout();
-                                        await controller.loginTokenStorage
-                                            .clearMoreFishSession();
+                                        
+                                        // Clear both possible sessions handled by this view
+                                        await controller.loginTokenStorage.clearMoreFishSession();
+                                        await controller.loginTokenStorage.clearPharmaSession();
+
                                         controller.isLoggedIn.value = '';
                                         Get.offAllNamed(Routes.DMA_TECHNOLOGIES);
                                       },
@@ -141,14 +158,21 @@ class ProfileView extends GetView<ProfileController> {
                                           vertical: 16,
                                         ),
                                         alignment: Alignment.center,
+                                        gradient: const LinearGradient(
+                                          colors: [
+                                            Color(0xffffebee),
+                                            Color(0xffffcdd2),
+                                          ],
+                                        ),
+                                        border: Border.all(color: Colors.red.shade100),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
                                               Text(
                                               "logout".tr,
-                                              style: const TextStyle(
-                                                color: Colors.black,
+                                              style: TextStyle(
+                                                color: Colors.red.shade700,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
                                               ),

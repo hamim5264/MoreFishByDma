@@ -8,6 +8,7 @@ import 'package:more_fish/app/service/local_storage.dart';
 class ProfileController extends GetxController {
   late LoginTokenStorage loginTokenStorage;
   var isLoggedIn = ''.obs;
+  var activeMode = 'more_fish'.obs;
   AuthRepository authRepository = AuthRepository();
   final profileResponse = Rxn<ProfileResponse>();
   static const String _cacheProfileKey = 'morefish_profile_cache';
@@ -26,10 +27,18 @@ class ProfileController extends GetxController {
 
   checkLogin() {
     loginTokenStorage = Get.find<LoginTokenStorage>();
-    final token = loginTokenStorage.getMoreFishToken();
-    print(token);
-    if (token != null) {
-      isLoggedIn.value = token;
+    final moreFishToken = loginTokenStorage.getMoreFishToken();
+    final pharmaToken = loginTokenStorage.getPharmaToken();
+
+    if (pharmaToken != null) {
+      isLoggedIn.value = pharmaToken;
+      activeMode.value = 'pharma';
+      _loadCachedProfile();
+      userProfile(isPharma: true);
+      _startPolling(isPharma: true);
+    } else if (moreFishToken != null) {
+      isLoggedIn.value = moreFishToken;
+      activeMode.value = 'more_fish';
       _loadCachedProfile();
       userProfile();
       _startPolling();
@@ -38,16 +47,16 @@ class ProfileController extends GetxController {
     }
   }
 
-  void _startPolling() {
+  void _startPolling({bool isPharma = false}) {
     _pollingTimer?.cancel();
     _pollingTimer = Timer.periodic(const Duration(minutes: 1), (_) {
       if (isLoggedIn.value.isEmpty) return;
-      userProfile();
+      userProfile(isPharma: isPharma);
     });
   }
 
-  userProfile() async {
-    var response = await authRepository.getProfile();
+  userProfile({bool isPharma = false}) async {
+    var response = await authRepository.getProfile(isPharmaFlow: isPharma);
     response.fold(
       (l) {
         print('${l.message}');

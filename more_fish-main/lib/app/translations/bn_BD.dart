@@ -293,6 +293,14 @@ const Map<String, String> bnBD = {
   'fcr_value_missing': 'সার্ভার রেসপন্সে FCR মান নেই।',
   'fcr_calc_failed': 'FCR হিসাব করতে ব্যর্থ হয়েছে।',
 
+  'feed_requirement_calculator': 'মাছের খাবারের চাহিদার ক্যালকুলেটর',
+  'total_body_weight': 'মাছের মোট ওজন (কেজি)',
+  'select_fish_size': 'মাছের আকার নির্বাচন করুন',
+  'fry_fingerling': 'পোনা মাছ',
+  'medium_size': 'মাঝারি মাছ',
+  'market_size': 'বিক্রয়যোগ্য মাছ',
+  'required_feed': 'প্রয়োজনীয় খাবার',
+
   'no_image_selected': 'কোনো ছবি নির্বাচন করা হয়নি',
   'camera': 'ক্যামেরা',
   'gallery': 'গ্যালারি',

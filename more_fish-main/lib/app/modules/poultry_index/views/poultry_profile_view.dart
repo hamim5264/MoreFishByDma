@@ -1,200 +1,16 @@
-// // app/modules/poultry_index/views/poultry_profile_view.dart
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:get/get.dart';
-
-// import '../../../common_widgets/common_app_bar.dart';
-// import '../../../routes/app_pages.dart';
-// import '../../../service/local_storage.dart';
-// import '../controllers/poultry_header_controller.dart';
-
-// class PoultryProfileView extends StatelessWidget {
-//   const PoultryProfileView({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final header = Get.find<PoultryHeaderController>();
-
-//     return AnnotatedRegion<SystemUiOverlayStyle>(
-//       value: const SystemUiOverlayStyle(
-//         statusBarColor: Color(0xffdbcc68),
-//         statusBarIconBrightness: Brightness.dark,
-//         statusBarBrightness: Brightness.dark,
-//       ),
-//       child: SafeArea(
-//         child: Scaffold(
-//           backgroundColor: const Color(0xffebffff),
-//           body: Column(
-//             children: [
-//               Obx(
-//                 () => CommonAppBar(
-//                   title: 'Poultry Pulse',
-//                   cityName: 'Dhaka',
-//                   date: header.formattedDate.value,
-//                   time: header.formattedTime.value,
-//                   temp: header.tempText.value,
-//                   humidity: header.humidityText.value,
-//                   logoAssetPath: 'assets/icons/dma_poultry_pulse.png',
-//                   backgroundColor: const Color(0xffdbcc68),
-//                 ),
-//               ),
-//               Expanded(
-//                 child: Center(
-//                   child: Column(
-//                     mainAxisSize: MainAxisSize.min,
-//                     children: [
-//                       SizedBox(
-//                         width: 180,
-//                         child: ElevatedButton(
-//                           onPressed: () async {
-//                             final loginTokenStorage =
-//                                 Get.find<LoginTokenStorage>();
-//                             await loginTokenStorage.removeToken();
-//                             await loginTokenStorage.removeUserId();
-//                             Get.offAllNamed(Routes.DMA_TECHNOLOGIES);
-//                           },
-//                           style: ElevatedButton.styleFrom(
-//                             backgroundColor: const Color(0xffdbcc68),
-//                             foregroundColor: Colors.black87,
-//                             padding: const EdgeInsets.symmetric(vertical: 12),
-//                             shape: RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(12),
-//                             ),
-//                           ),
-//                           child: const Text(
-//                             'Logout',
-//                             style: TextStyle(
-//                               fontSize: 15,
-//                               fontWeight: FontWeight.w700,
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-// app/modules/poultry_index/views/poultry_profile_view.dart
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:get/get.dart';
-
-// import '../../../common_widgets/common_app_bar.dart';
-// import '../../../routes/app_pages.dart';
-// import '../../../service/local_storage.dart';
-// import '../controllers/poultry_header_controller.dart';
-// import '../controllers/poultry_index_controller.dart';
-
-// class PoultryProfileView extends StatelessWidget {
-//   const PoultryProfileView({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final header = Get.find<PoultryHeaderController>();
-//     final poultryIndexController = Get.find<PoultryIndexController>();
-
-//     return AnnotatedRegion<SystemUiOverlayStyle>(
-//       value: const SystemUiOverlayStyle(
-//         statusBarColor: Color(0xffdbcc68),
-//         statusBarIconBrightness: Brightness.dark,
-//         statusBarBrightness: Brightness.dark,
-//       ),
-//       child: SafeArea(
-//         child: Scaffold(
-//           backgroundColor: const Color(0xffebffff),
-//           body: Column(
-//             children: [
-//               Obx(
-//                 () => CommonAppBar(
-//                   title: 'Poultry Pulse',
-//                   cityName: 'Dhaka',
-//                   date: header.formattedDate.value,
-//                   time: header.formattedTime.value,
-//                   temp: header.tempText.value,
-//                   humidity: header.humidityText.value,
-//                   logoAssetPath:
-//                       'assets/icons/dma_poultry_pulse.png',
-//                   backgroundColor: const Color(0xffdbcc68),
-//                 ),
-//               ),
-
-//               Expanded(
-//                 child: Center(
-//                   child: Column(
-//                     mainAxisSize: MainAxisSize.min,
-//                     children: [
-//                       SizedBox(
-//                         width: 180,
-//                         child: ElevatedButton(
-//                           onPressed: () async {
-//                             final loginTokenStorage =
-//                                 Get.find<LoginTokenStorage>();
-
-//                             /// Clear token + userId
-//                             await loginTokenStorage.removeToken();
-//                             await loginTokenStorage.removeUserId();
-
-//                             /// IMPORTANT:
-//                             /// also clear controller login state
-//                           poultryIndexController.isLoggedIn.value = '';
-
-//                             /// Remove all previous routes completely
-//                             Get.offAllNamed(
-//                               Routes.DMA_TECHNOLOGIES,
-//                             );
-//                           },
-//                           style: ElevatedButton.styleFrom(
-//                             backgroundColor:
-//                                 const Color(0xffdbcc68),
-//                             foregroundColor: Colors.black87,
-//                             padding: const EdgeInsets.symmetric(
-//                               vertical: 12,
-//                             ),
-//                             shape: RoundedRectangleBorder(
-//                               borderRadius:
-//                                   BorderRadius.circular(12),
-//                             ),
-//                           ),
-//                           child: const Text(
-//                             'Logout',
-//                             style: TextStyle(
-//                               fontSize: 15,
-//                               fontWeight: FontWeight.w700,
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-// app/modules/poultry_index/views/poultry_profile_view.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'package:more_fish/app/service/fcm_service.dart';
 import '../../../common_widgets/common_app_bar.dart';
+import '../../../common_widgets/common_container.dart';
+import '../../../common_widgets/common_text.dart';
 import '../../../routes/app_pages.dart';
 import '../../../service/local_storage.dart';
 import '../controllers/poultry_header_controller.dart';
 import '../controllers/poultry_index_controller.dart';
+import '../controllers/poultry_profile_controller.dart';
 
 class PoultryProfileView extends StatelessWidget {
   const PoultryProfileView({super.key});
@@ -203,6 +19,8 @@ class PoultryProfileView extends StatelessWidget {
   Widget build(BuildContext context) {
     final header = Get.find<PoultryHeaderController>();
     final poultryIndexController = Get.find<PoultryIndexController>();
+    final poultryProfileController = Get.put(PoultryProfileController());
+    poultryProfileController.checkLogin();
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
@@ -217,8 +35,8 @@ class PoultryProfileView extends StatelessWidget {
             children: [
               Obx(
                 () => CommonAppBar(
-                  title: 'Poultry Care',
-                  cityName: 'Dhaka',
+                  title: 'poultry_care'.tr,
+                  cityName: 'dhaka'.tr,
                   date: header.formattedDate.value,
                   time: header.formattedTime.value,
                   temp: header.tempText.value,
@@ -229,54 +47,150 @@ class PoultryProfileView extends StatelessWidget {
               ),
 
               Expanded(
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        width: 180,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            final loginTokenStorage =
-                                Get.find<LoginTokenStorage>();
+                child: Obx(() {
+                  var data = poultryProfileController.profileResponse.value;
+                  return poultryIndexController.isLoggedIn.isEmpty
+                      ? const SizedBox()
+                      : data == null
+                      ? const Center(child: Text('No cached profile yet.'))
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              Expanded(
+                                child: CommonContainer(
+                                  width: double.infinity,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(16),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.blue.shade50,
+                                          border: Border.all(color: Colors.blue.shade100),
+                                        ),
+                                        child: const Icon(
+                                          Icons.person,
+                                          size: 60,
+                                          color: Color(0xff0370c3),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      CommonText(
+                                        "${data.data?.firstName ?? ''} ${data.data?.lastName ?? ''} ",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      CommonText(
+                                        data.data?.usrEmail ?? '',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Colors.blueGrey,
+                                      ),
+                                      const SizedBox(height: 8),
+                                      if (data.data?.userPhone != null)
+                                        CommonText(
+                                          "${data.data?.userPhone?.phnCell ?? ''}",
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                        ),
+                                      const SizedBox(height: 20),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () async {
+                                        Get.toNamed(Routes.PASSWORD_CHANGE);
+                                      },
+                                      child: CommonContainer(
+                                        height: 50,
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 0,
+                                          vertical: 16,
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                              Text(
+                                              "change_password".tr,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.justify,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: InkWell(
+                                      onTap: () async {
+                                        final loginTokenStorage =
+                                            Get.find<LoginTokenStorage>();
 
-                            /// ✅ FIX: clear FCM token before removing session
-                            await FcmService.clearFcmTokenOnLogout(
-                              isPoultryFlow: true,
-                            );
+                                        await FcmService.clearFcmTokenOnLogout(
+                                          isPoultryFlow: true,
+                                        );
 
-                            /// ✅ FIX: poultry token properly remove
-                            await loginTokenStorage.removePoultryToken();
-                            await loginTokenStorage.removePoultryUserId();
+                                        await loginTokenStorage.removePoultryToken();
+                                        await loginTokenStorage.removePoultryUserId();
 
-                            /// clear reactive state
-                            poultryIndexController.isLoggedIn.value = '';
+                                        poultryIndexController.isLoggedIn.value = '';
 
-                            debugPrint('Logout done: token cleared');
-
-                            /// go to root
-                            Get.offAllNamed(Routes.DMA_TECHNOLOGIES);
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xffdbcc68),
-                            foregroundColor: Colors.black87,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
+                                        Get.offAllNamed(Routes.DMA_TECHNOLOGIES);
+                                      },
+                                      child: CommonContainer(
+                                        height: 50,
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 0,
+                                          vertical: 16,
+                                        ),
+                                        alignment: Alignment.center,
+                                        gradient: const LinearGradient(
+                                          colors: [
+                                            Color(0xffffebee),
+                                            Color(0xffffcdd2),
+                                          ],
+                                        ),
+                                        border: Border.all(color: Colors.red.shade100),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                              Text(
+                                              "logout".tr,
+                                              style: TextStyle(
+                                                color: Colors.red.shade700,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.justify,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          child: const Text(
-                            'Logout',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                        );
+                }),
               ),
             ],
           ),

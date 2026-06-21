@@ -1,132 +1,158 @@
-# DMA Technologies - Full API Documentation (Web Implementation)
+# More Fish - API Documentation
 
-This documentation provides the exact endpoint details, request payloads, and response structures for all features: More Fish, Poultry Care, Cattle Care, and Pharma Care.
+This document provides a comprehensive guide to the API implementation for the **More Fish** mobile application. This documentation is designed to assist in the development of a corresponding web application.
 
 ---
 
-## 1. Global Configuration
-- **Base URL:** `http://66.29.151.40:8004` (Common for all features)
+## 1. General Information
+- **Base URL:** `http://66.29.151.40:8004`
 - **Content-Type:** `application/json`
-- **Weather API Key:** `1fe3d8310812392fbac14b02b9b3dcf1` (OpenWeatherMap)
+- **Authentication:** Bearer Token (`Authorization: Bearer <token>`)
 
 ---
 
-## 2. Authentication & Profile
-Each module (More Fish, Poultry, Cattle, Pharma) manages its own session token. Ensure you use the correct token for the active module.
+## 2. Authentication API
+Endpoints for user session management and profile handling.
 
 ### 2.1 Login
 - **Endpoint:** `POST /auth/login/`
-- **Body:** `{ "usr_email": "...", "password": "..." }`
-- **Response Keys (Crucial for UI):**
-  - `data.token`: Session bearer token.
-  - `data.user_id`: Numeric ID (store as `userId`, `poultryUserId`, etc.).
-  - `data.user_data.first_name`, `data.user_data.last_name`: Displayed as user name.
-  - `data.user_data.user_phone.phn_cell`: User's primary phone.
+- **Request Body:**
+  ```json
+  {
+    "usr_email": "user@example.com",
+    "password": "yourpassword"
+  }
+  ```
+- **Response:** Returns `LoginResponse` containing tokens (`access`, `refresh`) and user details.
 
-### 2.2 Profile Details
+### 2.2 Registration
+- **Endpoint:** `POST /auth/registration/`
+- **Request Body:** `RegistrationRequest` model (fields include name, email, phone, password, etc.).
+- **Response:** `RegistrationResponse`.
+
+### 2.3 User Profile
 - **Endpoint:** `GET /auth/user/details/{userId}`
-- **Response Mapping (Fix "None" values):**
-  - **Email:** `data.usr_email`
-  - **Phone:** `data.user_phone` (This can be an object or string; in `ProfileResponse` it is currently `dynamic`. Check both `data.user_phone.phn_cell` and `data.user_phone` as a raw string).
-  - **Address:** `data.user_address`
+- **Headers:** Requires Authorization.
+- **Response:** Detailed user profile information.
+
+### 2.4 Password Management
+- **Change Password:** `POST /auth/user/password/change/`
+  - Body: `{"old_password": "...", "new_password": "..."}`
+- **Forgot Password:** `POST /auth/user/forgot/password/`
+  - Body: `{"phone": "...", "email": "..."}`
+- **OTP Verify:** `POST /auth/user/otp/verify/`
+  - Body: `{"code": "..."}`
+- **Reset Password:** `POST /auth/user/reset/password/`
+  - Body: `{"user_id": "...", "password": "..."}`
 
 ---
 
-## 3. More Fish Module (Main Dashboard)
+## 3. Weather Forecast API
+Uses external service for real-time environmental data.
 
-### 3.1 Live Data Monitoring
+- **Provider:** OpenWeatherMap
+- **API Key:** `1fe3d8310812392fbac14b02b9b3dcf1`
+- **Endpoints:**
+  - **Current Weather:** `https://api.openweathermap.org/data/2.5/weather?q={city},BD&appid={apiKey}&units=metric`
+  - **5-Day Forecast:** `https://api.openweathermap.org/data/2.5/forecast?q={city},BD&appid={apiKey}&units=metric`
+- **Locations:** Supports all major districts in Bangladesh (Dhaka, Naogaon, etc.).
+
+---
+
+## 4. More Fish Features
+
+### 4.0 Header Weather & Location Logic
+The application header dynamically updates weather information based on the user's authentication state.
+
+- **Logged Out User:**
+  - **Default Location:** Dhaka
+  - **Data Source:** OpenWeatherMap API.
+  - **Displayed Info:** Air Temp, Humidity, and Weather Description.
+  - **Update Frequency:** Throttled to every 5 minutes.
+
+- **Logged In User (More Fish/Pharma):**
+  - **Logic:** The app identifies the user's first registered pond/asset from `GET /devices/data/pond/list`.
+  - **Data Source:** Backend Dashboard API (`GET /devices/data/pond/data?asset_id={id}`).
+  - **Displayed Info:** 
+    - **Location:** The district associated with the asset (e.g., "Naogaon").
+    - **Weather:** Real-time values from the `weather` node in the API response.
+    - **Sunlight Level:** Displays the `sunlight_level` value (e.g., "Medium", "High", "Low") provided by backend sensors.
+  - **Fallback:** If no asset exists or backend weather data is missing, the app falls back to OpenWeatherMap (Dhaka).
+
+### 4.1 Pond & Asset Management
 - **Pond List:** `GET /devices/data/pond/list`
-- **Pond Details:** `GET /devices/data/pond/data?asset_id={id}`
-  - **Status:** `data.devices[0].device_status` (Online/Offline)
-  - **Sensors:** `data.devices[0].sensors`
-    - `sensor_name`: (e.g., "Dissolved Oxygen (DO)")
-    - `last_value`: (The numeric value to display)
-    - `sensor_unit`: (e.g., "mg/L")
-    - `danger_status`: ("danger" or "normal")
-  - **Aerators:** `data.devices[0].aerators`
-    - `aerator_name`, `isRunning`, `isOnline`.
+  - Returns list of ponds associated with the user.
+- **Pond Data:** `GET /devices/data/pond/data?asset_id={asset_id}`
+  - Fetches real-time sensor data for a specific pond (Temp, DO, pH, NH3, TDS, Salinity).
 
-### 3.2 Automation & Controls
-- **Manual Control:** `POST /devices/aerators/command/`
-  - Body: `{"aerator_id": "...", "command": 1}` (1=ON, 0=OFF).
-- **Automation Settings:** `GET /devices/aerator-automation/?device_id={id}`
-- **Save Automation:** `POST /devices/aerator-automation/`
-  - Body: `{"device_id": 123, "is_enabled": true, "do_min": 4.5, "do_max": 7.5}`
-- **Cleaner Status:** `GET /devices/cleaner/status/?asset_id={id}`
+### 4.2 Sensor & Graph Data
+- **Sensor List:** `GET /devices/sensor/list?device_id={device_id}`
+- **Graph Data:** `GET /devices/data/graph`
+  - **Query Params:**
+    - `assst_id`: The ID of the pond/asset.
+    - `sensor_id`: The ID of the specific sensor (1: pH, 2: Temp, 3: DO, 4: TDS, 5: NH3, 6: Salinity).
+    - `type`: Data range (`daily`, `weekly`, `monthly`).
+  - **Response Logic:**
+    - Returns an array of `sensor_val` (numeric data points) and `time` (labels for the X-axis).
+    - Used for historical data visualization on charts.
 
-### 3.3 Fish Disease Detector
-- **Endpoint:** `POST /devices/fish-disease/detect/`
-- **Type:** `Multipart/form-data`
-- **Key:** `file` (Image blob)
-- **Response:** `data.disease` (Name), `data.confidence_percent`.
+### 4.3 Hardware Automation (Aerators)
+- **Send Command:** `POST /devices/aerators/command/`
+  - Body: `{"aerator_id": "...", "command": "ON/OFF"}`
+- **Automation Settings (GET):** `GET /devices/aerator-automation/?device_id={deviceId}`
+- **Automation Settings (POST):** `POST /devices/aerator-automation/?device_id={deviceId}`
+  - Body: `{"device_id": "...", "is_enabled": true, "do_min": 4.0, "do_max": 8.0}`
+- **Cleaner Status:** `GET /devices/cleaner/status/?asset_id={assetId}`
 
-### 3.4 Product Marketplace (Marketplace features)
-- **Categories:** `GET /product/category/list/`
-- **Companies:** `GET /product/product-companies?category_guid={guid}`
-- **Products:** `GET /product/search-product-by-company?product_company_guid={guid}&page_number=1&size=30`
-- **Details:** `GET /product/details?product_guid={guid}`
+### 4.4 Fish Disease Detector
+- **Detect Disease:** `POST /devices/fish-disease/detect/`
+- **Method:** Multipart POST
+- **Field:** `file` (Image file)
+- **Response:** Returns `disease` name and `confidence_percent`.
 
----
-
-## 4. Cattle Care Module
-
-### 4.1 Home Dashboard
-- **Farm List:** `GET /cattle_care/farms/list/`
-- **Farm Dashboard:** `GET /cattle_care/farms/dashboard/?farm_id={id}`
-  - **Online Status:** `data.device.is_online` (bool)
-  - **Sensors:** `data.device.sensors`
-    - Keys: `name`, `last_value`, `unit`, `danger_status`.
-  - **Switches:** `data.device.switches`
-    - Keys: `switch_id`, `switch_name`, `is_on` (bool).
-  - **Automation Flag:** `data.automation_enabled` (bool).
-
-### 4.2 Automation & Light Timers
-- **Toggle Switches:** `POST /cattle_care/switches/command/`
-  - Body: `{"switch_id": "...", "command": 1}`
-- **Automation Thresholds:** `POST /cattle_care/automation/`
-  - Body: `{"farm_id": 1, "is_enabled": true, "fan_temp_min": 25, "fan_temp_max": 30, "fogger_humidity_min": 40}`
-- **Light Schedules:**
-  - **Add:** `POST /cattle_care/automation/light-schedule/`
-    - Body: `{"farm_id": 1, "start_time": "HH:mm:ss", "end_time": "HH:mm:ss"}`
-  - **Delete:** `DELETE /cattle_care/automation/light-schedule/{id}/`
+### 4.5 FCR Calculator
+- **Calculate:** `POST /devices/fcr/calculate/`
+- **Body:**
+  ```json
+  {
+    "asset_id": 1,
+    "feed_weight_kg": 1500,
+    "weight_gained_kg": 1000,
+    "notes": "Optional"
+  }
+  ```
+- **Response:** Returns calculated `fcr` value.
 
 ---
 
-## 5. Poultry Care Module
+## 5. Marketplace (Product & Equipment)
+Endpoints for the various marketplaces (Feed, Equipment, Medicine, Fingerlings).
 
-### 5.1 Dashboard Data
-- **Farm List:** `GET /poultry_care/farms/list/`
-- **Farm Dashboard:** `GET /poultry_care/farms/dashboard/?farm_id={id}`
-  - **Structure:** Matches Cattle Care.
-  - **Sensors:** Look for `temperature`, `humidity`, `nh3_gas`, `aqi`, `co2`, `tvoc`, `methane_ppm`, `light_intensity`.
-
-### 5.2 Controls
-- **Switch Control:** `POST /poultry_care/switches/command/`
-  - Body: `{"switch_id": "...", "command": 1}`
-- **Automation:** `POST /poultry_care/automation/` (Fan/Fogger/Humidity thresholds).
+- **Category List:** `GET /product/category/list/`
+- **Companies by Category:** `GET /product/product-companies?category_guid={guid}`
+- **Products by Company:** `GET /product/search-product-by-company?page_number=1&size=30&product_company_guid={guid}`
+- **Product Details:** `GET /product/details?product_guid={guid}`
 
 ---
 
-## 6. Common Mapping Issues (Troubleshooting Web)
+## 6. Notifications
+- **List Notifications:** `GET /notification/all/list/{userId}/`
+- **Update FCM Token:** `POST /auth/user/fcm/token/update/`
+  - Body: `{"fcm_token": "..."}`
 
-1.  **Sensor Keys:**
-    - **More Fish:** Uses `sensor_name` and `sensor_id` (string).
-    - **Cattle/Poultry:** Uses `name` and `sensor_id` (int).
-    - **Solution:** Ensure your sensor component can handle both `name` and `sensor_name`.
+---
 
-2.  **User Profile:**
-    - If Email/Phone are "None", verify if you are hitting `/auth/user/details/{userId}`.
-    - Check if the response `data.user_phone` is an object: `{ "phn_cell": "..." }`.
+## 7. Static Content & Tools
+The following features are implemented using local data and application logic:
+- **Feed Management Guides:** (Types, Guidelines, Feeding Methods, etc.) - Localized strings.
+- **Pond Management Guides:** (Preparation, Selection) - Localized strings.
+- **Live Consultancy:** Integration via WhatsApp (`wa.me`) and Facebook Messenger (`m.me`).
+- **Emergency Service:** Direct dialer implementation.
+- **Smart Khamari:** Concept documentation and premium network details.
 
-3.  **Missing Poultry Data:**
-    - Verify `token` vs `poultryToken`. If you use the More Fish token for Poultry APIs, you might get an empty farm list.
-    - Ensure you are hitting `/poultry_care/farms/list/` (NOT just `/devices/data/pond/list`).
+---
 
-4.  **Metric Cards (Cattle/Poultry):**
-    - Map icons based on sensor names:
-      - `temperature` -> thermometer icon
-      - `humidity` -> water drop icon
-      - `nh3_gas` -> ammonia/gas icon
-
-5.  **Offline State:**
-    - If `is_online` is false, grey out controls and show `--` for sensors if the backend doesn't provide the last known values.
+## 8. Development Notes for Web App
+- Ensure CORS is handled if the backend doesn't allow browser requests.
+- Use the provided `apiKey` for OpenWeatherMap integration.
+- Standardize on `http://66.29.151.40:8004` as the base for all API calls.

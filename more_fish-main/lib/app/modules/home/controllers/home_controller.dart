@@ -21,6 +21,8 @@ class HomeController extends GetxController {
   var listItemsEnglish1 = [
     'live_data_monitoring',
     'fish_disease_detector',
+    "fcr_calculator",
+    "nano_bubble_aeration_system",
     "pond_management",
     "feed_management",
     "fish_disease_treatment",
@@ -29,13 +31,13 @@ class HomeController extends GetxController {
     "fingerlings_marketplace",
     "grown_fish_sell",
     "fish_medicine_enzyme",
-    "fcr_calculator",
-    "nano_bubble_aeration_system",
   ].obs;
 
   var iconList1 = [
     "assets/icons/water_quality_check.png",
     "assets/icons/fish_disease_treatment.png",
+    "assets/icons/feed_management.png",
+    "assets/icons/bubble.png",
     "assets/icons/pond_management.png",
     "assets/icons/feed_management.png",
     "assets/icons/fish_disease_treatment.png",
@@ -44,8 +46,6 @@ class HomeController extends GetxController {
     "assets/icons/fingerlings.png",
     "assets/icons/grown_fish.png",
     "assets/icons/fish_medicine.png",
-    "assets/icons/feed_management.png",
-    "assets/icons/bubble.png",
   ].obs;
 
   var listItemsEnglish2 = [
@@ -55,9 +55,9 @@ class HomeController extends GetxController {
     "auto_aerator_connection",
     "auto_feeder_connection",
     "weather_forecast",
+    "fish_pond_filtration_system",
     "smart_khamari",
     "emergency_service",
-    "fish_pond_filtration_system",
   ].obs;
 
   var iconList2 = [
@@ -67,9 +67,9 @@ class HomeController extends GetxController {
     "assets/icons/auto_aerator.png",
     "assets/icons/auto-feeder.png",
     "assets/icons/weather_forecast.png",
+    "assets/icons/pond.png",
     "assets/icons/community.png",
     "assets/icons/24_hours_support.png",
-    "assets/icons/pond.png",
   ].obs;
 
   var listItemsBangla1 = [

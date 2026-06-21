@@ -34,35 +34,44 @@ class CattleProfileView extends GetView<CattleIndexController> {
                     Expanded(
                       child: CommonContainer(
                         width: double.infinity,
-                        child: Row(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CommonText(
-                                  "${data.data?.firstName ?? ''} ${data.data?.lastName ?? ''} ",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 24,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: 4),
-                                CommonText(
-                                  data.data?.usrEmail ?? '',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                                const SizedBox(height: 4),
-                                data.data?.userPhone != null
-                                    ? CommonText(
-                                        "${data.data?.userPhone?.phnCell ?? ''}",
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 18,
-                                      )
-                                    : const CommonText(""),
-                                const SizedBox(height: 50),
-                              ],
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blue.shade50,
+                                border: Border.all(color: Colors.blue.shade100),
+                              ),
+                              child: const Icon(
+                                Icons.person,
+                                size: 60,
+                                color: Color(0xff0370c3),
+                              ),
                             ),
+                            const SizedBox(height: 20),
+                            CommonText(
+                              "${data.data?.firstName ?? ''} ${data.data?.lastName ?? ''} ",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 22,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 8),
+                            CommonText(
+                              data.data?.usrEmail ?? '',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: Colors.blueGrey,
+                            ),
+                            const SizedBox(height: 8),
+                            if (data.data?.userPhone != null)
+                              CommonText(
+                                "${data.data?.userPhone?.phnCell ?? ''}",
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18,
+                              ),
+                            const SizedBox(height: 20),
                           ],
                         ),
                       ),
@@ -121,20 +130,27 @@ class CattleProfileView extends GetView<CattleIndexController> {
 
                               Get.offAllNamed(Routes.DMA_TECHNOLOGIES);
                             },
-                            child: const CommonContainer(
+                            child: CommonContainer(
                               height: 50,
-                              margin: EdgeInsets.symmetric(
+                              margin: const EdgeInsets.symmetric(
                                 horizontal: 0,
                                 vertical: 16,
                               ),
                               alignment: Alignment.center,
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xffffebee),
+                                  Color(0xffffcdd2),
+                                ],
+                              ),
+                              border: Border.all(color: Colors.red.shade100),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     "Logout",
                                     style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.red.shade700,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
