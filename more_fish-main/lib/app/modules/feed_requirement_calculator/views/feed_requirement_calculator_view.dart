@@ -74,6 +74,13 @@ class FeedRequirementCalculatorView
                       Expanded(
                         child: ElevatedButton(
                           onPressed: controller.calculateRequirement,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
                           child: Text('calculate'.tr),
                         ),
                       ),
@@ -81,6 +88,13 @@ class FeedRequirementCalculatorView
                       Expanded(
                         child: OutlinedButton(
                           onPressed: controller.clearAll,
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: AppColors.primary),
+                            foregroundColor: AppColors.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
                           child: Text('clear'.tr),
                         ),
                       ),
@@ -130,6 +144,29 @@ class FeedRequirementCalculatorView
                       ),
                     );
                   }),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            CommonContainer(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CommonText(
+                    'feed_requirement_calculation'.tr,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xff0370c3),
+                  ),
+                  const SizedBox(height: 6),
+                  CommonText(
+                    'feed_req_description'.tr,
+                    fontSize: 14,
+                    color: Colors.blueGrey.shade700,
+                    maxLines: 5,
+                    overflow: TextOverflow.visible,
+                  ),
                 ],
               ),
             ),

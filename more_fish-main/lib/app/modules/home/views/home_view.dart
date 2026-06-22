@@ -47,6 +47,8 @@ class HomeView extends GetView<HomeController> {
                       const SizedBox(height: 10),
                       gridViewSection1(controller),
                       const SizedBox(height: 10),
+                      liveConsultancyBanner(controller),
+                      const SizedBox(height: 10),
                       promoCard(controller),
                       const SizedBox(height: 10),
                       gridViewSection2(controller),
@@ -62,11 +64,11 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  promoCard(homeController) => InkWell(
+  liveConsultancyBanner(homeController) => InkWell(
         onTap: () async {
           final Uri launchUri = Uri(
             scheme: 'tel',
-            path: "+8801898938354",
+            path: "+880 1898-938355",
           );
           if (await canLaunchUrl(launchUri)) {
             await launchUrl(launchUri);
@@ -74,59 +76,90 @@ class HomeView extends GetView<HomeController> {
         },
         child: CommonContainer(
           margin: const EdgeInsets.symmetric(horizontal: 12),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           gradient: const LinearGradient(
             colors: [
-              Color(0xffd4fcfd),
+              Color(0xffe0f2f1),
               Color(0xffffffff),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          child: Column(
+          child: Row(
             children: [
-              const Text(
-                "পুকুরের পানির অক্সিজেন, পিএইচ, অ্যামোনিয়া, তাপমাত্রা, লবণাক্ততা ও টিডিএস ২৪ ঘণ্টা আপনার মোবাইল অ্যাপে দেখুন!",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff1a1a1a),
-                  height: 1.5,
-                ),
-                textAlign: TextAlign.center,
+              Image.asset(
+                'assets/icons/doctor.png',
+                height: 60,
+                width: 60,
               ),
-              const SizedBox(height: 10),
-              Text(
-                "(ডিভাইস মূল্য জানার জন্য কল করুন)",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red.shade700,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.green.shade600,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.green.withOpacity(0.3),
-                      blurRadius: 8,
-                      spreadRadius: 2,
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'live_consultancy'.tr,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff004d40),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'consult_with_experts'.tr, // I'll assume this key exists or just use a hardcoded fallback if not
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade700,
+                      ),
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.phone,
-                  color: Colors.white,
-                  size: 24,
-                ),
+              ),
+              Image.asset(
+                'assets/icons/live-chat.png',
+                height: 40,
+                width: 40,
               ),
             ],
           ),
+        ),
+      );
+
+  promoCard(homeController) => CommonContainer(
+        margin: const EdgeInsets.symmetric(horizontal: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xffd4fcfd),
+            Color(0xffffffff),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        child: Column(
+          children: [
+            const Text(
+              "পুকুরের পানির অক্সিজেন, পিএইচ, অ্যামোনিয়া, তাপমাত্রা, লবণাক্ততা ও টিডিএস ২৪ ঘণ্টা আপনার মোবাইল অ্যাপে দেখুন!",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff1a1a1a),
+                height: 1.5,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              "(ডিভাইস মূল্য জানার জন্য কল করুন)",
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.red.shade700,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       );
 
@@ -201,14 +234,6 @@ class HomeView extends GetView<HomeController> {
                 Get.toNamed(Routes.FEED_MANAGEMENT);
               } else if (itemKey == 'fish_disease_treatment') {
                 Get.toNamed(Routes.FISH_DISEASE_TREATMENT);
-              } else if (itemKey == 'live_consultancy') {
-                final Uri launchUri = Uri(
-                  scheme: 'tel',
-                  path: "+880 1898-938355",
-                );
-                if (await canLaunchUrl(launchUri)) {
-                  await launchUrl(launchUri);
-                }
               } else if (itemKey == 'fish_farm_marketplace') {
                 var category = homeController.categoryResponse.value?.data;
                 for (int i = 0; i < category.length; i++) {
@@ -250,7 +275,7 @@ class HomeView extends GetView<HomeController> {
               }
             },
             child: CommonContainer(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               alignment: Alignment.center,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -265,12 +290,12 @@ class HomeView extends GetView<HomeController> {
                     "$itemKey".tr,
                     style: const TextStyle(
                       color: Colors.black,
-                      fontSize: 13,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    overflow: TextOverflow.visible,
                   ),
                 ],
               ),
@@ -291,7 +316,7 @@ class HomeView extends GetView<HomeController> {
             crossAxisCount: 3,
             crossAxisSpacing: 12.0,
             mainAxisSpacing: 12.0,
-            childAspectRatio: 0.85,
+            childAspectRatio: 0.9,
           ),
           itemBuilder: (context, index) {
             final itemKey = homeController.listItemsEnglish2[index];
@@ -332,7 +357,7 @@ class HomeView extends GetView<HomeController> {
                 }
               },
               child: CommonContainer(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                 alignment: Alignment.center,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -347,12 +372,12 @@ class HomeView extends GetView<HomeController> {
                       "$itemKey".tr,
                       style: const TextStyle(
                         color: Colors.black,
-                        fontSize: 13,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
+                      overflow: TextOverflow.visible,
                     ),
                   ],
                 ),

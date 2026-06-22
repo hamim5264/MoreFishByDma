@@ -74,6 +74,13 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: controller.calculateFcr,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
                           child: Text('calculate'.tr),
                         ),
                       ),
@@ -81,6 +88,13 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
                       Expanded(
                         child: OutlinedButton(
                           onPressed: controller.clearAll,
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: AppColors.primary),
+                            foregroundColor: AppColors.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                          ),
                           child: Text('clear'.tr),
                         ),
                       ),
@@ -130,6 +144,44 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
                       ),
                     );
                   }),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            CommonContainer(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CommonText(
+                    'what_is_fcr'.tr,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xff0370c3),
+                  ),
+                  const SizedBox(height: 6),
+                  CommonText(
+                    'fcr_description'.tr,
+                    fontSize: 14,
+                    color: Colors.blueGrey.shade700,
+                    maxLines: 5,
+                    overflow: TextOverflow.visible,
+                  ),
+                  const SizedBox(height: 12),
+                  CommonText(
+                    'how_it_works'.tr,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xff0370c3),
+                  ),
+                  const SizedBox(height: 6),
+                  CommonText(
+                    'fcr_how_it_works_desc'.tr,
+                    fontSize: 14,
+                    color: Colors.blueGrey.shade700,
+                    maxLines: 5,
+                    overflow: TextOverflow.visible,
+                  ),
                 ],
               ),
             ),

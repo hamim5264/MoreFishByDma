@@ -31,7 +31,6 @@ class HomeController extends GetxController {
     "fish_farm_marketplace",
     "fingerlings_marketplace",
     "grown_fish_sell",
-    "live_consultancy",
   ].obs;
 
   var iconList1 = [
@@ -47,7 +46,6 @@ class HomeController extends GetxController {
     "assets/icons/fish_farm_materials.png",
     "assets/icons/fingerlings.png",
     "assets/icons/grown_fish.png",
-    "assets/icons/doctor_service.png",
   ].obs;
 
   var listItemsEnglish2 = [
