@@ -21,7 +21,7 @@ class FcrCalculatorController extends GetxController {
   final ponds = <dynamic>[].obs;
   final fcrResult = RxnDouble();
   final validationMessage = ''.obs;
-  
+
   final fcrHistory = <FcrRecord>[].obs;
   final isLoadingHistory = false.obs;
 
@@ -135,7 +135,7 @@ class FcrCalculatorController extends GetxController {
 
         if (fcrValue is num) {
           fcrResult.value = fcrValue.toDouble();
-          fetchFcrHistory(); // Refresh history after calculation
+          fetchFcrHistory();
           return;
         }
 

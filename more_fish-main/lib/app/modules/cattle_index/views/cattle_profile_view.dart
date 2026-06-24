@@ -111,20 +111,24 @@ class CattleProfileView extends GetView<CattleIndexController> {
                         Expanded(
                           child: InkWell(
                             onTap: () async {
-                              // ✅ Logout only from Cattle Care
                               await FcmService.clearFcmTokenOnLogout(
                                 isCattleFlow: true,
                               );
                               await cattleProfileController.loginTokenStorage
                                   .clearCattleSession();
-                              cattleProfileController.loginTokenStorage.isCattleLoggedIn.value = false;
+                              cattleProfileController
+                                      .loginTokenStorage
+                                      .isCattleLoggedIn
+                                      .value =
+                                  false;
                               cattleProfileController.isLoggedIn.value = '';
 
-                              // Clear global header controllers if they exist
                               if (Get.isRegistered<CattleHeaderController>()) {
                                 Get.delete<CattleHeaderController>();
                               }
-                              if (Get.isRegistered<CattleLiveMonitoringController>()) {
+                              if (Get.isRegistered<
+                                CattleLiveMonitoringController
+                              >()) {
                                 Get.delete<CattleLiveMonitoringController>();
                               }
 
@@ -138,10 +142,7 @@ class CattleProfileView extends GetView<CattleIndexController> {
                               ),
                               alignment: Alignment.center,
                               gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xffffebee),
-                                  Color(0xffffcdd2),
-                                ],
+                                colors: [Color(0xffffebee), Color(0xffffcdd2)],
                               ),
                               border: Border.all(color: Colors.red.shade100),
                               child: Row(

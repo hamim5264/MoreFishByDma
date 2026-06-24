@@ -70,7 +70,9 @@ class CommonAppBar extends StatelessWidget {
         constraints: const BoxConstraints(minHeight: minAppBarHeight),
         decoration: BoxDecoration(
           color: backgroundColor ?? const Color(0xffd4fcfd),
-          border: const Border(bottom: BorderSide(color: Colors.black12, width: 0.5)),
+          border: const Border(
+            bottom: BorderSide(color: Colors.black12, width: 0.5),
+          ),
         ),
         child: SafeArea(
           bottom: false,
@@ -212,7 +214,8 @@ class CommonAppBar extends StatelessWidget {
                         ],
                       ),
                     ),
-                    if (finalDescription != null && finalDescription!.isNotEmpty) ...[
+                    if (finalDescription != null &&
+                        finalDescription.isNotEmpty) ...[
                       const SizedBox(height: 2),
                       CommonText(
                         finalDescription.tr,
@@ -222,7 +225,7 @@ class CommonAppBar extends StatelessWidget {
                         maxLines: 1,
                       ),
                     ],
-                    if (finalSunlight != null && finalSunlight!.isNotEmpty)
+                    if (finalSunlight != null && finalSunlight.isNotEmpty)
                       CommonText(
                         "${'sunlight'.tr}: ${finalSunlight.tr}",
                         fontSize: 11,
@@ -234,10 +237,7 @@ class CommonAppBar extends StatelessWidget {
                 ),
               ),
               if (actions != null && actions!.isNotEmpty)
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: actions!,
-                ),
+                Row(mainAxisSize: MainAxisSize.min, children: actions!),
             ],
           ),
         ),
@@ -260,18 +260,10 @@ class _LanguageButton extends StatelessWidget {
         Get.updateLocale(const Locale('en', 'US'));
       },
       itemBuilder: (context) => [
-        PopupMenuItem<String>(
-          value: 'en',
-          child: Text('english'.tr),
-        ),
-        PopupMenuItem<String>(
-          value: 'bn',
-          child: Text('bangla'.tr),
-        ),
+        PopupMenuItem<String>(value: 'en', child: Text('english'.tr)),
+        PopupMenuItem<String>(value: 'bn', child: Text('bangla'.tr)),
       ],
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       offset: const Offset(0, 30),
       child: Container(
         height: 24,

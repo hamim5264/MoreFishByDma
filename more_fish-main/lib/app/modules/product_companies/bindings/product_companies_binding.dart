@@ -5,8 +5,6 @@ import '../controllers/product_companies_controller.dart';
 class ProductCompaniesBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<ProductCompaniesController>(
-      () => ProductCompaniesController(),
-    );
+    Get.lazyPut<ProductCompaniesController>(() => ProductCompaniesController());
   }
 }

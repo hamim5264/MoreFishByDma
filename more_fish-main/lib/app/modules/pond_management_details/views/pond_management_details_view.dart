@@ -27,7 +27,7 @@ class PondManagementDetailsView
         backgroundColor: AppColors.backGround,
         body: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Obx(() {
               return CommonAppBar(
                 title: 'title'.tr,
@@ -42,7 +42,7 @@ class PondManagementDetailsView
               return Expanded(
                 child: Column(
                   children: [
-                    if (controller.title == "Steps for Fish Farming")
+                    if (controller.title.value == "Steps for Fish Farming")
                       Column(
                         children: [
                           CommonContainer(
@@ -67,7 +67,7 @@ class PondManagementDetailsView
                         ],
                       ),
 
-                    if (controller.title == "Pond Selection Criteria")
+                    if (controller.title.value == "Pond Selection Criteria")
                       Column(
                         children: [
                           CommonContainer(
@@ -88,7 +88,7 @@ class PondManagementDetailsView
                         ],
                       ),
 
-                    if (controller.title == "Pond Preparation Guide")
+                    if (controller.title.value == "Pond Preparation Guide")
                       Expanded(
                         child: CommonContainer(
                           margin: const EdgeInsets.all(16.0),
@@ -205,20 +205,17 @@ class PondManagementDetailsView
   boxDecoration() {
     return BoxDecoration(
       gradient: const LinearGradient(
-        colors: [
-          Color(0xffebffff), // Start color
-          Colors.white, // End color
-        ],
-        begin: Alignment.topLeft, // Gradient start position
-        end: Alignment.bottomRight, // Gradient end position
+        colors: [Color(0xffebffff), Colors.white],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
       ),
       borderRadius: BorderRadius.circular(10),
       boxShadow: [
         BoxShadow(
-          color: Colors.blueGrey.withOpacity(0.5), // Shadow color with opacity
-          spreadRadius: 1, // How much the shadow spreads
-          blurRadius: 1, // How blurry the shadow is
-          offset: const Offset(.2, .2), // Position of shadow: (x, y)
+          color: Colors.blueGrey.withValues(alpha: 0.5),
+          spreadRadius: 1,
+          blurRadius: 1,
+          offset: const Offset(.2, .2),
         ),
       ],
     );

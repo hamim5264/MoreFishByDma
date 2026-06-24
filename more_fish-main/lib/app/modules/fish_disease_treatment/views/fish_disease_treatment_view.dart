@@ -12,6 +12,7 @@ import '../controllers/fish_disease_treatment_controller.dart';
 
 class FishDiseaseTreatmentView extends GetView<FishDiseaseTreatmentController> {
   const FishDiseaseTreatmentView({super.key});
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -25,7 +26,7 @@ class FishDiseaseTreatmentView extends GetView<FishDiseaseTreatmentController> {
         backgroundColor: AppColors.backGround,
         body: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Obx(() {
               return CommonAppBar(
                 title: 'title'.tr,
@@ -62,7 +63,7 @@ class FishDiseaseTreatmentView extends GetView<FishDiseaseTreatmentController> {
                         bottom: 14,
                       ),
                       child: CommonText(
-                        "${controller.titleList[index]}",
+                        controller.titleList[index],
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                         color: Colors.black,
@@ -85,7 +86,7 @@ class FishDiseaseTreatmentView extends GetView<FishDiseaseTreatmentController> {
       children: [
         Expanded(
           child: CommonText(
-            "${text}",
+            "$text",
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: const Color(0xff0370c3),
@@ -104,7 +105,7 @@ class FishDiseaseTreatmentView extends GetView<FishDiseaseTreatmentController> {
         children: [
           Expanded(
             child: CommonText(
-              "${text}",
+              "$text",
               fontSize: 16,
               fontWeight: FontWeight.w500,
               maxLines: 3,
@@ -167,26 +168,22 @@ class FishDiseaseTreatmentView extends GetView<FishDiseaseTreatmentController> {
   boxDecoration() {
     return BoxDecoration(
       gradient: const LinearGradient(
-        colors: [
-          Color(0xffebffff), // Start color
-          Colors.white, // End color
-        ],
-        begin: Alignment.topLeft, // Gradient start position
-        end: Alignment.bottomRight, // Gradient end position
+        colors: [Color(0xffebffff), Colors.white],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
       ),
       borderRadius: BorderRadius.circular(10),
       boxShadow: [
         BoxShadow(
-          color: Colors.blueGrey.withOpacity(0.5), // Shadow color with opacity
-          spreadRadius: 1, // How much the shadow spreads
-          blurRadius: 1, // How blurry the shadow is
-          offset: const Offset(.2, .2), // Position of shadow: (x, y)
+          color: Colors.blueGrey.withValues(alpha: 0.5),
+          spreadRadius: 1,
+          blurRadius: 1,
+          offset: const Offset(.2, .2),
         ),
       ],
     );
   }
 }
-
 
 /*Container(
                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),

@@ -1,4 +1,3 @@
-// app/modules/poultry_index/views/poultry_home_view.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -6,10 +5,7 @@ import '../../../common_widgets/common_app_bar.dart';
 import '../controllers/poultry_index_controller.dart';
 import '../controllers/poultry_header_controller.dart';
 import 'poultry_live_monitoring_view.dart';
-// NOTE: app_routes.dart is a `part of` file (part of app_pages.dart),
-// so it should not be imported directly. Import app_pages.dart instead.
 import '../../../routes/app_pages.dart';
-import '../../cattle_index/controllers/cattle_header_controller.dart';
 
 class PoultryHomeView extends GetView<PoultryIndexController> {
   const PoultryHomeView({super.key});
@@ -93,7 +89,9 @@ class PoultryHomeView extends GetView<PoultryIndexController> {
                         onTap: () => openIfLoggedIn(
                           () => Get.toNamed(
                             Routes.COMING_SOON,
-                            arguments: {'title': 'poultry_disease_treatment'.tr},
+                            arguments: {
+                              'title': 'poultry_disease_treatment'.tr,
+                            },
                           ),
                         ),
                       ),
@@ -120,7 +118,7 @@ class PoultryHomeView extends GetView<PoultryIndexController> {
                         ),
                       ),
                       _HomeFeatureTile(
-                        title: 'auto_feeder'.tr, //
+                        title: 'auto_feeder'.tr,
                         iconAssetPath:
                             'assets/icons/farm_management/auto_feeder.png',
                         onTap: () => openIfLoggedIn(

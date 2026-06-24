@@ -4,7 +4,6 @@ import '../../../common_widgets/common_alert_dialog.dart';
 import '../../../common_widgets/common_container.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/cattle_index_controller.dart';
-import '../controllers/cattle_live_monitoring_controller.dart';
 import 'cattle_live_monitoring_view.dart';
 
 class CattleHomeView extends GetView<CattleIndexController> {
@@ -29,21 +28,23 @@ class CattleHomeView extends GetView<CattleIndexController> {
               showDialog(
                 context: context,
                 barrierDismissible: true,
-                builder: (context) => WillPopScope(
-                  onWillPop: () async => false,
+                builder: (context) => PopScope(
+                  canPop: false,
                   child: CommonAlertDialog(
                     notNow: () => Get.back(),
                     login: () async {
-                      Get.back(); // Close dialog
+                      Get.back();
                       final result = await Get.toNamed(
                         Routes.CATTLE_LOGIN,
                         arguments: {'fromGuard': true},
                       );
-                      // ✅ Refresh login state in the controller
                       controller.checkLogin();
                       if (result == true) {
                         if (index == 0) {
-                          Get.to(() => const CattleLiveMonitoringView(), routeName: '/cattle-live-monitoring');
+                          Get.to(
+                            () => const CattleLiveMonitoringView(),
+                            routeName: '/cattle-live-monitoring',
+                          );
                         } else {
                           Get.toNamed(Routes.COMING_SOON);
                         }
@@ -54,7 +55,10 @@ class CattleHomeView extends GetView<CattleIndexController> {
               );
             } else {
               if (index == 0) {
-                Get.to(() => const CattleLiveMonitoringView(), routeName: '/cattle-live-monitoring');
+                Get.to(
+                  () => const CattleLiveMonitoringView(),
+                  routeName: '/cattle-live-monitoring',
+                );
               } else {
                 Get.toNamed(Routes.COMING_SOON);
               }

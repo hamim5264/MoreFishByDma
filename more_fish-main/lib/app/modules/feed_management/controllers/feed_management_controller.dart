@@ -2,9 +2,7 @@ import 'package:get/get.dart';
 import 'package:more_fish/app/res/strings/feed_management.dart';
 
 class FeedManagementController extends GetxController {
-  //TODO: Implement FeedManagementController
-
-  var titleList =[
+  var titleList = [
     'types',
     'guidelines',
     'quantity',
@@ -12,10 +10,10 @@ class FeedManagementController extends GetxController {
     'relationship',
     'feeding_tips',
     'ration',
-    'calculator'
+    'calculator',
   ];
 
-  var dataList =[
+  var dataList = [
     FeedManagementData.data1,
     FeedManagementData.data2,
     FeedManagementData.data3,
@@ -27,20 +25,6 @@ class FeedManagementController extends GetxController {
   ];
 
   final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   void increment() => count.value++;
 }

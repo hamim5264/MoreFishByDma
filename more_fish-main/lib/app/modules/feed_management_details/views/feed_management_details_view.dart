@@ -119,7 +119,7 @@ class FeedManagementDetailsView
                                         TableRow(
                                           children: [
                                             tableCell("Medium-size Fish"),
-                                            tableCell("25–30%"), ////
+                                            tableCell("25–30%"),
                                           ],
                                         ),
                                         TableRow(

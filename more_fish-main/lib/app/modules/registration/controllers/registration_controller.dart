@@ -18,18 +18,16 @@ class RegistrationController extends GetxController {
   var showConfirmPassword = false.obs;
   var phoneNumber = "".obs;
 
-  // Checkboxes for Customer and Organization
   var isCustomer = false.obs;
   var isOrganization = false.obs;
 
-  // Error messages
   var phoneError = RxnString();
   var roleError = RxnString();
   var orgError = RxnString();
 
   AuthRepository authRepository = AuthRepository();
   final registrationResponse = Rxn<RegistrationResponse>();
-  var isActiveRegButton  = true.obs;
+  var isActiveRegButton = true.obs;
 
   @override
   void onClose() {
@@ -42,32 +40,26 @@ class RegistrationController extends GetxController {
     super.onClose();
   }
 
-
   registration(requestModel, context) async {
-
-    var response = await authRepository.setRegistration(requestModel: requestModel);
-
-    response.fold(
-        (l){
-          debugPrint('${l.message}');
-          isActiveRegButton.value = true;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("registration_error".tr)),
-          );
-        },
-        (r){
-          registrationResponse.value = r;
-          Get.offAllNamed(Routes.INDEX);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("registration_success".tr)),
-          );
-
-
-
-        }
+    var response = await authRepository.setRegistration(
+      requestModel: requestModel,
     );
 
-
+    response.fold(
+      (l) {
+        debugPrint(l.message);
+        isActiveRegButton.value = true;
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("registration_error".tr)));
+      },
+      (r) {
+        registrationResponse.value = r;
+        Get.offAllNamed(Routes.INDEX);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("registration_success".tr)));
+      },
+    );
   }
 }
-

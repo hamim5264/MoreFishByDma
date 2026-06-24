@@ -3,13 +3,6 @@ import 'package:get/get.dart';
 import '../../../res/strings/farm_management.dart';
 
 class FarmManagementController extends GetxController {
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-
   var listItemsEnglish = [
     "fish_farm_management_software",
     "weekly_medicinal_records",
@@ -72,6 +65,4 @@ class FarmManagementController extends GetxController {
     FarmManagementData.text17,
     FarmManagementData.text18,
   ].obs;
-
 }
-

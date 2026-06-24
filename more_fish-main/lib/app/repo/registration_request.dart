@@ -25,22 +25,24 @@ class RegistrationRequest {
     required this.interestedProductDetails,
   });
 
-  factory RegistrationRequest.fromRawJson(String str) => RegistrationRequest.fromJson(json.decode(str));
+  factory RegistrationRequest.fromRawJson(String str) =>
+      RegistrationRequest.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory RegistrationRequest.fromJson(Map<String, dynamic> json) => RegistrationRequest(
-    usrEmail: json["usr_email"],
-    password: json["password"],
-    phone: json["phone"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    userType: json["user_type"],
-    company: json["company"],
-    userDetails: json["user_details"],
-    usrAddress: json["usr_address"],
-    interestedProductDetails: json["interested_product_details"],
-  );
+  factory RegistrationRequest.fromJson(Map<String, dynamic> json) =>
+      RegistrationRequest(
+        usrEmail: json["usr_email"],
+        password: json["password"],
+        phone: json["phone"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        userType: json["user_type"],
+        company: json["company"],
+        userDetails: json["user_details"],
+        usrAddress: json["usr_address"],
+        interestedProductDetails: json["interested_product_details"],
+      );
 
   Map<String, dynamic> toJson() => {
     "usr_email": usrEmail,

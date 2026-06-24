@@ -59,8 +59,9 @@ class LoginView extends GetView<LoginController> {
                         ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
-                          if (value == null || value.isEmpty)
+                          if (value == null || value.isEmpty) {
                             return "enter_email".tr;
+                          }
                           String emailPattern =
                               r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
                           if (!RegExp(emailPattern).hasMatch(value) &&
@@ -92,10 +93,12 @@ class LoginView extends GetView<LoginController> {
                           ),
                           obscureText: !controller.showPassword.value,
                           validator: (value) {
-                            if (value == null || value.isEmpty)
+                            if (value == null || value.isEmpty) {
                               return "enter_password".tr;
-                            if (value.length < 5)
+                            }
+                            if (value.length < 5) {
                               return "password_length_error".tr;
+                            }
                             return null;
                           },
                         ),
@@ -129,7 +132,9 @@ class LoginView extends GetView<LoginController> {
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.green,
-                                    padding: const EdgeInsets.symmetric(vertical: 14),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:more_fish/app/service/fcm_service.dart';
@@ -14,11 +15,6 @@ class CleanAirProfileController extends GetxController {
   final profileResponse = Rxn<ProfileResponse>();
   static const String _cacheProfileKey = 'pharma_profile_cache';
   Timer? _pollingTimer;
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   void checkLogin() {
     loginTokenStorage = Get.find<LoginTokenStorage>();
@@ -54,7 +50,7 @@ class CleanAirProfileController extends GetxController {
     final response = await authRepository.getProfile(isPharmaFlow: true);
     response.fold(
       (failure) {
-        print(failure.message);
+        debugPrint(failure.message);
       },
       (profile) async {
         profileResponse.value = profile;

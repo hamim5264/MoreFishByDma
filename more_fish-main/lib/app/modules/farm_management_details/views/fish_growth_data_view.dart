@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../common_widgets/common_container.dart';
-
-
+import '../controllers/farm_management_details_controller.dart';
 
 class FishGrowthDataView extends StatelessWidget {
-  const FishGrowthDataView(this.controller, {super.key,});
-  final controller;
+  const FishGrowthDataView(this.controller, {super.key});
+
+  final FarmManagementDetailsController controller;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -62,7 +63,9 @@ class FishGrowthDataView extends StatelessWidget {
                           },
                           children: [
                             TableRow(
-                              decoration: BoxDecoration(color: Colors.grey[300]),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                              ),
                               children: [
                                 tableCell("Pond No.", isHeader: true),
                                 tableCell("Pond Type", isHeader: true),
@@ -71,102 +74,148 @@ class FishGrowthDataView extends StatelessWidget {
                                 tableCell("মাছের জাত", isHeader: true),
                                 tableCell("সাথী মাছের জাত", isHeader: true),
                                 tableCell("মাছ মজুদের তারিখ", isHeader: true),
-                                tableCell("মজুদকৃত মাছের সংখ্যা", isHeader: true),
+                                tableCell(
+                                  "মজুদকৃত মাছের সংখ্যা",
+                                  isHeader: true,
+                                ),
                                 tableCell("মজুদকৃত মাছের বয়স", isHeader: true),
                                 tableCell("মজুদকৃত মাছের ওজন", isHeader: true),
                                 tableCell("মাছের বর্তমান বয়স", isHeader: true),
                                 tableCell("মাছের বর্তমান ওজন", isHeader: true),
-                                tableCell("খাবার প্রয়োগ পদ্ধতি", isHeader: true),
+                                tableCell(
+                                  "খাবার প্রয়োগ পদ্ধতি",
+                                  isHeader: true,
+                                ),
                                 tableCell("সার প্রয়োগ পদ্ধতি", isHeader: true),
-                                tableCell("মেডিসিন প্রয়োগ পদ্ধতি", isHeader: true),
+                                tableCell(
+                                  "মেডিসিন প্রয়োগ পদ্ধতি",
+                                  isHeader: true,
+                                ),
                                 tableCell("মাছ উত্তলনের তারিখ", isHeader: true),
                               ],
                             ),
 
                             TableRow(
                               children: [
-                                tableCell("১(১১)", ),
-                                tableCell("কালচার পুকুর", ),
-                                tableCell("৫০০ শতক", ),
-                                tableCell("৭ ফিট", ),
-                                tableCell("তেলাপিয়া", ),
-                                tableCell("সিলভার,\nরুই, কাতলা,\nমিরর কার্প,\nব্রিগেড", ),
-                                tableCell("05-06-2023", ),
-                                tableCell("তেলাপিয়া - ৭০,০০০\nসাথী মাছ - ১০,০০০",),
-                                tableCell("তেলাপিয়া – ১মাস\nসাথী মাছ – ৩মাস",),
-                                tableCell("তেলাপিয়া-৭৫ পিস পার কেজি\nসাথী -৮ পিস পার কেজি", ),
-                                tableCell("৯০ দিন", ),
-                                tableCell("তেলাপিয়া- প্রতি কেজিতে ১৯টি\nসাথী মাছ- প্রতি কেজিতে ৩টি", ),
-                                tableCell("৩ মিলি Grower", ),
-                                tableCell("সার প্রয়োগ করা হয়নি", ),
-                                tableCell("১৫ দিন পরপর  Probiotic Super pH – 4L",),
-                                tableCell("15 September",),
+                                tableCell("১(১১)"),
+                                tableCell("কালচার পুকুর"),
+                                tableCell("৫০০ শতক"),
+                                tableCell("৭ ফিট"),
+                                tableCell("তেলাপিয়া"),
+                                tableCell(
+                                  "সিলভার,\nরুই, কাতলা,\nমিরর কার্প,\nব্রিগেড",
+                                ),
+                                tableCell("05-06-2023"),
+                                tableCell(
+                                  "তেলাপিয়া - ৭০,০০০\nসাথী মাছ - ১০,০০০",
+                                ),
+                                tableCell("তেলাপিয়া – ১মাস\nসাথী মাছ – ৩মাস"),
+                                tableCell(
+                                  "তেলাপিয়া-৭৫ পিস পার কেজি\nসাথী -৮ পিস পার কেজি",
+                                ),
+                                tableCell("৯০ দিন"),
+                                tableCell(
+                                  "তেলাপিয়া- প্রতি কেজিতে ১৯টি\nসাথী মাছ- প্রতি কেজিতে ৩টি",
+                                ),
+                                tableCell("৩ মিলি Grower"),
+                                tableCell("সার প্রয়োগ করা হয়নি"),
+                                tableCell(
+                                  "১৫ দিন পরপর  Probiotic Super pH – 4L",
+                                ),
+                                tableCell("15 September"),
                               ],
                             ),
                             TableRow(
                               children: [
-                                tableCell("২(১০)", ),
-                                tableCell("কালচার পুকুর", ),
-                                tableCell("১৬০ শতক", ),
-                                tableCell("৭ ফিটা", ),
-                                tableCell("তেলাপিয়া", ),
-                                tableCell("সিলভার, রুই, কাতলা, মিরর কার্প, ব্রিগেড", ),
-                                tableCell("05-06-2023", ),
-                                tableCell("তেলাপিয়া - ৭০,০০০\nসাথী মাছ - ১০,০০০",),
-                                tableCell("তেলাপিয়া – ১মাস\nসাথী মাছ – ৩মাস",),
-                                tableCell("তেলাপিয়া-৭৫ পিস পার কেজি\nসাথী -৮ পিস পার কেজি", ),
-                                tableCell("৯০ দিন", ),
-                                tableCell("তেলাপিয়া- প্রতি কেজিতে ১১টি\nসাথী মাছ- প্রতি কেজিতে ৩টি", ),
-                                tableCell("৩ মিলি Grower প্রতিদিন ৩ বেলা ৭ বস্তা । ২০ কেজি পার বস্তা । পার বস্তা খরচ - ১১৬০ । ( বৃষ্টিতে খাবারের পরিমাণ কমিয়ে দেয়া হয়। তাই গতকাল কেবল ১ বেলা খাবার দেয়া হয়েছে । )", ),
-                                tableCell("সার প্রয়োগ করা হয়নি", ),
-                                tableCell("১৫ দিন পরপর  Probiotic Super pH – 2L",),
-                                tableCell("15 September",),
+                                tableCell("২(১০)"),
+                                tableCell("কালচার পুকুর"),
+                                tableCell("১৬০ শতক"),
+                                tableCell("৭ ফিটা"),
+                                tableCell("তেলাপিয়া"),
+                                tableCell(
+                                  "সিলভার, রুই, কাতলা, মিরর কার্প, ব্রিগেড",
+                                ),
+                                tableCell("05-06-2023"),
+                                tableCell(
+                                  "তেলাপিয়া - ৭০,০০০\nসাথী মাছ - ১০,০০০",
+                                ),
+                                tableCell("তেলাপিয়া – ১মাস\nসাথী মাছ – ৩মাস"),
+                                tableCell(
+                                  "তেলাপিয়া-৭৫ পিস পার কেজি\nসাথী -৮ পিস পার কেজি",
+                                ),
+                                tableCell("৯০ দিন"),
+                                tableCell(
+                                  "তেলাপিয়া- প্রতি কেজিতে ১১টি\nসাথী মাছ- প্রতি কেজিতে ৩টি",
+                                ),
+                                tableCell(
+                                  "৩ মিলি Grower প্রতিদিন ৩ বেলা ৭ বস্তা । ২০ কেজি পার বস্তা । পার বস্তা খরচ - ১১৬০ । ( বৃষ্টিতে খাবারের পরিমাণ কমিয়ে দেয়া হয়। তাই গতকাল কেবল ১ বেলা খাবার দেয়া হয়েছে । )",
+                                ),
+                                tableCell("সার প্রয়োগ করা হয়নি"),
+                                tableCell(
+                                  "১৫ দিন পরপর  Probiotic Super pH – 2L",
+                                ),
+                                tableCell("15 September"),
                               ],
                             ),
                             TableRow(
                               children: [
-                                tableCell("১(১১)", ),
-                                tableCell("কালচার পুকুর", ),
-                                tableCell("৫০০ শতক", ),
-                                tableCell("৭ ফিট", ),
-                                tableCell("তেলাপিয়া", ),
-                                tableCell("সিলভার, রুই, কাতলা, মিরর কার্প, ব্রিগেড", ),
-                                tableCell("05-06-2023", ),
-                                tableCell("তেলাপিয়া - ৭০,০০০\nসাথী মাছ - ১০,০০০",),
-                                tableCell("তেলাপিয়া – ১মাস\nসাথী মাছ – ৩মাস",),
-                                tableCell("", ),
-                                tableCell("৯৭ দিন", ),
-                                tableCell("তেলাপিয়া- প্রতি কেজিতে ১৩টি \nসাথী মাছ- ৪০০ গ্রাম+", ),
-                                tableCell("৩ মিলি Growerপ্রতিদিন ৩ বেলা ৯ বস্তা । ২০ কেজি পার বস্তা । পার বস্তা খরচ - ১১৬০ ।", ),
-                                tableCell("সার প্রয়োগ করা হয়নি", ),
-                                tableCell("15th August Super pH – 4L",),
-                                tableCell("15 September",),
+                                tableCell("১(১১)"),
+                                tableCell("কালচার পুকুর"),
+                                tableCell("৫০০ শতক"),
+                                tableCell("৭ ফিট"),
+                                tableCell("তেলাপিয়া"),
+                                tableCell(
+                                  "সিলভার, রুই, কাতলা, মিরর কার্প, ব্রিগেড",
+                                ),
+                                tableCell("05-06-2023"),
+                                tableCell(
+                                  "তেলাপিয়া - ৭০,০০০\nসাথী মাছ - ১০,০০০",
+                                ),
+                                tableCell("তেলাপিয়া – ১মাস\nসাথী মাছ – ৩মাস"),
+                                tableCell(""),
+                                tableCell("৯৭ দিন"),
+                                tableCell(
+                                  "তেলাপিয়া- প্রতি কেজিতে ১৩টি \nসাথী মাছ- ৪০০ গ্রাম+",
+                                ),
+                                tableCell(
+                                  "৩ মিলি Grower প্রতিদিন ৩ বেলা ৯ বস্তা । ২০ কেজি পার বস্তা । পার বস্তা খরচ - ১১৬০ ।",
+                                ),
+                                tableCell("সার প্রয়োগ করা হয়নি"),
+                                tableCell("15th August Super pH – 4L"),
+                                tableCell("15 September"),
                               ],
                             ),
                             TableRow(
                               children: [
-                                tableCell("২(১০)", ),
-                                tableCell("কালচার পুকুর", ),
-                                tableCell("১৬০ শতক", ),
-                                tableCell("৭ ফিট", ),
-                                tableCell("তেলাপিয়া", ),
-                                tableCell("সিলভার, রুই, কাতলা, মিরর কার্প, ব্রিগেড", ),
-                                tableCell("05-06-2023", ),
-                                tableCell("তেলাপিয়া - ৭০,০০০\nসাথী মাছ - ১০,০০০",),
-                                tableCell("তেলাপিয়া – ১মাস\nসাথী মাছ – ৩মাস",),
-                                tableCell("", ),
-                                tableCell("৯৭ দিন", ),
-                                tableCell("তেলাপিয়া- প্রতি কেজিতে ৮.৫টি \nসাথী মাছ- প্রতি কেজিতে ৮.৫টি", ),
-                                tableCell("৩ মিলি Grower প্রতিদিন ৩ বেলা ৯ বস্তা । ২০ কেজি পার বস্তা । পার বস্তা খরচ - ১১৬০ ।", ),
-                                tableCell("সার প্রয়োগ করা হয়নি", ),
-                                tableCell("15th August Super pH – 4L",),
-                                tableCell("15 September",),
+                                tableCell("২(১০)"),
+                                tableCell("কালচার পুকুর"),
+                                tableCell("১৬০ শতক"),
+                                tableCell("৭ ফিট"),
+                                tableCell("তেলাপিয়া"),
+                                tableCell(
+                                  "সিলভার, রুই, কাতলা, মিরর কার্প, ব্রিগেড",
+                                ),
+                                tableCell("05-06-2023"),
+                                tableCell(
+                                  "তেলাপিয়া - ৭০,০০০\nসাথী মাছ - ১০,০০০",
+                                ),
+                                tableCell("তেলাপিয়া – ১মাস\nসাথী মাছ – ৩মাস"),
+                                tableCell(""),
+                                tableCell("৯৭ দিন"),
+                                tableCell(
+                                  "তেলাপিয়া- প্রতি কেজিতে ৮.৫টি \nসাথী মাছ- প্রতি কেজিতে ৮.৫টি",
+                                ),
+                                tableCell(
+                                  "৩ মিলি Grower প্রতিদিন ৩ বেলা ৯ বস্তা । ২০ কেজি পার বস্তা । পার বস্তা খরচ - ১১৬০ ।",
+                                ),
+                                tableCell("সার প্রয়োগ করা হয়নি"),
+                                tableCell("15th August Super pH – 4L"),
+                                tableCell("15 September"),
                               ],
                             ),
                           ],
                         ),
                       ),
-
 
                       const SizedBox(height: 10),
                     ],
@@ -179,15 +228,10 @@ class FishGrowthDataView extends StatelessWidget {
         const SizedBox(height: 10),
         InkWell(
           onTap: () async {
-            final Uri launchUri = Uri(
-              scheme: 'tel',
-              path: "+8801783038202",
-            );
+            final Uri launchUri = Uri(scheme: 'tel', path: "+8801783038202");
             if (await canLaunchUrl(launchUri)) {
               await launchUrl(launchUri);
-            } else {
-              // Handle error here
-            }
+            } else {}
           },
           child: CommonContainer(
             height: 50,

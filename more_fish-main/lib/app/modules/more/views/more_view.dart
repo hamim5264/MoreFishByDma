@@ -5,35 +5,34 @@ import '../../../common_widgets/common_app_bar.dart';
 import '../../../common_widgets/common_container.dart';
 import '../../../common_widgets/common_text.dart';
 import '../../../res/colors/colors.dart';
-import '../../../routes/app_pages.dart';
 import '../../home/controllers/home_controller.dart';
 import '../controllers/more_controller.dart';
 
 class MoreView extends GetView<MoreController> {
   const MoreView({super.key});
+
   @override
   Widget build(BuildContext context) {
-
     HomeController homeController = Get.put(HomeController());
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: const SystemUiOverlayStyle(
-          statusBarColor: Color(0xffd4fcfd),
-          statusBarIconBrightness: Brightness.dark,
-          statusBarBrightness: Brightness.dark,
-        ),
-        child:SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.backGround,
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Color(0xffd4fcfd),
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark,
+      ),
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: AppColors.backGround,
           body: Column(
             children: [
               Obx(() {
                 final weather = homeController.weatherData;
-                final main = (weather != null && weather.isNotEmpty)
-                    ? weather['main']
-                    : null;
+                final main = (weather.isNotEmpty) ? weather['main'] : null;
                 final temp = main != null ? (main['temp'] ?? '--') : '--';
-                final humidity = main != null ? (main['humidity'] ?? '--') : '--';
+                final humidity = main != null
+                    ? (main['humidity'] ?? '--')
+                    : '--';
 
                 return CommonAppBar(
                   title: 'title'.tr,
@@ -48,14 +47,20 @@ class MoreView extends GetView<MoreController> {
               }),
               Expanded(
                 child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 18,
+                  ),
                   itemCount: controller.items.length,
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () => controller.navigateToItem(index),
                       child: CommonContainer(
                         height: 50,
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
                         margin: const EdgeInsets.only(bottom: 14),
                         alignment: Alignment.center,
                         child: Column(
@@ -73,7 +78,10 @@ class MoreView extends GetView<MoreController> {
                                   ),
                                   textAlign: TextAlign.justify,
                                 ),
-                                const Icon(Icons.arrow_forward_ios_outlined, size: 16,)
+                                const Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                  size: 16,
+                                ),
                               ],
                             ),
                           ],
@@ -89,11 +97,11 @@ class MoreView extends GetView<MoreController> {
                 fontWeight: FontWeight.bold,
                 color: Colors.grey.shade500,
               ),
-              const SizedBox(height: 30,)
+              const SizedBox(height: 30),
             ],
           ),
+        ),
       ),
-        )
     );
   }
 }

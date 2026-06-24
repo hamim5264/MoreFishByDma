@@ -32,7 +32,6 @@ class ComingSoonView extends GetView<ComingSoonController> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
           decoration: BoxDecoration(
-            // Use the app's standard light background tone.
             color: AppColors.background,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Colors.black12),

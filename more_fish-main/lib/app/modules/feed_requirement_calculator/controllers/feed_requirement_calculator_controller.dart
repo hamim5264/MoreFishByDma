@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class FeedRequirementCalculatorController extends GetxController {
   final bodyWeightController = TextEditingController();
-  
+
   final selectedSize = 'fry_fingerling'.obs;
   final feedRequirementResult = RxnDouble();
   final validationMessage = ''.obs;

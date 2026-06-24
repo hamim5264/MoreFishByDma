@@ -7,7 +7,6 @@ import '../../../common_widgets/common_container.dart';
 import '../../../common_widgets/common_text.dart';
 import '../../home/controllers/home_controller.dart';
 import '../../water_quality_device/controllers/water_quality_device_controller.dart';
-import '../../cattle_index/controllers/cattle_header_controller.dart';
 
 class NanoBubbleView extends GetView<WaterQualityDeviceController> {
   const NanoBubbleView({super.key});
@@ -45,7 +44,8 @@ class NanoBubbleView extends GetView<WaterQualityDeviceController> {
                 date: '${homeController.formattedDate}',
                 time: '${homeController.formattedTime}',
                 temp: '${homeController.weatherData['main']?['temp'] ?? ''}°C',
-                humidity: '${homeController.weatherData['main']?['humidity'] ?? ''}%',
+                humidity:
+                    '${homeController.weatherData['main']?['humidity'] ?? ''}%',
               );
             }),
             Expanded(
@@ -72,146 +72,150 @@ class NanoBubbleView extends GetView<WaterQualityDeviceController> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.all(12),
                     child: Column(
-                    children: [
-                      if (doSensor != null) ...[
-                        CommonContainer(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                'assets/icons/water_quality_check.png',
-                                height: 80,
-                                width: 80,
-                              ),
-                              const SizedBox(height: 16),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CommonText(
-                                    double.tryParse(doSensor.lastValue ?? '')
-                                            ?.toStringAsFixed(2) ??
-                                        '0.00',
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: doSensor.dangerStatus == "perfect"
-                                        ? const Color(0xff00cc00)
-                                        : Colors.red,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  CommonText(
-                                    doSensor.sensorUnit,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w500,
-                                    color: doSensor.dangerStatus == "perfect"
-                                        ? const Color(0xff00cc00)
-                                        : Colors.red,
-                                  ),
-                                ],
-                              ),
-                              CommonText(
-                                doSensor.sensorName,
-                                fontSize: 22,
+                      children: [
+                        if (doSensor != null) ...[
+                          CommonContainer(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              children: [
+                                Image.asset(
+                                  'assets/icons/water_quality_check.png',
+                                  height: 80,
+                                  width: 80,
+                                ),
+                                const SizedBox(height: 16),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CommonText(
+                                      double.tryParse(
+                                            doSensor.lastValue,
+                                          )?.toStringAsFixed(2) ??
+                                          '0.00',
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: doSensor.dangerStatus == "perfect"
+                                          ? const Color(0xff00cc00)
+                                          : Colors.red,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    CommonText(
+                                      doSensor.sensorUnit,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500,
+                                      color: doSensor.dangerStatus == "perfect"
+                                          ? const Color(0xff00cc00)
+                                          : Colors.red,
+                                    ),
+                                  ],
+                                ),
+                                CommonText(
+                                  doSensor.sensorName,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+                        if (aerators.isNotEmpty) ...[
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 8, bottom: 12),
+                              child: CommonText(
+                                "Aerators Control",
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                      ],
-                      if (aerators.isNotEmpty) ...[
-                        const Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 8, bottom: 12),
-                            child: CommonText(
-                              "Aerators Control",
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                        ListView.builder(
-                          itemCount: aerators.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            final aerator = aerators[index];
-                            final isOnline = aerator.isOnline == true;
+                          ListView.builder(
+                            itemCount: aerators.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              final aerator = aerators[index];
+                              final isOnline = aerator.isOnline == true;
 
-                            return CommonContainer(
-                              margin: const EdgeInsets.only(bottom: 12),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 12,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 16,
-                                        height: 16,
-                                        decoration: BoxDecoration(
-                                          color: isOnline
-                                              ? const Color(0xff2fbf71)
-                                              : const Color(0xffe74c3c),
-                                          shape: BoxShape.circle,
+                              return CommonContainer(
+                                margin: const EdgeInsets.only(bottom: 12),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 16,
+                                          height: 16,
+                                          decoration: BoxDecoration(
+                                            color: isOnline
+                                                ? const Color(0xff2fbf71)
+                                                : const Color(0xffe74c3c),
+                                            shape: BoxShape.circle,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      CommonText(
-                                        aerator.aeratorName,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ],
-                                  ),
-                                  Obx(() {
-                                    final bool switchValue = controller.aeratorSwitchValueFor(
-                                      aerator.aeratorPk,
-                                      fallback: aerator.isRunning == true,
-                                    );
+                                        const SizedBox(width: 12),
+                                        CommonText(
+                                          aerator.aeratorName,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ],
+                                    ),
+                                    Obx(() {
+                                      final bool switchValue = controller
+                                          .aeratorSwitchValueFor(
+                                            aerator.aeratorPk,
+                                            fallback: aerator.isRunning == true,
+                                          );
 
-                                    return CommonSwitch(
-                                      value: switchValue,
-                                      onChanged: !isOnline ||
-                                              controller.isAeratorBusy(
-                                                aerator.aeratorPk,
-                                              )
-                                          ? null
-                                          : (bool value) {
-                                              controller.aeratorCommand(
-                                                id: aerator.aeratorId,
-                                                command: value ? 1 : 0,
-                                                index: index,
-                                                isOnline: isOnline,
-                                                aeratorPk: aerator.aeratorPk,
-                                              );
-                                            },
-                                      activeColor: Colors.green,
-                                      inactiveColor: Colors.red,
-                                    );
-                                  }),
-                                ],
+                                      return CommonSwitch(
+                                        value: switchValue,
+                                        onChanged:
+                                            !isOnline ||
+                                                controller.isAeratorBusy(
+                                                  aerator.aeratorPk,
+                                                )
+                                            ? null
+                                            : (bool value) {
+                                                controller.aeratorCommand(
+                                                  id: aerator.aeratorId,
+                                                  command: value ? 1 : 0,
+                                                  index: index,
+                                                  isOnline: isOnline,
+                                                  aeratorPk: aerator.aeratorPk,
+                                                );
+                                              },
+                                        activeColor: Colors.green,
+                                        inactiveColor: Colors.red,
+                                      );
+                                    }),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                        if (doSensor == null && aerators.isEmpty)
+                          const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(20.0),
+                              child: Text(
+                                "No live DO data or Aerators found for this pond.",
+                                textAlign: TextAlign.center,
                               ),
-                            );
-                          },
-                        ),
-                      ],
-                      if (doSensor == null && aerators.isEmpty)
-                        const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(20.0),
-                            child: Text(
-                              "No live DO data or Aerators found for this pond.",
-                              textAlign: TextAlign.center,
                             ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                )
                 );
               }),
             ),

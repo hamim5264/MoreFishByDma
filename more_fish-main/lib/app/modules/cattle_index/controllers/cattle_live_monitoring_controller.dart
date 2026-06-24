@@ -13,16 +13,11 @@ class CattleLiveMonitoringController extends GetxController {
 
   final cattleFarmListResponse = Rxn<CattleFarmListResponse>();
   final cattleFarmDashboardResponse = Rxn<CattleFarmDashboardResponse>();
-  //
-  // final selectedDeviceId = ''.obs;
-  // final isLoading = false.obs;
-  // final error = ''.obs;
 
   final selectedDeviceId = ''.obs;
   final isLoading = false.obs;
   final error = ''.obs;
 
-// ✅ Instant switch UI state
   final switchUiState = <String, bool>{}.obs;
   final switchBusy = <String, bool>{}.obs;
 
@@ -32,9 +27,7 @@ class CattleLiveMonitoringController extends GetxController {
   void onInit() {
     super.onInit();
     debugPrint('CattleMonitoringController: onInit');
-    
-    // Use a small delay or post-frame callback to ensure dependencies (like token storage) 
-    // are fully settled, especially after a fresh login.
+
     Future.delayed(const Duration(milliseconds: 200), () {
       if (cattleFarmListResponse.value == null) {
         fetchFarmList();
@@ -42,7 +35,7 @@ class CattleLiveMonitoringController extends GetxController {
         refreshLiveData(showLoader: false);
       }
     });
-    
+
     _startBackgroundRefresh();
   }
 
@@ -56,7 +49,6 @@ class CattleLiveMonitoringController extends GetxController {
     _refreshTimer?.cancel();
     _refreshTimer = Timer.periodic(const Duration(seconds: 15), (timer) {
       final route = Get.currentRoute.toLowerCase();
-      // Only refresh if user is still in the cattle module to save resources
       if (selectedDeviceId.value.isNotEmpty && route.contains('cattle')) {
         refreshLiveData(showLoader: false);
       }
@@ -64,8 +56,7 @@ class CattleLiveMonitoringController extends GetxController {
   }
 
   void _syncSwitchUiState() {
-    final switches =
-        cattleFarmDashboardResponse.value?.data?.device?.switches;
+    final switches = cattleFarmDashboardResponse.value?.data?.device?.switches;
 
     if (switches == null) return;
 
@@ -78,8 +69,7 @@ class CattleLiveMonitoringController extends GetxController {
 
   Future<void> fetchFarmList() async {
     debugPrint('CattleMonitoring: fetchFarmList() start');
-    
-    // Only show full-screen loader if we have NO data yet
+
     if (cattleFarmListResponse.value == null) {
       isLoading.value = true;
     }
@@ -101,7 +91,6 @@ class CattleLiveMonitoringController extends GetxController {
           if (r.data != null && r.data!.isNotEmpty) {
             final firstFarmId = r.data![0].id.toString();
             selectedDeviceId.value = firstFarmId;
-            // fetchFarmDashboard will handle setting isLoading to false
             await fetchFarmDashboard(id: firstFarmId, showLoader: true);
           } else {
             debugPrint('CattleMonitoring: No farms in list');
@@ -122,9 +111,10 @@ class CattleLiveMonitoringController extends GetxController {
     bool showLoader = true,
   }) async {
     debugPrint('CattleMonitoring: fetchFarmDashboard(id: $id) start');
-    
-    // Only show loader if requested AND we don't have data for THIS device yet
-    if (showLoader && (cattleFarmDashboardResponse.value == null || selectedDeviceId.value != id)) {
+
+    if (showLoader &&
+        (cattleFarmDashboardResponse.value == null ||
+            selectedDeviceId.value != id)) {
       isLoading.value = true;
     }
     error.value = '';
@@ -133,12 +123,13 @@ class CattleLiveMonitoringController extends GetxController {
       final response = await cattleLiveDataRepository.getFarmDashboard(id: id);
       response.fold(
         (l) {
-          debugPrint('CattleMonitoring: fetchFarmDashboard() error: ${l.message}');
+          debugPrint(
+            'CattleMonitoring: fetchFarmDashboard() error: ${l.message}',
+          );
           error.value = l.message;
         },
         (r) {
           debugPrint('CattleMonitoring: fetchFarmDashboard() success');
-          // cattleFarmDashboardResponse.value = r;
           cattleFarmDashboardResponse.value = r;
           _syncSwitchUiState();
           if (Get.isRegistered<CattleHeaderController>()) {
@@ -174,20 +165,6 @@ class CattleLiveMonitoringController extends GetxController {
     }
   }
 
-  // Future<void> toggleSwitch(String switchId, bool turnOn) async {
-  //   var result = await cattleLiveDataRepository.setSwitchState(
-  //     switchId: switchId,
-  //     turnOn: turnOn,
-  //   );
-  //   result.fold(
-  //     (l) {
-  //       debugPrint('Cattle Switch Error: ${l.message}');
-  //     },
-  //     (r) {
-  //       refreshLiveData(showLoader: false);
-  //     },
-  //   );
-  // }
   Future<void> toggleSwitch(String switchId, bool turnOn) async {
     if (switchId.trim().isEmpty) return;
 
@@ -195,7 +172,6 @@ class CattleLiveMonitoringController extends GetxController {
 
     switchBusy[switchId] = true;
 
-    // ✅ Instant UI update
     switchUiState[switchId] = turnOn;
     switchUiState.refresh();
 
@@ -205,10 +181,9 @@ class CattleLiveMonitoringController extends GetxController {
     );
 
     result.fold(
-          (l) {
+      (l) {
         debugPrint('Cattle Switch Error: ${l.message}');
 
-        // rollback if failed
         switchUiState[switchId] = !turnOn;
         switchUiState.refresh();
 
@@ -220,10 +195,10 @@ class CattleLiveMonitoringController extends GetxController {
           colorText: Colors.white,
         );
       },
-          (r) {
+      (r) {
         Future.delayed(
           const Duration(seconds: 2),
-              () => refreshLiveData(showLoader: false),
+          () => refreshLiveData(showLoader: false),
         );
       },
     );

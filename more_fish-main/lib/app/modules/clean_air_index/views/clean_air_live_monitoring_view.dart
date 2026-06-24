@@ -39,9 +39,7 @@ class CleanAirLiveMonitoringView
       try {
         final fetch = controller.pondData(id: controller.selectedAstId.value);
         await fetch.timeout(const Duration(seconds: 2), onTimeout: () {});
-      } catch (_) {
-        // keep refresh lightweight
-      }
+      } catch (_) {}
     }
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -72,7 +70,7 @@ class CleanAirLiveMonitoringView
             controller.pondDataResponse.value = null;
             controller.pondList();
             controller.sensorList();
-            controller.CompanyList();
+            controller.companyList();
           },
           child: Column(
             children: [
@@ -434,7 +432,17 @@ class CleanAirLiveMonitoringView
                                                           '${ApiService.baseUrl}/${controller.pondDataResponse.value?.data.devices[0].sensors[index].sensorIcon}',
                                                           height: 40,
                                                           width: 40,
-                                                          errorBuilder: (context, error, stackTrace) => const Icon(Icons.sensors, size: 40, color: Colors.grey),
+                                                          errorBuilder:
+                                                              (
+                                                                context,
+                                                                error,
+                                                                stackTrace,
+                                                              ) => const Icon(
+                                                                Icons.sensors,
+                                                                size: 40,
+                                                                color:
+                                                                    Colors.grey,
+                                                              ),
                                                         ),
                                                       ),
                                                       Expanded(
@@ -448,7 +456,8 @@ class CleanAirLiveMonitoringView
                                                                 CommonText(
                                                                   sensorData?.dangerStatus ==
                                                                           'invalid'
-                                                                      ? 'no_data'.tr
+                                                                      ? 'no_data'
+                                                                            .tr
                                                                       : _formatSensorValue(
                                                                           sensorName:
                                                                               sensorData?.sensorName,
@@ -546,11 +555,14 @@ class CleanAirLiveMonitoringView
                                                   aerator.isOnline == true;
 
                                               return Obx(() {
-                                                final bool switchValue =
-                                                    controller.aeratorSwitchValueFor(
-                                                  aerator.aeratorPk,
-                                                  fallback: aerator.isRunning == true,
-                                                );
+                                                final bool
+                                                switchValue = controller
+                                                    .aeratorSwitchValueFor(
+                                                      aerator.aeratorPk,
+                                                      fallback:
+                                                          aerator.isRunning ==
+                                                          true,
+                                                    );
 
                                                 return CommonContainer(
                                                   margin: const EdgeInsets.only(
@@ -558,27 +570,37 @@ class CleanAirLiveMonitoringView
                                                     right: 14,
                                                     bottom: 16,
                                                   ),
-                                                  padding: const EdgeInsets.symmetric(
-                                                    horizontal: 16,
-                                                    vertical: 6,
-                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 6,
+                                                      ),
                                                   border: Border.all(
                                                     color: switchValue
-                                                        ? Colors.green.withOpacity(0.5)
+                                                        ? Colors.green
+                                                              .withValues(
+                                                                alpha: 0.5,
+                                                              )
                                                         : Colors.black12,
-                                                    width: switchValue ? 1.5 : 1,
+                                                    width: switchValue
+                                                        ? 1.5
+                                                        : 1,
                                                   ),
                                                   boxShadow: [
                                                     if (switchValue && isOnline)
                                                       BoxShadow(
-                                                        color: Colors.green.withOpacity(0.2),
+                                                        color: Colors.green
+                                                            .withValues(
+                                                              alpha: 0.2,
+                                                            ),
                                                         blurRadius: 10,
                                                         spreadRadius: 2,
                                                       ),
                                                   ],
                                                   child: Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment.spaceBetween,
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       Row(
                                                         children: [
@@ -593,24 +615,29 @@ class CleanAirLiveMonitoringView
                                                                   : const Color(
                                                                       0xffe74c3c,
                                                                     ),
-                                                              shape: BoxShape.circle,
+                                                              shape: BoxShape
+                                                                  .circle,
                                                             ),
                                                           ),
                                                           const SizedBox(
                                                             width: 12,
                                                           ),
                                                           SizedBox(
-                                                            width: MediaQuery.of(
+                                                            width:
+                                                                MediaQuery.of(
                                                                   context,
                                                                 ).size.width -
                                                                 220,
                                                             child: CommonText(
-                                                              aerator.aeratorName,
+                                                              aerator
+                                                                  .aeratorName,
                                                               fontSize: 20,
                                                               fontWeight:
-                                                                  FontWeight.bold,
+                                                                  FontWeight
+                                                                      .bold,
                                                               overflow:
-                                                                  TextOverflow.ellipsis,
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               maxLines: 1,
                                                             ),
                                                           ),
@@ -618,23 +645,32 @@ class CleanAirLiveMonitoringView
                                                       ),
                                                       CommonSwitch(
                                                         value: switchValue,
-                                                        onChanged: !isOnline ||
-                                                                controller.isAeratorBusy(
-                                                                  aerator.aeratorPk,
-                                                                )
+                                                        onChanged:
+                                                            !isOnline ||
+                                                                controller
+                                                                    .isAeratorBusy(
+                                                                      aerator
+                                                                          .aeratorPk,
+                                                                    )
                                                             ? null
                                                             : (bool value) {
                                                                 controller.aeratorCommand(
-                                                                  id: aerator.aeratorId,
-                                                                  command: value ? 1 : 0,
+                                                                  id: aerator
+                                                                      .aeratorId,
+                                                                  command: value
+                                                                      ? 1
+                                                                      : 0,
                                                                   index: index,
-                                                                  isOnline: isOnline,
-                                                                  aeratorPk:
-                                                                      aerator.aeratorPk,
+                                                                  isOnline:
+                                                                      isOnline,
+                                                                  aeratorPk: aerator
+                                                                      .aeratorPk,
                                                                 );
                                                               },
-                                                        activeColor: Colors.green,
-                                                        inactiveColor: Colors.red,
+                                                        activeColor:
+                                                            Colors.green,
+                                                        inactiveColor:
+                                                            Colors.red,
                                                       ),
                                                     ],
                                                   ),
@@ -886,63 +922,6 @@ class CleanAirLiveMonitoringView
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _MetricCard extends StatelessWidget {
-  const _MetricCard({
-    required this.iconAsset,
-    required this.title,
-    required this.value,
-  });
-
-  final String iconAsset;
-  final String title;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    final w = (MediaQuery.of(context).size.width - 14 * 2 - 12) / 2;
-    return SizedBox(
-      width: w,
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 207, 255, 197),
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-          border: Border.all(color: Colors.black12),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(iconAsset, height: 56, fit: BoxFit.contain),
-            const SizedBox(height: 6),
-            Text(
-              value,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: Colors.green,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-            ),
-          ],
         ),
       ),
     );

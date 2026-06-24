@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import '../../../res/strings/smart_khamari.dart';
 
 class SmartKhamariController extends GetxController {
-  //TODO: Implement SmartKhamariController
-
   var titleList = [
     SmartKhamari.title1,
     SmartKhamari.title2,
@@ -30,20 +28,6 @@ class SmartKhamariController extends GetxController {
   ].obs;
 
   final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   void increment() => count.value++;
 }

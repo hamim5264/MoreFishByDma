@@ -142,14 +142,14 @@ class HomeController extends GetxController {
 
     response.fold(
       (l) {
-        print('Failed to fetch categories: ${l.message}');
+        debugPrint('Failed to fetch categories: ${l.message}');
       },
       (r) {
         categoryResponse.value = r;
 
         debugPrint("=================================");
-        print(categoryResponse.value);
-        print("=================================");
+        debugPrint(categoryResponse.value.toString());
+        debugPrint("=================================");
       },
     );
   }
@@ -157,7 +157,7 @@ class HomeController extends GetxController {
   checkLogin() {
     loginTokenStorage = Get.find<LoginTokenStorage>();
     final token = loginTokenStorage.getMoreFishToken();
-    print(token);
+    debugPrint(token);
     if (token != null) {
       isLoggedIn.value = token;
     }

@@ -69,7 +69,9 @@ class PoultryProfileView extends StatelessWidget {
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: Colors.blue.shade50,
-                                          border: Border.all(color: Colors.blue.shade100),
+                                          border: Border.all(
+                                            color: Colors.blue.shade100,
+                                          ),
                                         ),
                                         child: const Icon(
                                           Icons.person,
@@ -121,7 +123,7 @@ class PoultryProfileView extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                              Text(
+                                            Text(
                                               "change_password".tr,
                                               style: const TextStyle(
                                                 color: Colors.black,
@@ -146,12 +148,19 @@ class PoultryProfileView extends StatelessWidget {
                                           isPoultryFlow: true,
                                         );
 
-                                        await loginTokenStorage.removePoultryToken();
-                                        await loginTokenStorage.removePoultryUserId();
+                                        await loginTokenStorage
+                                            .removePoultryToken();
+                                        await loginTokenStorage
+                                            .removePoultryUserId();
 
-                                        poultryIndexController.isLoggedIn.value = '';
+                                        poultryIndexController
+                                                .isLoggedIn
+                                                .value =
+                                            '';
 
-                                        Get.offAllNamed(Routes.DMA_TECHNOLOGIES);
+                                        Get.offAllNamed(
+                                          Routes.DMA_TECHNOLOGIES,
+                                        );
                                       },
                                       child: CommonContainer(
                                         height: 50,
@@ -166,12 +175,14 @@ class PoultryProfileView extends StatelessWidget {
                                             Color(0xffffcdd2),
                                           ],
                                         ),
-                                        border: Border.all(color: Colors.red.shade100),
+                                        border: Border.all(
+                                          color: Colors.red.shade100,
+                                        ),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                              Text(
+                                            Text(
                                               "logout".tr,
                                               style: TextStyle(
                                                 color: Colors.red.shade700,

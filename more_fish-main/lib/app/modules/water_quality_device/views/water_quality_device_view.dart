@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:get/get.dart';
@@ -23,8 +22,6 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
     final parsedValue = double.tryParse(rawValue ?? '');
     if (parsedValue == null) return '0';
 
-    final normalizedSensorName = sensorName?.trim().toUpperCase();
-    // DO value restriction (clamped 1.62 - 16.0) removed as requested.
     final displayValue = parsedValue;
 
     return displayValue.toStringAsFixed(2);
@@ -89,15 +86,11 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
-    // Pull-to-refresh handler: attempt to refresh pond data but ensure
-    // the refresh Future completes within 2 seconds for snappy UI.
     Future<void> handlePullToRefresh() async {
       try {
         final fetch = controller.pondData(id: controller.selectedAstId.value);
         await fetch.timeout(const Duration(seconds: 2), onTimeout: () {});
-      } catch (_) {
-        // ignore — keep refresh lightweight
-      }
+      } catch (_) {}
     }
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -128,18 +121,17 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
             controller.pondDataResponse.value = null;
             controller.pondList();
             controller.sensorList();
-            controller.CompanyList();
+            controller.companyList();
           },
           child: Column(
             children: [
               Obx(() {
                 final weather = homeController.weatherData;
-                final main = (weather != null && weather.isNotEmpty)
-                    ? weather['main']
-                    : null;
+                final main = (weather.isNotEmpty) ? weather['main'] : null;
                 final temp = main != null ? (main['temp'] ?? '--') : '--';
-                final humidity =
-                    main != null ? (main['humidity'] ?? '--') : '--';
+                final humidity = main != null
+                    ? (main['humidity'] ?? '--')
+                    : '--';
 
                 return CommonAppBar(
                   title: 'title'.tr,
@@ -376,7 +368,6 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                           color: const Color(0xff0370c3),
                                         ),
 
-                                        // Sensors Grid
                                         Obx(() {
                                           return GridView.builder(
                                             physics:
@@ -406,21 +397,32 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                   .value
                                                   ?.data
                                                   .devices;
-                                              
-                                              if (devices == null || devices.isEmpty) {
+
+                                              if (devices == null ||
+                                                  devices.isEmpty) {
                                                 return const SizedBox.shrink();
                                               }
 
-                                              var sensorData = devices[0].sensors[index];
+                                              var sensorData =
+                                                  devices[0].sensors[index];
 
-                                              // Company ID logic (unchanged)
-                                              final companyData = controller.companyListResponse.value?.data;
-                                              final pondData = controller.pondListResponse.value?.data;
+                                              final companyData = controller
+                                                  .companyListResponse
+                                                  .value
+                                                  ?.data;
+                                              final pondData = controller
+                                                  .pondListResponse
+                                                  .value
+                                                  ?.data;
 
-                                              if (companyData != null && pondData != null && pondData.isNotEmpty) {
+                                              if (companyData != null &&
+                                                  pondData != null &&
+                                                  pondData.isNotEmpty) {
                                                 for (var i in companyData) {
-                                                  if (i.name == pondData[0].astName) {
-                                                    controller.comId.value = i.id!;
+                                                  if (i.name ==
+                                                      pondData[0].astName) {
+                                                    controller.comId.value =
+                                                        i.id!;
                                                     break;
                                                   }
                                                 }
@@ -442,8 +444,7 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                   String? mappedSensorIdString;
                                                   try {
                                                     final sensorName =
-                                                        (sensorData?.sensorName ??
-                                                                '')
+                                                        (sensorData.sensorName)
                                                             .toString()
                                                             .toLowerCase();
                                                     final mapped = controller
@@ -468,7 +469,7 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
 
                                                   final sensorIdForGraph =
                                                       mappedSensorIdString ??
-                                                      sensorData?.sensorId;
+                                                      sensorData.sensorId;
 
                                                   Get.toNamed(
                                                     Routes.GRAPH,
@@ -494,9 +495,9 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                         child:
                                                             _getSensorIconWidget(
                                                               sensorData
-                                                                  ?.sensorName,
+                                                                  .sensorName,
                                                               sensorData
-                                                                  ?.sensorIcon,
+                                                                  .sensorIcon,
                                                             ),
                                                       ),
                                                       Expanded(
@@ -508,18 +509,19 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                       .center,
                                                               children: [
                                                                 CommonText(
-                                                                  sensorData?.dangerStatus ==
+                                                                  sensorData.dangerStatus ==
                                                                           "invalid"
-                                                                      ? "no_data".tr
+                                                                      ? "no_data"
+                                                                            .tr
                                                                       : _formatSensorValue(
                                                                           sensorName:
-                                                                              sensorData?.sensorName,
+                                                                              sensorData.sensorName,
                                                                           rawValue:
-                                                                              sensorData?.lastValue,
+                                                                              sensorData.lastValue,
                                                                         ),
                                                                   fontSize:
                                                                       sensorData
-                                                                              ?.dangerStatus ==
+                                                                              .dangerStatus ==
                                                                           "invalid"
                                                                       ? 16
                                                                       : 20,
@@ -528,7 +530,7 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                           .bold,
                                                                   color:
                                                                       sensorData
-                                                                              ?.dangerStatus ==
+                                                                              .dangerStatus ==
                                                                           "perfect"
                                                                       ? const Color(
                                                                           0xff00cc00,
@@ -546,14 +548,15 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                   width: 3,
                                                                 ),
                                                                 CommonText(
-                                                                  sensorData?.dangerStatus ==
+                                                                  sensorData.dangerStatus ==
                                                                           "invalid"
                                                                       ? ""
-                                                                      : "${sensorData?.sensorUnit}",
+                                                                      : sensorData
+                                                                            .sensorUnit,
                                                                   fontSize: 20,
                                                                   color:
                                                                       sensorData
-                                                                              ?.dangerStatus ==
+                                                                              .dangerStatus ==
                                                                           "perfect"
                                                                       ? const Color(
                                                                           0xff00cc00,
@@ -567,7 +570,8 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                               ],
                                                             ),
                                                             CommonText(
-                                                              "${sensorData?.sensorName}",
+                                                              sensorData
+                                                                  .sensorName,
                                                               fontSize: 18,
                                                               fontWeight:
                                                                   FontWeight
@@ -590,7 +594,6 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
 
                                         const SizedBox(height: 16),
 
-                                        // ==================== AERATORS SECTION (UPDATED) ====================
                                         Obx(() {
                                           final aerators =
                                               controller
@@ -612,11 +615,14 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                   aerator.isOnline == true;
 
                                               return Obx(() {
-                                                final bool switchValue =
-                                                    controller.aeratorSwitchValueFor(
-                                                  aerator.aeratorPk,
-                                                  fallback: aerator.isRunning == true,
-                                                );
+                                                final bool
+                                                switchValue = controller
+                                                    .aeratorSwitchValueFor(
+                                                      aerator.aeratorPk,
+                                                      fallback:
+                                                          aerator.isRunning ==
+                                                          true,
+                                                    );
 
                                                 return CommonContainer(
                                                   margin: const EdgeInsets.only(
@@ -624,27 +630,37 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                     right: 14,
                                                     bottom: 16,
                                                   ),
-                                                  padding: const EdgeInsets.symmetric(
-                                                    horizontal: 16,
-                                                    vertical: 20,
-                                                  ),
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 20,
+                                                      ),
                                                   border: Border.all(
                                                     color: switchValue
-                                                        ? Colors.green.withOpacity(0.5)
+                                                        ? Colors.green
+                                                              .withValues(
+                                                                alpha: 0.5,
+                                                              )
                                                         : Colors.black12,
-                                                    width: switchValue ? 1.5 : 1,
+                                                    width: switchValue
+                                                        ? 1.5
+                                                        : 1,
                                                   ),
                                                   boxShadow: [
                                                     if (switchValue && isOnline)
                                                       BoxShadow(
-                                                        color: Colors.green.withOpacity(0.2),
+                                                        color: Colors.green
+                                                            .withValues(
+                                                              alpha: 0.2,
+                                                            ),
                                                         blurRadius: 10,
                                                         spreadRadius: 2,
                                                       ),
                                                   ],
                                                   child: Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment.spaceBetween,
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       Row(
                                                         children: [
@@ -659,105 +675,112 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                   : const Color(
                                                                       0xffe74c3c,
                                                                     ),
-                                                              shape: BoxShape.circle,
+                                                              shape: BoxShape
+                                                                  .circle,
                                                             ),
                                                           ),
                                                           const SizedBox(
                                                             width: 12,
                                                           ),
-                                                            SizedBox(
-                                                              width: MediaQuery.of(
-                                                                    context,
-                                                                  ).size.width -
-                                                                  220,
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                children: [
+                                                          SizedBox(
+                                                            width:
+                                                                MediaQuery.of(
+                                                                  context,
+                                                                ).size.width -
+                                                                220,
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                CommonText(
+                                                                  aerator
+                                                                      .aeratorName,
+                                                                  fontSize: 20,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  maxLines: 1,
+                                                                ),
+                                                                if (controller
+                                                                    .isAutomationEnabled
+                                                                    .value)
                                                                   CommonText(
-                                                                    aerator
-                                                                        .aeratorName,
-                                                                    fontSize: 20,
+                                                                    'auto_mode'
+                                                                        .tr,
+                                                                    fontSize:
+                                                                        12,
+                                                                    color: Colors
+                                                                        .blue,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    maxLines: 1,
                                                                   ),
-                                                                  if (controller
-                                                                      .isAutomationEnabled
-                                                                      .value)
-                                                                    CommonText(
-                                                                      'auto_mode'.tr,
-                                                                      fontSize: 12,
-                                                                      color: Colors
-                                                                          .blue,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                    ),
-                                                                ],
-                                                              ),
+                                                              ],
                                                             ),
-                                                          ],
-                                                        ),
-                                                        // CommonSwitch(
-                                                        //   value: switchValue,
-                                                        //   onChanged: (bool value) {
-                                                        //     if (controller.isAutomationEnabled.value) {
-                                                        //       controller.showAutomationWarning();
-                                                        //       return;
-                                                        //     }
-                                                        //     if (!isOnline || controller.isAeratorBusy(aerator.aeratorPk)) {
-                                                        //       return;
-                                                        //     }
-                                                        //     controller.aeratorCommand(
-                                                        //       id: aerator.aeratorId,
-                                                        //       command: value ? 1 : 0,
-                                                        //       index: index,
-                                                        //       isOnline: isOnline,
-                                                        //       aeratorPk: aerator.aeratorPk,
-                                                        //     );
-                                                        //   },
-                                                        //   activeColor: Colors.green,
-                                                        //   inactiveColor: Colors.red,
-                                                        // ),
+                                                          ),
+                                                        ],
+                                                      ),
+
                                                       CommonSwitch(
                                                         value: switchValue,
                                                         onChanged: (bool value) {
-                                                          // Block manual control when automation is enabled
-                                                          if (controller.isAutomationEnabled.value) {
-                                                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                          if (controller
+                                                              .isAutomationEnabled
+                                                              .value) {
+                                                            ScaffoldMessenger.of(
+                                                              context,
+                                                            ).hideCurrentSnackBar();
 
-                                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                            ScaffoldMessenger.of(
+                                                              context,
+                                                            ).showSnackBar(
                                                               SnackBar(
                                                                 content: Text(
-                                                                  'manual_control_disabled'.tr,
+                                                                  'manual_control_disabled'
+                                                                      .tr,
                                                                 ),
-                                                                duration: const Duration(seconds: 2),
+                                                                duration:
+                                                                    const Duration(
+                                                                      seconds:
+                                                                          2,
+                                                                    ),
                                                               ),
                                                             );
 
                                                             return;
                                                           }
 
-                                                          if (!isOnline || controller.isAeratorBusy(aerator.aeratorPk)) {
+                                                          if (!isOnline ||
+                                                              controller
+                                                                  .isAeratorBusy(
+                                                                    aerator
+                                                                        .aeratorPk,
+                                                                  )) {
                                                             return;
                                                           }
 
-                                                          controller.aeratorCommand(
-                                                            id: aerator.aeratorId,
-                                                            command: value ? 1 : 0,
-                                                            index: index,
-                                                            isOnline: isOnline,
-                                                            aeratorPk: aerator.aeratorPk,
-                                                          );
+                                                          controller
+                                                              .aeratorCommand(
+                                                                id: aerator
+                                                                    .aeratorId,
+                                                                command: value
+                                                                    ? 1
+                                                                    : 0,
+                                                                index: index,
+                                                                isOnline:
+                                                                    isOnline,
+                                                                aeratorPk: aerator
+                                                                    .aeratorPk,
+                                                              );
                                                         },
-                                                        activeColor: Colors.green,
-                                                        inactiveColor: Colors.red,
+                                                        activeColor:
+                                                            Colors.green,
+                                                        inactiveColor:
+                                                            Colors.red,
                                                       ),
                                                     ],
                                                   ),
@@ -767,19 +790,21 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                           );
                                         }),
 
-                                        // ==================== CLEANER SECTION ====================
                                         Obx(() {
-                                          final cleaner =
-                                              controller.cleanerStatusResponse.value;
+                                          final cleaner = controller
+                                              .cleanerStatusResponse
+                                              .value;
                                           if (cleaner == null ||
                                               cleaner.success == false) {
                                             return const SizedBox.shrink();
                                           }
 
-                                          final bool isOn = cleaner.isOn == true;
+                                          final bool isOn =
+                                              cleaner.isOn == true;
 
                                           return Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
                                               CommonContainer(
                                                 margin: const EdgeInsets.only(
@@ -787,13 +812,16 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                   right: 14,
                                                   bottom: 8,
                                                 ),
-                                                padding: const EdgeInsets.symmetric(
-                                                  horizontal: 16,
-                                                  vertical: 18,
-                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 18,
+                                                    ),
                                                 border: Border.all(
                                                   color: isOn
-                                                      ? Colors.green.withOpacity(0.5)
+                                                      ? Colors.green.withValues(
+                                                          alpha: 0.5,
+                                                        )
                                                       : Colors.black12,
                                                   width: isOn ? 1.5 : 1,
                                                 ),
@@ -804,7 +832,9 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                       height: 18,
                                                       decoration: BoxDecoration(
                                                         color: isOn
-                                                            ? const Color(0xff2fbf71)
+                                                            ? const Color(
+                                                                0xff2fbf71,
+                                                              )
                                                             : Colors.grey,
                                                         shape: BoxShape.circle,
                                                       ),
@@ -814,13 +844,15 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                       child: CommonText(
                                                         'auto_cleaner'.tr,
                                                         fontSize: 20,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
                                                     ),
                                                     CommonText(
                                                       isOn ? 'on'.tr : 'off'.tr,
                                                       fontSize: 18,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       color: isOn
                                                           ? Colors.green
                                                           : Colors.grey,
@@ -829,24 +861,33 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: 18),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 18,
+                                                    ),
                                                 child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
-                                                    if (cleaner.lastRunAt != null)
+                                                    if (cleaner.lastRunAt !=
+                                                        null)
                                                       CommonText(
                                                         '${'last_run'.tr}: ${cleaner.lastRunAt}',
                                                         fontSize: 14,
-                                                        fontWeight: FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         color: Colors.black87,
                                                       ),
                                                     const SizedBox(height: 6),
                                                     CommonText(
-                                                      'cleaner_schedule_note'.tr,
+                                                      'cleaner_schedule_note'
+                                                          .tr,
                                                       fontSize: 13,
-                                                      color: Colors.grey.shade700,
+                                                      color:
+                                                          Colors.grey.shade700,
                                                       maxLines: 2,
-                                                      overflow: TextOverflow.visible,
+                                                      overflow:
+                                                          TextOverflow.visible,
                                                     ),
                                                   ],
                                                 ),
@@ -856,7 +897,6 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                           );
                                         }),
 
-                                        // Warning Messages (unchanged)
                                         controller.pondDataResponse.value ==
                                                 null
                                             ? const SizedBox()
@@ -911,7 +951,7 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 "চুন প্রয়োগ করুন।",
                                                                 fontWeight:
@@ -937,7 +977,7 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 "টিএসপি, জিপসাম, ভিনেগার অথবা গভীর নলকূপের পানি যোগ করুন।",
                                                                 fontWeight:
@@ -963,7 +1003,7 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 "এরেটর চালান বা গভীর নলকূপের পানি যোগ করুন।",
                                                                 fontWeight:
@@ -989,7 +1029,7 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 "চুন, জিপসাম অথবা লবণ যোগ করুন।",
                                                                 fontWeight:
@@ -1015,7 +1055,7 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 "গভীর নলকূপের পানি যোগ করুন।",
                                                                 fontWeight:
@@ -1042,7 +1082,7 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 "গভীর নলকূপের পানি যোগ করুন।",
                                                                 fontWeight:
@@ -1068,7 +1108,7 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                   FontWeight
                                                                       .bold,
                                                             ),
-                                                            Expanded(
+                                                            const Expanded(
                                                               child: CommonText(
                                                                 "হররা বা জাল টানুন।",
                                                                 fontWeight:

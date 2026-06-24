@@ -29,14 +29,13 @@ class CleanAirIndexView extends GetView<CleanAirIndexController> {
           backgroundColor: const Color(0xffebffff),
           currentIndex: controller.selectedIndex.value,
           onTap: (index) {
-            // Same login gating behavior as Cattle Care / More Fish
             if ((index == 1 || index == 2) &&
                 controller.isLoggedIn.value.isEmpty) {
               showDialog(
                 context: context,
                 barrierDismissible: true,
-                builder: (context) => WillPopScope(
-                  onWillPop: () async => false,
+                builder: (context) => PopScope(
+                  canPop: false,
                   child: CommonAlertDialog(
                     notNow: () {
                       Get.back();
@@ -59,13 +58,18 @@ class CleanAirIndexView extends GetView<CleanAirIndexController> {
           elevation: 4,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
           items: [
-            const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
             BottomNavigationBarItem(
               icon: Stack(
                 children: [
                   const Icon(Icons.notifications),
                   Obx(() {
-                    final count = Get.find<LoginTokenStorage>().unreadNotificationCount.value;
+                    final count = Get.find<LoginTokenStorage>()
+                        .unreadNotificationCount
+                        .value;
                     if (count == 0) return const SizedBox.shrink();
                     return Positioned(
                       right: 0,
@@ -95,8 +99,14 @@ class CleanAirIndexView extends GetView<CleanAirIndexController> {
               ),
               label: 'Notifications',
             ),
-            const BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-            const BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'More'),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+            const BottomNavigationBarItem(
+              icon: Icon(Icons.menu),
+              label: 'More',
+            ),
           ],
         ),
       );

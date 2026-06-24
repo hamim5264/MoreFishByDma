@@ -2,38 +2,20 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-
 class InternetCheckerController extends GetxController {
-  //TODO: Implement InternetCheckerController
-  Timer ? timer;
+  Timer? timer;
   final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  checkInternet() async{
+  checkInternet() async {
     timer?.cancel();
-    timer = Timer(const Duration(seconds: 1), ()async {
-      if(await InternetConnectionChecker.instance.hasConnection){
+    timer = Timer(const Duration(seconds: 1), () async {
+      if (await InternetConnectionChecker.instance.hasConnection) {
         Get.back();
-      }
-      else{
+      } else {
         checkInternet();
       }
     });
   }
-
 
   void increment() => count.value++;
 }

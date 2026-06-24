@@ -12,6 +12,7 @@ import '../controllers/product_companies_controller.dart';
 
 class ProductCompaniesView extends GetView<ProductCompaniesController> {
   const ProductCompaniesView({super.key});
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -25,7 +26,7 @@ class ProductCompaniesView extends GetView<ProductCompaniesController> {
         backgroundColor: AppColors.backGround,
         body: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Obx(() {
               return CommonAppBar(
                 title: 'title'.tr,
@@ -46,12 +47,10 @@ class ProductCompaniesView extends GetView<ProductCompaniesController> {
                         itemCount: data.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, // Number of columns
-                              crossAxisSpacing:
-                                  12.0, // Horizontal space between tiles
-                              mainAxisSpacing:
-                                  12.0, // Vertical space between tiles
-                              childAspectRatio: 1, // Width / Height ratio
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 12.0,
+                              mainAxisSpacing: 12.0,
+                              childAspectRatio: 1,
                             ),
                         itemBuilder: (context, index) {
                           return InkWell(
@@ -70,13 +69,14 @@ class ProductCompaniesView extends GetView<ProductCompaniesController> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   SafeNetworkImage(
-                                    url: "${ApiService.baseUrl}${data[index].companyImage}",
+                                    url:
+                                        "${ApiService.baseUrl}${data[index].companyImage}",
                                     height: 80,
                                     width: 80,
                                   ),
                                   const SizedBox(height: 3),
                                   Text(
-                                    "${data[index].name}",
+                                    data[index].name,
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontSize: 18,

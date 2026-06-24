@@ -9,6 +9,7 @@ import '../controllers/about_app_details_controller.dart';
 
 class AboutAppDetailsView extends GetView<AboutAppDetailsController> {
   const AboutAppDetailsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +38,7 @@ class AboutAppDetailsView extends GetView<AboutAppDetailsController> {
                 color: Colors.blueGrey.shade800,
                 textAlign: TextAlign.justify,
               ),
-              const SizedBox(height: 15,),
+              const SizedBox(height: 15),
             ],
           ),
         ),

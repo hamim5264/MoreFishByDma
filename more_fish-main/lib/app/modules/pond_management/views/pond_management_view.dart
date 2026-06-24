@@ -11,6 +11,7 @@ import '../controllers/pond_management_controller.dart';
 
 class PondManagementView extends GetView<PondManagementController> {
   const PondManagementView({super.key});
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -25,7 +26,7 @@ class PondManagementView extends GetView<PondManagementController> {
         backgroundColor: AppColors.backGround,
         body: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Obx(() {
               return CommonAppBar(
                 title: 'title'.tr,

@@ -14,19 +14,70 @@ class WeatherForecastController extends GetxController {
   var errorMessage = ''.obs;
 
   final List<String> locations = [
-    'Bagerhat', 'Bandarban', 'Barguna', 'Barisal', 'Bhola', 'Bogra',
-    'Brahmanbaria', 'Chandpur', 'Chapai Nawabganj', 'Chittagong',
-    'Chuadanga', 'Comilla', 'Cox\'s Bazar', 'Dhaka', 'Dinajpur',
-    'Faridpur', 'Feni', 'Gaibandha', 'Gazipur', 'Gopalganj',
-    'Habiganj', 'Jamalpur', 'Jessore', 'Jhalokati', 'Jhenaidah',
-    'Joypurhat', 'Khagrachhari', 'Khulna', 'Kishoreganj', 'Kurigram',
-    'Kushtia', 'Lakshmipur', 'Lalmonirhat', 'Madaripur', 'Magura',
-    'Manikganj', 'Meherpur', 'Moulvibazar', 'Munshiganj', 'Mymensingh',
-    'Naogaon', 'Narail', 'Narayanganj', 'Narsingdi', 'Natore',
-    'Netrokona', 'Nilphamari', 'Noakhali', 'Pabna', 'Panchagarh',
-    'Patuakhali', 'Pirojpur', 'Rajbari', 'Rajshahi', 'Rangamati',
-    'Rangpur', 'Satkhira', 'Shariatpur', 'Sherpur', 'Sirajganj',
-    'Sunamganj', 'Sylhet', 'Tangail', 'Thakurgaon'
+    'Bagerhat',
+    'Bandarban',
+    'Barguna',
+    'Barisal',
+    'Bhola',
+    'Bogra',
+    'Brahmanbaria',
+    'Chandpur',
+    'Chapai Nawabganj',
+    'Chittagong',
+    'Chuadanga',
+    'Comilla',
+    'Cox\'s Bazar',
+    'Dhaka',
+    'Dinajpur',
+    'Faridpur',
+    'Feni',
+    'Gaibandha',
+    'Gazipur',
+    'Gopalganj',
+    'Habiganj',
+    'Jamalpur',
+    'Jessore',
+    'Jhalokati',
+    'Jhenaidah',
+    'Joypurhat',
+    'Khagrachhari',
+    'Khulna',
+    'Kishoreganj',
+    'Kurigram',
+    'Kushtia',
+    'Lakshmipur',
+    'Lalmonirhat',
+    'Madaripur',
+    'Magura',
+    'Manikganj',
+    'Meherpur',
+    'Moulvibazar',
+    'Munshiganj',
+    'Mymensingh',
+    'Naogaon',
+    'Narail',
+    'Narayanganj',
+    'Narsingdi',
+    'Natore',
+    'Netrokona',
+    'Nilphamari',
+    'Noakhali',
+    'Pabna',
+    'Panchagarh',
+    'Patuakhali',
+    'Pirojpur',
+    'Rajbari',
+    'Rajshahi',
+    'Rangamati',
+    'Rangpur',
+    'Satkhira',
+    'Shariatpur',
+    'Sherpur',
+    'Sirajganj',
+    'Sunamganj',
+    'Sylhet',
+    'Tangail',
+    'Thakurgaon',
   ];
 
   var selectedLocation = 'Dhaka'.obs;
@@ -60,27 +111,27 @@ class WeatherForecastController extends GetxController {
 
     try {
       String queryCity = city;
-      // OpenWeatherMap usually recognizes 'Nawabganj' or 'Chapai Nawabganj' with space
-      if (city.toLowerCase().contains('chapainawabganj') || city.toLowerCase().contains('chapai nawabganj')) {
+      if (city.toLowerCase().contains('chapainawabganj') ||
+          city.toLowerCase().contains('chapai nawabganj')) {
         queryCity = "Nawabganj";
       }
 
-      // Fetch Current Weather
       var weatherUrl = Uri.parse(
-          'https://api.openweathermap.org/data/2.5/weather?q=$queryCity,BD&appid=$apiKey&units=metric');
+        'https://api.openweathermap.org/data/2.5/weather?q=$queryCity,BD&appid=$apiKey&units=metric',
+      );
       var weatherResponse = await http.get(weatherUrl);
 
-      // If it fails, try the original name as fallback
       if (weatherResponse.statusCode != 200 && queryCity != city) {
         queryCity = city;
         weatherUrl = Uri.parse(
-            'https://api.openweathermap.org/data/2.5/weather?q=$queryCity,BD&appid=$apiKey&units=metric');
+          'https://api.openweathermap.org/data/2.5/weather?q=$queryCity,BD&appid=$apiKey&units=metric',
+        );
         weatherResponse = await http.get(weatherUrl);
       }
 
-      // Fetch 5-day / 3-hour Forecast
       final forecastUrl = Uri.parse(
-          'https://api.openweathermap.org/data/2.5/forecast?q=$queryCity,BD&appid=$apiKey&units=metric');
+        'https://api.openweathermap.org/data/2.5/forecast?q=$queryCity,BD&appid=$apiKey&units=metric',
+      );
       final forecastResponse = await http.get(forecastUrl);
 
       if (weatherResponse.statusCode == 200 &&
@@ -99,7 +150,3 @@ class WeatherForecastController extends GetxController {
     }
   }
 }
-
-
-
-

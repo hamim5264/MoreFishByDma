@@ -60,7 +60,7 @@ class PharmaLoginView extends GetView<PharmaLoginController> {
                           if (value == null || value.isEmpty) {
                             return 'Enter your email';
                           }
-                          final emailPattern =
+                          const emailPattern =
                               r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
                           if (!RegExp(emailPattern).hasMatch(value) &&
                               value.length < 6) {

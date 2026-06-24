@@ -17,7 +17,7 @@ class PoultryAutomationSettingsView
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         if (controller.hasUnsavedChanges) {
           _showUnsavedDialog(context);
@@ -29,26 +29,28 @@ class PoultryAutomationSettingsView
         backgroundColor: const Color(0xffebffff),
         body: Column(
           children: [
-            Obx(() => CommonAppBar(
-                  title: 'Automation Settings',
-                  cityName: 'Dhaka',
-                  leading: IconButton(
-                    onPressed: () {
-                      if (controller.hasUnsavedChanges) {
-                        _showUnsavedDialog(context);
-                      } else {
-                        Get.back();
-                      }
-                    },
-                    icon: const Icon(Icons.arrow_back, color: Colors.black),
-                  ),
-                  date: header.formattedDate.value,
-                  time: header.formattedTime.value,
-                  temp: header.tempText.value,
-                  humidity: header.humidityText.value,
-                  logoAssetPath: 'assets/icons/dma_poultry_pulse.png',
-                  backgroundColor: const Color(0xffdbcc68),
-                )),
+            Obx(
+              () => CommonAppBar(
+                title: 'Automation Settings',
+                cityName: 'Dhaka',
+                leading: IconButton(
+                  onPressed: () {
+                    if (controller.hasUnsavedChanges) {
+                      _showUnsavedDialog(context);
+                    } else {
+                      Get.back();
+                    }
+                  },
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                ),
+                date: header.formattedDate.value,
+                time: header.formattedTime.value,
+                temp: header.tempText.value,
+                humidity: header.humidityText.value,
+                logoAssetPath: 'assets/icons/dma_poultry_pulse.png',
+                backgroundColor: const Color(0xffdbcc68),
+              ),
+            ),
             Expanded(
               child: Obx(() {
                 if (controller.isLoading.value &&
@@ -113,8 +115,11 @@ class PoultryAutomationSettingsView
             children: [
               Icon(Icons.cyclone, color: Colors.blue),
               SizedBox(width: 8),
-              CommonText("Fan Control (Temp based)",
-                  fontSize: 16, fontWeight: FontWeight.bold),
+              CommonText(
+                "Fan Control (Temp based)",
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -152,8 +157,11 @@ class PoultryAutomationSettingsView
             children: [
               Icon(Icons.water_drop, color: Colors.cyan),
               SizedBox(width: 8),
-              CommonText("Fogger Control (Humidity based)",
-                  fontSize: 16, fontWeight: FontWeight.bold),
+              CommonText(
+                "Fogger Control (Humidity based)",
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ],
           ),
           const SizedBox(height: 16),
@@ -180,14 +188,17 @@ class PoultryAutomationSettingsView
                 children: [
                   Icon(Icons.lightbulb, color: Colors.orangeAccent),
                   SizedBox(width: 8),
-                  CommonText("Light Schedules",
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                  CommonText(
+                    "Light Schedules",
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ],
               ),
               IconButton(
                 onPressed: () => _showAddTimeDialog(context),
                 icon: const Icon(Icons.add_circle, color: Colors.green),
-              )
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -198,15 +209,19 @@ class PoultryAutomationSettingsView
                 child: CommonText("No schedules added", color: Colors.grey),
               ),
             ),
-          ...controller.lightSchedules.map((s) => ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: CommonText("${s.startTime} - ${s.endTime}",
-                    fontWeight: FontWeight.w600),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete_outline, color: Colors.red),
-                  onPressed: () => controller.deleteLightSchedule(s.id!),
-                ),
-              )),
+          ...controller.lightSchedules.map(
+            (s) => ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: CommonText(
+                "${s.startTime} - ${s.endTime}",
+                fontWeight: FontWeight.w600,
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete_outline, color: Colors.red),
+                onPressed: () => controller.deleteLightSchedule(s.id!),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -216,17 +231,24 @@ class PoultryAutomationSettingsView
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: controller.isSaving.value ? null : () => controller.saveSettings(),
+        onPressed: controller.isSaving.value
+            ? null
+            : () => controller.saveSettings(),
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xffdbcc68),
           foregroundColor: Colors.black,
           padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
         child: controller.isSaving.value
             ? const CircularProgressIndicator()
-            : const CommonText("Save Automation Settings",
-                fontWeight: FontWeight.bold, fontSize: 16),
+            : const CommonText(
+                "Save Automation Settings",
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
       ),
     );
   }
@@ -252,7 +274,10 @@ class PoultryAutomationSettingsView
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: Colors.black12),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 10,
+            ),
           ),
         ),
       ],
@@ -261,19 +286,25 @@ class PoultryAutomationSettingsView
 
   void _showAddTimeDialog(BuildContext context) async {
     TimeOfDay? start = await showTimePicker(
-        context: context,
-        initialTime: const TimeOfDay(hour: 20, minute: 0),
-        helpText: "SELECT START TIME");
+      context: context,
+      initialTime: const TimeOfDay(hour: 20, minute: 0),
+      helpText: "SELECT START TIME",
+    );
     if (start == null) return;
 
+    if (!context.mounted) return;
+
     TimeOfDay? end = await showTimePicker(
-        context: context,
-        initialTime: const TimeOfDay(hour: 8, minute: 0),
-        helpText: "SELECT END TIME");
+      context: context,
+      initialTime: const TimeOfDay(hour: 8, minute: 0),
+      helpText: "SELECT END TIME",
+    );
     if (end == null) return;
 
-    final startStr = "${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')}:00";
-    final endStr = "${end.hour.toString().padLeft(2, '0')}:${end.minute.toString().padLeft(2, '0')}:00";
+    final startStr =
+        "${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')}:00";
+    final endStr =
+        "${end.hour.toString().padLeft(2, '0')}:${end.minute.toString().padLeft(2, '0')}:00";
 
     controller.addLightSchedule(startStr, endStr);
   }
@@ -287,11 +318,12 @@ class PoultryAutomationSettingsView
         actions: [
           TextButton(onPressed: () => Get.back(), child: const Text("Discard")),
           ElevatedButton(
-              onPressed: () {
-                Get.back();
-                controller.saveSettings();
-              },
-              child: const Text("Save")),
+            onPressed: () {
+              Get.back();
+              controller.saveSettings();
+            },
+            child: const Text("Save"),
+          ),
         ],
       ),
     );

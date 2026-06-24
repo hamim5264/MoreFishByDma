@@ -43,13 +43,18 @@ class PoultryIndexView extends GetView<PoultryIndexController> {
           elevation: 4,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
           items: [
-            BottomNavigationBarItem(icon: const Icon(Icons.home), label: 'home'.tr),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.home),
+              label: 'home'.tr,
+            ),
             BottomNavigationBarItem(
               icon: Stack(
                 children: [
                   const Icon(Icons.notifications),
                   Obx(() {
-                    final count = Get.find<LoginTokenStorage>().unreadNotificationCount.value;
+                    final count = Get.find<LoginTokenStorage>()
+                        .unreadNotificationCount
+                        .value;
                     if (count == 0) return const SizedBox.shrink();
                     return Positioned(
                       right: 0,
@@ -79,8 +84,14 @@ class PoultryIndexView extends GetView<PoultryIndexController> {
               ),
               label: 'notifications'.tr,
             ),
-            BottomNavigationBarItem(icon: const Icon(Icons.person), label: 'profile'.tr),
-            BottomNavigationBarItem(icon: const Icon(Icons.menu), label: 'more'.tr),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.person),
+              label: 'profile'.tr,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.menu),
+              label: 'more'.tr,
+            ),
           ],
         ),
       );

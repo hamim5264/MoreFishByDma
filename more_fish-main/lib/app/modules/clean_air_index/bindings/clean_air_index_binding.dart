@@ -10,7 +10,6 @@ class CleanAirIndexBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<CleanAirIndexController>(() => CleanAirIndexController());
-    // Shared header data (date/time + weather) for all Clean Air tabs
     Get.lazyPut<CleanAirHeaderController>(() => CleanAirHeaderController());
     Get.lazyPut<CleanAirLiveMonitoringController>(
       () => CleanAirLiveMonitoringController(),

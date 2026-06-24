@@ -9,12 +9,12 @@ class VersionCheckerView extends StatelessWidget {
   const VersionCheckerView({super.key});
 
   Future<void> _openUpdateLink() async {
-    // TODO: Replace with your real Play Store / website link
-    final uri = Uri.parse('https://play.google.com/store/apps/details?id=com.dmatechnologies.more_fish');
+    final uri = Uri.parse(
+      'https://play.google.com/store/apps/details?id=com.dmatechnologies.more_fish',
+    );
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
-      // fallback: just go ahead
       Get.offAllNamed(Routes.DMA_TECHNOLOGIES);
     }
   }

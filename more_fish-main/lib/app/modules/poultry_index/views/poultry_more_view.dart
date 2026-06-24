@@ -17,13 +17,17 @@ class PoultryMoreView extends GetView<PoultryIndexController> {
       final farmId = ctrl.selectedDeviceId.value;
 
       if (farmId.isNotEmpty) {
-        Get.toNamed(Routes.POULTRY_AUTOMATION_SETTINGS,
-            arguments: {'farmId': farmId});
+        Get.toNamed(
+          Routes.POULTRY_AUTOMATION_SETTINGS,
+          arguments: {'farmId': farmId},
+        );
       } else {
         debugPrint('Automation error: Farm ID is null');
       }
     } else {
-      debugPrint('Automation error: PoultryLiveMonitoringController not registered');
+      debugPrint(
+        'Automation error: PoultryLiveMonitoringController not registered',
+      );
     }
   }
 
@@ -107,7 +111,10 @@ class _LanguageTile extends StatelessWidget {
             Expanded(
               child: Text(
                 'language'.tr,
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             PopupMenuButton<String>(

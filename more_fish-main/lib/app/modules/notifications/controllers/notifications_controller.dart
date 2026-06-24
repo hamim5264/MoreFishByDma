@@ -34,11 +34,6 @@ class NotificationsController extends GetxController {
   Timer? _pollingTimer;
 
   @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
   void onReady() {
     super.onReady();
     checkLogin();
@@ -46,14 +41,10 @@ class NotificationsController extends GetxController {
 
   checkLogin() {
     loginTokenStorage = Get.find<LoginTokenStorage>();
-    
-    // ✅ Reset unread count when user opens notifications screen
+
     loginTokenStorage.unreadNotificationCount.value = 0;
 
     final token = loginTokenStorage.getMoreFishToken();
-    final id = loginTokenStorage.getMoreFishUserId();
-    print(id);
-    print(token);
     if (token != null) {
       isLoggedIn.value = token;
       _loadCachedNotifications();
@@ -94,18 +85,10 @@ class NotificationsController extends GetxController {
 
   notificationList() async {
     var response = await notificationsRepository.getNotification();
-    response.fold(
-      (l) {
-        print('${l.message}');
-      },
-      (r) {
-        notificationResponse.value = r;
-        _cacheNotifications(r);
-        print("=================================");
-        print(notificationResponse.value);
-        print("=================================");
-      },
-    );
+    response.fold((l) {}, (r) {
+      notificationResponse.value = r;
+      _cacheNotifications(r);
+    });
   }
 
   void _loadCachedNotifications() {

@@ -34,7 +34,6 @@ class WaterQualityDeviceController extends GetxController {
   var commandInProgress = false.obs;
   var busyAeratorPks = <int>{}.obs;
   var isAutomationEnabled = false.obs;
-  bool _firstFetch = true;
 
   var aeratorIds = <int>[].obs;
 
@@ -43,11 +42,17 @@ class WaterQualityDeviceController extends GetxController {
   String get _cacheAeratorKey => '${cachePrefix}_aerator_cache';
 
   String get _cachePondListKey => '${cachePrefix}_pond_list_cache';
+
   String get _cachePondDataKey => '${cachePrefix}_pond_data_cache';
+
   String get _cacheSensorListKey => '${cachePrefix}_sensor_list_cache';
+
   String get _cacheCompanyListKey => '${cachePrefix}_company_list_cache';
+
   String get _cacheCleanerStatusKey => '${cachePrefix}_cleaner_status_cache';
+
   String get _cacheSelectedAstIdKey => '${cachePrefix}_selected_ast_id';
+
   String get _cacheSelectedAstNameKey => '${cachePrefix}_selected_ast_name';
 
   @override
@@ -79,9 +84,8 @@ class WaterQualityDeviceController extends GetxController {
   void _startAeratorPolling() {
     debugPrint('[WaterQuality] Aerator polling started (every 2 seconds)');
     _aeratorPollTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
-      // Conditions: we have a selected asset and we have known aerator ids
       if (selectedAstId.value == 0) return;
-      if (aeratorIds.isEmpty) return; // don't change UI shape after first fetch
+      if (aeratorIds.isEmpty) return;
       _pollAeratorState();
     });
   }
@@ -104,8 +108,7 @@ class WaterQualityDeviceController extends GetxController {
   Future<void> _bootstrap() async {
     await _loadCachedState();
     pondList();
-    CompanyList();
-    // Instant fetch if we have a cached asset ID
+    companyList();
     if (selectedAstId.value != 0) {
       fetchCleanerStatus(selectedAstId.value);
     }
@@ -138,40 +141,31 @@ class WaterQualityDeviceController extends GetxController {
 
   void _pollAeratorState() async {
     try {
-      // lightweight: fetch pond data but only update isRunning flags
       var response = await devicesRepository.getPondData(
         id: selectedAstId.value,
       );
-      response.fold(
-        (l) {
-          // ignore errors for polling
-        },
-        (r) {
-          try {
-            final aerators = r.data.devices[0].aerators;
-            for (int i = 0; i < aerators.length; i++) {
-              final pk = aerators[i].aeratorPk;
-              final idx = aeratorIds.indexOf(pk);
-              if (idx >= 0) {
-                // update existing switch state only
-                aeratorSwitch[idx] = aerators[i].isRunning;
-              } else {
-                // new aerator discovered after first fetch: cache but do not add to UI
-                _cacheSingleAerator(pk, aerators[i].isRunning);
-              }
+      response.fold((l) {}, (r) {
+        try {
+          final aerators = r.data.devices[0].aerators;
+          for (int i = 0; i < aerators.length; i++) {
+            final pk = aerators[i].aeratorPk;
+            final idx = aeratorIds.indexOf(pk);
+            if (idx >= 0) {
+              aeratorSwitch[idx] = aerators[i].isRunning;
+            } else {
+              _cacheSingleAerator(pk, aerators[i].isRunning);
             }
-          } catch (_) {}
-        },
-      );
+          }
+        } catch (_) {}
+      });
     } catch (_) {}
   }
 
   pondList() async {
     debugPrint('[API] getPondList() requested');
-    // Clear cleaner status when fetching new list to avoid showing stale data
     cleanerStatusResponse.value = null;
     var response = await devicesRepository.getPondList();
-    response.fold((l) => print("${l.message}"), (r) {
+    response.fold((l) => debugPrint(l.message), (r) {
       debugPrint('[API] getPondList() success -> ponds: ${r.data.length}');
       pondListResponse.value = r;
       _cachePondList(r);
@@ -186,8 +180,6 @@ class WaterQualityDeviceController extends GetxController {
     if (isFetching.value) return;
     isFetching.value = true;
 
-    // loader removed
-
     if (id != null) selectedAstId.value = id;
     _cacheSelectedAstId(selectedAstId.value);
 
@@ -196,22 +188,17 @@ class WaterQualityDeviceController extends GetxController {
     response.fold(
       (l) {
         debugPrint('[API] getPondData() failed -> ${l.message}');
-        print("${l.message}");
+        debugPrint(l.message);
         isFetching.value = false;
-        _firstFetch = false;
       },
       (r) {
         debugPrint('[API] getPondData() success');
         pondDataResponse.value = r;
         _cachePondData(r);
 
-        // Populate aerator switches from fresh API data when the response
-        // actually includes aerators. If the response is partial or offline
-        // state is already cached, keep the previous switch snapshot.
         final aerators = r.data.devices[0].aerators;
         if (aerators.isNotEmpty) {
           _syncAeratorSwitchState(aerators);
-          // Cache discovered aerators so we remember them between app launches.
           _cacheAeratorListFromData(aerators);
         } else {
           debugPrint(
@@ -219,11 +206,10 @@ class WaterQualityDeviceController extends GetxController {
           );
         }
 
-        // Fetch sensor list for graph
         try {
           fetchCleanerStatus(selectedAstId.value);
           final deviceId = r.data.devices[0].deviceId;
-          if (deviceId != null && deviceId.toString().isNotEmpty) {
+          if (deviceId.toString().isNotEmpty) {
             debugPrint('[Flow] sensorList() triggered -> device_id: $deviceId');
             sensorList(deviceId: deviceId);
             fetchAutomationStatus(deviceId);
@@ -233,7 +219,6 @@ class WaterQualityDeviceController extends GetxController {
         }
 
         isFetching.value = false;
-        _firstFetch = false;
       },
     );
   }
@@ -245,7 +230,7 @@ class WaterQualityDeviceController extends GetxController {
     response.fold(
       (l) {
         debugPrint('[API] getSensorList() failed -> ${l.message}');
-        print("${l.message}");
+        debugPrint(l.message);
       },
       (r) {
         debugPrint('[API] getSensorList() success');
@@ -255,13 +240,13 @@ class WaterQualityDeviceController extends GetxController {
     );
   }
 
-  CompanyList() async {
+  companyList() async {
     debugPrint('[API] getCompanyList() requested');
     var response = await devicesRepository.getCompanyList();
     response.fold(
       (l) {
         debugPrint('[API] getCompanyList() failed -> ${l.message}');
-        print("${l.message}");
+        debugPrint(l.message);
       },
       (r) {
         debugPrint(
@@ -322,12 +307,11 @@ class WaterQualityDeviceController extends GetxController {
 
       final cachedCleaner = prefs.getString(_cacheCleanerStatusKey);
       if (cachedCleaner != null && cachedCleaner.isNotEmpty) {
-        cleanerStatusResponse.value =
-            CleanerStatusResponse.fromRawJson(cachedCleaner);
+        cleanerStatusResponse.value = CleanerStatusResponse.fromRawJson(
+          cachedCleaner,
+        );
       }
 
-      // Load cached aerator states (if any). This populates the local arrays so
-      // the UI can show cached switch states before the first full fetch.
       if (aeratorIds.isEmpty || aeratorSwitch.isEmpty) {
         final cachedAerator = prefs.getString(_cacheAeratorKey);
         if (cachedAerator != null && cachedAerator.isNotEmpty) {
@@ -492,86 +476,16 @@ class WaterQualityDeviceController extends GetxController {
   bool isAeratorBusy(int aeratorPk) => busyAeratorPks.contains(aeratorPk);
 
   Future<void> fetchAutomationStatus(dynamic deviceId) async {
-    final response = await devicesRepository.getAutomationSettings(deviceId: deviceId);
-    response.fold(
-      (l) => debugPrint('Automation Status fetch failed'),
-      (r) {
-        if (r.data != null) {
-          isAutomationEnabled.value = r.data!.isEnabled ?? false;
-        }
-      },
+    final response = await devicesRepository.getAutomationSettings(
+      deviceId: deviceId,
     );
+    response.fold((l) => debugPrint('Automation Status fetch failed'), (r) {
+      if (r.data != null) {
+        isAutomationEnabled.value = r.data!.isEnabled ?? false;
+      }
+    });
   }
 
-  // aeratorCommand({
-  //   id,
-  //   command,
-  //   int? index,
-  //   bool? isOnline,
-  //   int? aeratorPk,
-  // }) async {
-  //   if (isOnline == false) {
-  //     try {
-  //       Get.rawSnackbar(
-  //         title: 'Error',
-  //         message: 'This aerator is offline',
-  //         snackPosition: SnackPosition.BOTTOM,
-  //         backgroundColor: Colors.red.withOpacity(0.8),
-  //         margin: const EdgeInsets.all(10),
-  //         borderRadius: 10,
-  //       );
-  //     } catch (_) {}
-  //     return;
-  //   }
-  //
-  //   final pk = aeratorPk;
-  //   if (pk != null && busyAeratorPks.contains(pk)) return;
-  //
-  //   if (pk != null) {
-  //     busyAeratorPks.add(pk);
-  //     commandInProgress.value = true;
-  //   }
-  //
-  //   // loader removed
-  //
-  //   debugPrint(
-  //     '[API] setAeratorCommand() requested -> id: $id, command: $command',
-  //   );
-  //   var response = await devicesRepository.setAeratorCommand(
-  //     id: id,
-  //     command: command,
-  //   );
-  //
-  //   response.fold(
-  //     (l) {
-  //       // Error case (e.g. "it is not connected", device offline, etc.)
-  //       String errorMsg = l.message;
-  //       debugPrint('[API] setAeratorCommand() failed -> $errorMsg');
-  //
-  //       // No optimistic update, so no need to revert switch
-  //       if (pk != null) {
-  //         busyAeratorPks.remove(pk);
-  //         commandInProgress.value = busyAeratorPks.isNotEmpty;
-  //       } else {
-  //         commandInProgress.value = false;
-  //       }
-  //     },
-  //     (r) {
-  //       // Success case
-  //       debugPrint('[API] setAeratorCommand() success -> ${r.msg}');
-  //       aeratorCommandResponse.value = r;
-  //
-  //       // Refresh pond data to get latest is_running state from server
-  //       pondData(id: selectedAstId.value);
-  //       if (pk != null) {
-  //         busyAeratorPks.remove(pk);
-  //         commandInProgress.value = busyAeratorPks.isNotEmpty;
-  //       } else {
-  //         commandInProgress.value = false;
-  //       }
-  //     },
-  //   );
-  // }
   aeratorCommand({
     id,
     command,
@@ -585,7 +499,7 @@ class WaterQualityDeviceController extends GetxController {
           title: 'Error',
           message: 'This aerator is offline',
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red.withOpacity(0.8),
+          backgroundColor: Colors.red.withValues(alpha: 0.8),
           margin: const EdgeInsets.all(10),
           borderRadius: 10,
         );
@@ -599,16 +513,12 @@ class WaterQualityDeviceController extends GetxController {
       return;
     }
 
-    // ==========================
-    // INSTANT UI UPDATE
-    // ==========================
     int switchIndex = -1;
 
     if (pk != null) {
       switchIndex = aeratorIds.indexOf(pk);
 
-      if (switchIndex >= 0 &&
-          switchIndex < aeratorSwitch.length) {
+      if (switchIndex >= 0 && switchIndex < aeratorSwitch.length) {
         aeratorSwitch[switchIndex] = command == 1;
       }
     }
@@ -628,47 +538,34 @@ class WaterQualityDeviceController extends GetxController {
     );
 
     response.fold(
-          (l) {
-        debugPrint(
-          '[API] setAeratorCommand() failed -> ${l.message}',
-        );
+      (l) {
+        debugPrint('[API] setAeratorCommand() failed -> ${l.message}');
 
-        // ==========================
-        // REVERT IF API FAILS
-        // ==========================
-        if (switchIndex >= 0 &&
-            switchIndex < aeratorSwitch.length) {
-          aeratorSwitch[switchIndex] =
-          !(command == 1);
+        if (switchIndex >= 0 && switchIndex < aeratorSwitch.length) {
+          aeratorSwitch[switchIndex] = !(command == 1);
         }
 
         if (pk != null) {
           busyAeratorPks.remove(pk);
-          commandInProgress.value =
-              busyAeratorPks.isNotEmpty;
+          commandInProgress.value = busyAeratorPks.isNotEmpty;
         } else {
           commandInProgress.value = false;
         }
       },
-          (r) {
-        debugPrint(
-          '[API] setAeratorCommand() success -> ${r.msg}',
-        );
+      (r) {
+        debugPrint('[API] setAeratorCommand() success -> ${r.msg}');
 
         aeratorCommandResponse.value = r;
 
         if (pk != null) {
           busyAeratorPks.remove(pk);
-          commandInProgress.value =
-              busyAeratorPks.isNotEmpty;
+          commandInProgress.value = busyAeratorPks.isNotEmpty;
         } else {
           commandInProgress.value = false;
         }
 
-        // Keep backend sync
         pondData(id: selectedAstId.value);
       },
     );
   }
 }
-//

@@ -17,6 +17,7 @@ import 'cattle_live_models.dart';
 
 abstract class CattleLiveRepository {
   Future<List<CattleDevice>> getDevices();
+
   Future<CattleLiveData> getLatestLiveData({required String deviceId});
 }
 
@@ -31,13 +32,15 @@ class CattleLiveDataRepository {
     debugPrint('Cattle GET FarmList: $url');
 
     try {
-      final response = await http.get(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-      ).timeout(_timeout);
+      final response = await http
+          .get(
+            url,
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+            },
+          )
+          .timeout(_timeout);
 
       debugPrint('Cattle FarmList status: ${response.statusCode}');
 
@@ -67,13 +70,15 @@ class CattleLiveDataRepository {
     debugPrint('Cattle GET Dashboard: $url');
 
     try {
-      final response = await http.get(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-      ).timeout(_timeout);
+      final response = await http
+          .get(
+            url,
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+            },
+          )
+          .timeout(_timeout);
 
       debugPrint('Cattle Dashboard status: ${response.statusCode}');
 
@@ -91,19 +96,22 @@ class CattleLiveDataRepository {
     }
   }
 
-  Future<Either<Failure, CattleNotificationsResponse>> getNotifications() async {
+  Future<Either<Failure, CattleNotificationsResponse>>
+  getNotifications() async {
     final storage = Get.find<LoginTokenStorage>();
     final token = storage.getCattleToken();
     final url = Uri.parse("${ApiService.baseUrl}/cattle_care/notifications/");
 
     try {
-      final response = await http.get(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-      ).timeout(_timeout);
+      final response = await http
+          .get(
+            url,
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+            },
+          )
+          .timeout(_timeout);
 
       if (response.statusCode == 200) {
         return Right(CattleNotificationsResponse.fromRawJson(response.body));
@@ -126,14 +134,19 @@ class CattleLiveDataRepository {
     );
 
     try {
-      final response = await http.post(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({'switch_id': switchId, 'command': turnOn ? 1 : 0}),
-      ).timeout(_timeout);
+      final response = await http
+          .post(
+            url,
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              'switch_id': switchId,
+              'command': turnOn ? 1 : 0,
+            }),
+          )
+          .timeout(_timeout);
 
       final decoded = jsonDecode(response.body);
       if (response.statusCode == 200 || response.statusCode == 403) {
@@ -143,7 +156,9 @@ class CattleLiveDataRepository {
           return Left(Failure(decoded['message'] ?? 'Switch command failed'));
         }
       } else {
-        return Left(Failure(decoded['message'] ?? 'Server error: ${response.statusCode}'));
+        return Left(
+          Failure(decoded['message'] ?? 'Server error: ${response.statusCode}'),
+        );
       }
     } catch (e) {
       return Left(Failure('Error: $e'));
@@ -160,13 +175,15 @@ class CattleLiveDataRepository {
     );
 
     try {
-      final response = await http.get(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-      ).timeout(_timeout);
+      final response = await http
+          .get(
+            url,
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+            },
+          )
+          .timeout(_timeout);
 
       if (response.statusCode == 200) {
         return Right(CattleAutomationResponse.fromRawJson(response.body));
@@ -187,9 +204,7 @@ class CattleLiveDataRepository {
   }) async {
     final storage = Get.find<LoginTokenStorage>();
     final token = storage.getCattleToken();
-    final url = Uri.parse(
-      "${ApiService.baseUrl}/cattle_care/automation/",
-    );
+    final url = Uri.parse("${ApiService.baseUrl}/cattle_care/automation/");
 
     try {
       final body = {
@@ -200,14 +215,16 @@ class CattleLiveDataRepository {
         if (foggerHumidityMin != null) "fogger_humidity_min": foggerHumidityMin,
       };
 
-      final response = await http.post(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(body),
-      ).timeout(_timeout);
+      final response = await http
+          .post(
+            url,
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(body),
+          )
+          .timeout(_timeout);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return Right(CattleAutomationResponse.fromRawJson(response.body));
@@ -237,14 +254,16 @@ class CattleLiveDataRepository {
         "end_time": endTime,
       };
 
-      final response = await http.post(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(body),
-      ).timeout(_timeout);
+      final response = await http
+          .post(
+            url,
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode(body),
+          )
+          .timeout(_timeout);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return const Right(true);
@@ -266,13 +285,15 @@ class CattleLiveDataRepository {
     );
 
     try {
-      final response = await http.delete(
-        url,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-      ).timeout(_timeout);
+      final response = await http
+          .delete(
+            url,
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+            },
+          )
+          .timeout(_timeout);
 
       if (response.statusCode == 200) {
         return const Right(true);

@@ -13,16 +13,18 @@ class CattleFarmDashboardResponse {
     this.data,
   });
 
-  factory CattleFarmDashboardResponse.fromRawJson(String str) => CattleFarmDashboardResponse.fromJson(json.decode(str));
+  factory CattleFarmDashboardResponse.fromRawJson(String str) =>
+      CattleFarmDashboardResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory CattleFarmDashboardResponse.fromJson(Map<String, dynamic> json) => CattleFarmDashboardResponse(
-    success: json["success"],
-    statusCode: json["status_code"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory CattleFarmDashboardResponse.fromJson(Map<String, dynamic> json) =>
+      CattleFarmDashboardResponse(
+        success: json["success"],
+        statusCode: json["status_code"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,
@@ -88,7 +90,9 @@ class Weather {
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
     sunlightLevel: json["sunlight_level"],
     solarRadiation: json["solar_radiation"],
-    weatherDistrict: json["weather_district"] == null ? null : WeatherDistrict.fromJson(json["weather_district"]),
+    weatherDistrict: json["weather_district"] == null
+        ? null
+        : WeatherDistrict.fromJson(json["weather_district"]),
     weatherTemperature: json["weather_temperature"],
     weatherHumidity: json["weather_humidity"],
     weatherDescription: json["weather_description"],
@@ -109,13 +113,10 @@ class WeatherDistrict {
 
   WeatherDistrict({this.district});
 
-  factory WeatherDistrict.fromJson(Map<String, dynamic> json) => WeatherDistrict(
-    district: json["district"],
-  );
+  factory WeatherDistrict.fromJson(Map<String, dynamic> json) =>
+      WeatherDistrict(district: json["district"]);
 
-  Map<String, dynamic> toJson() => {
-    "district": district,
-  };
+  Map<String, dynamic> toJson() => {"district": district};
 }
 
 class Device {
@@ -147,8 +148,12 @@ class Device {
     deviceStatus: json["device_status"],
     clientId: json["client_id"],
     isOnline: json["is_online"],
-    sensors: json["sensors"] == null ? [] : List<Sensor>.from(json["sensors"]!.map((x) => Sensor.fromJson(x))),
-    switches: json["switches"] == null ? [] : List<Switch>.from(json["switches"]!.map((x) => Switch.fromJson(x))),
+    sensors: json["sensors"] == null
+        ? []
+        : List<Sensor>.from(json["sensors"]!.map((x) => Sensor.fromJson(x))),
+    switches: json["switches"] == null
+        ? []
+        : List<Switch>.from(json["switches"]!.map((x) => Switch.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -157,8 +162,12 @@ class Device {
     "device_status": deviceStatus,
     "client_id": clientId,
     "is_online": isOnline,
-    "sensors": sensors == null ? [] : List<dynamic>.from(sensors!.map((x) => x.toJson())),
-    "switches": switches == null ? [] : List<dynamic>.from(switches!.map((x) => x.toJson())),
+    "sensors": sensors == null
+        ? []
+        : List<dynamic>.from(sensors!.map((x) => x.toJson())),
+    "switches": switches == null
+        ? []
+        : List<dynamic>.from(switches!.map((x) => x.toJson())),
   };
 }
 

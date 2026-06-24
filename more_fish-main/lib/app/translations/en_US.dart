@@ -249,18 +249,22 @@ const Map<String, String> enUS = {
   'select_device': 'Select device',
   'select_farm': 'Select Farm',
   'auto_mode': 'Auto Mode',
-  'manual_control_disabled': 'Manual control is disabled while Automation is ON.',
+  'manual_control_disabled':
+      'Manual control is disabled while Automation is ON.',
   'auto_cleaner': 'Auto-Cleaner',
   'on': 'On',
   'off': 'Off',
   'last_run': 'Last Run',
-  'cleaner_schedule_note': 'Every day at 2:00 PM Bangladesh time, the cleaner turns ON.',
+  'cleaner_schedule_note':
+      'Every day at 2:00 PM Bangladesh time, the cleaner turns ON.',
   'try_again': 'Try Again',
   'switch_controls': 'Switch Controls',
   'note': 'Note',
   'warning': 'Warning',
-  'poultry_param_note': 'Note: The parameters are changeable according to installation of device.',
-  'cattle_param_note': 'Note: Values reflect the latest data from your farm devices.',
+  'poultry_param_note':
+      'Note: The parameters are changeable according to installation of device.',
+  'cattle_param_note':
+      'Note: Values reflect the latest data from your farm devices.',
   'no_data': 'No Data',
   'failed_to_load': 'Failed to load',
   'faq_menu': 'FAQ',
@@ -299,11 +303,14 @@ const Map<String, String> enUS = {
   'feed': 'Feed',
   'gain': 'Gain',
   'what_is_fcr': 'FCR (Feed Conversion Ratio):',
-  'fcr_description': 'FCR refers to the amount of feed required to increase 1 kg of fish body weight.',
+  'fcr_description':
+      'FCR refers to the amount of feed required to increase 1 kg of fish body weight.',
   'how_it_works': 'Lower FCR =',
-  'fcr_how_it_works_desc': 'Better feed efficiency, better feed performance, and higher profitability.',
+  'fcr_how_it_works_desc':
+      'Better feed efficiency, better feed performance, and higher profitability.',
   'feed_requirement_calculation': 'Feed Requirements Calculation:',
-  'feed_req_description': 'The process of calculating the amount of feed required per day based on the total fish biomass and the feeding rate.',
+  'feed_req_description':
+      'The process of calculating the amount of feed required per day based on the total fish biomass and the feeding rate.',
   'no_assets_found': 'No assets found for this account.',
   'enter_numeric_values': 'Enter valid numeric values.',
   'values_greater_than_zero': 'Values must be greater than zero.',
@@ -326,9 +333,11 @@ const Map<String, String> enUS = {
   'detect_disease': 'Detect Disease',
   'detecting': 'Detecting...',
   'no_notifications': 'No notifications yet.',
-  'feature_coming_soon': 'This feature is currently not implemented and will be coming soon.',
+  'feature_coming_soon':
+      'This feature is currently not implemented and will be coming soon.',
   'service_coming_soon': 'Service is coming soon',
-  'new_version_available': 'A new version is available! Please update to continue using the app smoothly.',
+  'new_version_available':
+      'A new version is available! Please update to continue using the app smoothly.',
   'update': 'Update',
 
   'clear sky': 'Clear Sky',

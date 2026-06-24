@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../../../repo/auth.dart';
 import '../../../response/profile_response.dart';
@@ -27,7 +28,7 @@ class CattleProfileController extends GetxController {
   void getProfile() async {
     var response = await authRepository.getProfile(isCattleFlow: true);
     response.fold(
-      (l) => print("Profile error: ${l.message}"),
+      (l) => debugPrint("Profile error: ${l.message}"),
       (r) => profileResponse.value = r,
     );
   }

@@ -218,7 +218,6 @@ class GraphView extends GetView<GraphController> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              // Period Selector Card
               Card(
                 elevation: 2,
                 shape: RoundedRectangleBorder(
@@ -278,7 +277,6 @@ class GraphView extends GetView<GraphController> {
 
               const SizedBox(height: 24),
 
-              // Graph Section
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(10, 24, 20, 10),
@@ -287,7 +285,7 @@ class GraphView extends GetView<GraphController> {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -296,57 +294,60 @@ class GraphView extends GetView<GraphController> {
                   child: LineChart(
                     LineChartData(
                       lineTouchData: LineTouchData(
-                      handleBuiltInTouches: true,
-                      touchTooltipData: LineTouchTooltipData(
-                        getTooltipColor: (touchedSpot) =>
-                            AppColors.primary.withOpacity(0.9),
-                        tooltipRoundedRadius: 8,
-                        getTooltipItems: (List<LineBarSpot> touchedSpots) {
-                          return touchedSpots.map((LineBarSpot touchedSpot) {
-                            return LineTooltipItem(
-                              touchedSpot.y.toStringAsFixed(2),
-                              const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                            );
-                          }).toList();
-                        },
-                      ),
-                      getTouchedSpotIndicator:
-                          (LineChartBarData barData, List<int> spotIndexes) {
-                        return spotIndexes.map((spotIndex) {
-                          return TouchedSpotIndicatorData(
-                            FlLine(
-                              color: AppColors.primary.withOpacity(0.5),
-                              strokeWidth: 2,
-                              dashArray: [5, 5],
-                            ),
-                            FlDotData(
-                              getDotPainter: (spot, percent, barData, index) {
-                                return FlDotCirclePainter(
-                                  radius: 6,
-                                  color: AppColors.primary,
-                                  strokeWidth: 2,
-                                  strokeColor: Colors.white,
+                        handleBuiltInTouches: true,
+                        touchTooltipData: LineTouchTooltipData(
+                          getTooltipColor: (touchedSpot) =>
+                              AppColors.primary.withValues(alpha: 0.9),
+                          tooltipRoundedRadius: 8,
+                          getTooltipItems: (List<LineBarSpot> touchedSpots) {
+                            return touchedSpots.map((LineBarSpot touchedSpot) {
+                              return LineTooltipItem(
+                                touchedSpot.y.toStringAsFixed(2),
+                                const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              );
+                            }).toList();
+                          },
+                        ),
+                        getTouchedSpotIndicator:
+                            (LineChartBarData barData, List<int> spotIndexes) {
+                              return spotIndexes.map((spotIndex) {
+                                return TouchedSpotIndicatorData(
+                                  FlLine(
+                                    color: AppColors.primary.withValues(
+                                      alpha: 0.5,
+                                    ),
+                                    strokeWidth: 2,
+                                    dashArray: [5, 5],
+                                  ),
+                                  FlDotData(
+                                    getDotPainter:
+                                        (spot, percent, barData, index) {
+                                          return FlDotCirclePainter(
+                                            radius: 6,
+                                            color: AppColors.primary,
+                                            strokeWidth: 2,
+                                            strokeColor: Colors.white,
+                                          );
+                                        },
+                                  ),
                                 );
-                              },
-                            ),
-                          );
-                        }).toList();
-                      },
-                    ),
+                              }).toList();
+                            },
+                      ),
                       gridData: FlGridData(
                         show: true,
                         drawVerticalLine: true,
                         horizontalInterval: yInterval,
                         getDrawingHorizontalLine: (value) => FlLine(
-                          color: Colors.grey.withOpacity(0.1),
+                          color: Colors.grey.withValues(alpha: 0.1),
                           strokeWidth: 1,
                         ),
                         getDrawingVerticalLine: (value) => FlLine(
-                          color: Colors.grey.withOpacity(0.1),
+                          color: Colors.grey.withValues(alpha: 0.1),
                           strokeWidth: 1,
                         ),
                       ),
@@ -365,8 +366,8 @@ class GraphView extends GetView<GraphController> {
                             interval: (isWeekly || isYearly)
                                 ? 1
                                 : (sensorValues.length / 5)
-                                    .floorToDouble()
-                                    .clamp(1, 10),
+                                      .floorToDouble()
+                                      .clamp(1, 10),
                             getTitlesWidget: (value, meta) {
                               int index = value.toInt();
                               if (index >= 0 && index < timeLabels.length) {
@@ -423,11 +424,11 @@ class GraphView extends GetView<GraphController> {
                         show: true,
                         border: Border(
                           bottom: BorderSide(
-                            color: Colors.grey.withOpacity(0.2),
+                            color: Colors.grey.withValues(alpha: 0.2),
                             width: 1,
                           ),
                           left: BorderSide(
-                            color: Colors.grey.withOpacity(0.2),
+                            color: Colors.grey.withValues(alpha: 0.2),
                             width: 1,
                           ),
                           right: const BorderSide(color: Colors.transparent),
@@ -451,18 +452,18 @@ class GraphView extends GetView<GraphController> {
                             show: sensorValues.length < 30,
                             getDotPainter: (spot, percent, barData, index) =>
                                 FlDotCirclePainter(
-                              radius: 3,
-                              color: Colors.white,
-                              strokeWidth: 2,
-                              strokeColor: AppColors.primary,
-                            ),
+                                  radius: 3,
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                  strokeColor: AppColors.primary,
+                                ),
                           ),
                           belowBarData: BarAreaData(
                             show: true,
                             gradient: LinearGradient(
                               colors: [
-                                AppColors.primary.withOpacity(0.3),
-                                AppColors.primary.withOpacity(0.0),
+                                AppColors.primary.withValues(alpha: 0.3),
+                                AppColors.primary.withValues(alpha: 0.0),
                               ],
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
@@ -475,7 +476,6 @@ class GraphView extends GetView<GraphController> {
                 ),
               ),
               const SizedBox(height: 12),
-              // Hint text
               Text(
                 "Tip: Long press on the graph to see exact values",
                 style: TextStyle(

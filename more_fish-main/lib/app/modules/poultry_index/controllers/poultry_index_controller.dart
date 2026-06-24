@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// loader removed
 import 'package:get/get.dart';
 
 import '../../../repo/auth.dart';
@@ -9,7 +8,6 @@ import '../../../service/local_storage.dart';
 class PoultryIndexController extends GetxController {
   final selectedIndex = 0.obs;
 
-  /// keep reactive so logout updates instantly
   final isLoggedIn = ''.obs;
 
   final AuthRepository _authRepository = AuthRepository();
@@ -44,7 +42,6 @@ class PoultryIndexController extends GetxController {
   }
 
   Future<bool> ensureLoggedIn() async {
-    /// Always re-check latest token from storage
     checkLogin();
 
     if (isLoggedIn.value.isNotEmpty) {
@@ -56,7 +53,6 @@ class PoultryIndexController extends GetxController {
       arguments: {'fromGuard': true},
     );
 
-    /// Re-check after login screen returns
     checkLogin();
 
     return result == true || isLoggedIn.value.isNotEmpty;
@@ -66,8 +62,6 @@ class PoultryIndexController extends GetxController {
     required String username,
     required String password,
   }) async {
-    // loader removed
-
     debugPrint('Poultry login email input: $username');
 
     try {
@@ -119,7 +113,6 @@ class PoultryIndexController extends GetxController {
           await loginTokenStorage.setPoultryToken(token);
           await loginTokenStorage.setPoultryUserId(userId);
 
-          /// update memory state immediately
           isLoggedIn.value = token.trim();
 
           debugPrint('Poultry login token saved in SharedPreferences');
@@ -136,8 +129,6 @@ class PoultryIndexController extends GetxController {
           return true;
         },
       );
-    } finally {
-      // loader removed
-    }
+    } finally {}
   }
 }

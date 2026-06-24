@@ -6,9 +6,9 @@ import '../../../common_widgets/common_text.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/cattle_login_controller.dart';
 
-
 class CattleLoginView extends GetView<CattleLoginController> {
   const CattleLoginView({super.key});
+
   @override
   Widget build(BuildContext context) {
     final isGuardLogin = controller.openedFromGuard;
@@ -60,8 +60,9 @@ class CattleLoginView extends GetView<CattleLoginController> {
                         ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
-                          if (value == null || value.isEmpty)
+                          if (value == null || value.isEmpty) {
                             return "Enter your email";
+                          }
                           String emailPattern =
                               r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
                           if (!RegExp(emailPattern).hasMatch(value) &&
@@ -74,7 +75,7 @@ class CattleLoginView extends GetView<CattleLoginController> {
                       const SizedBox(height: 15),
 
                       Obx(
-                            () => TextFormField(
+                        () => TextFormField(
                           controller: controller.passwordController,
                           decoration: InputDecoration(
                             labelText: "Password",
@@ -88,15 +89,17 @@ class CattleLoginView extends GetView<CattleLoginController> {
                                     : Icons.visibility_off,
                               ),
                               onPressed: () => controller.showPassword.value =
-                              !controller.showPassword.value,
+                                  !controller.showPassword.value,
                             ),
                           ),
                           obscureText: !controller.showPassword.value,
                           validator: (value) {
-                            if (value == null || value.isEmpty)
+                            if (value == null || value.isEmpty) {
                               return "Enter your password";
-                            if (value.length < 5)
+                            }
+                            if (value.length < 5) {
                               return "Password must be at least 5 characters";
+                            }
                             return null;
                           },
                         ),
@@ -126,42 +129,44 @@ class CattleLoginView extends GetView<CattleLoginController> {
                       Obx(() {
                         return controller.isActiveLoginButton.value == true
                             ? SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            onPressed: () {
-                              if (controller.formKey.currentState!
-                                  .validate()) {
-                                controller.isActiveLoginButton.value =
-                                false;
-                                debugPrint(
-                                  "Email/Phone: ${controller.emailController.text}",
-                                );
-                                debugPrint(
-                                  "Password length: ${controller.passwordController.text.length}",
-                                );
-                                controller.login(
-                                  context,
-                                  controller.emailController.text,
-                                  controller.passwordController.text,
-                                );
-                              }
-                            },
-                            child: const Text(
-                              "Login",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        )
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    if (controller.formKey.currentState!
+                                        .validate()) {
+                                      controller.isActiveLoginButton.value =
+                                          false;
+                                      debugPrint(
+                                        "Email/Phone: ${controller.emailController.text}",
+                                      );
+                                      debugPrint(
+                                        "Password length: ${controller.passwordController.text.length}",
+                                      );
+                                      controller.login(
+                                        context,
+                                        controller.emailController.text,
+                                        controller.passwordController.text,
+                                      );
+                                    }
+                                  },
+                                  child: const Text(
+                                    "Login",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
                             : const CircularProgressIndicator();
                       }),
 

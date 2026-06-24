@@ -5,34 +5,33 @@ import '../../../response/otp_verify_response.dart';
 import '../../../routes/app_pages.dart';
 
 class OtpVerifyController extends GetxController {
-
   AuthRepository authRepository = AuthRepository();
   final otpVerifyResponse = Rxn<OtpVerifyResponse>();
   var isActiveButton = true.obs;
 
-  otpVerification(context, code, ) async {
+  otpVerification(context, code) async {
     var response = await authRepository.otpVerify(code: code);
     response.fold(
-            (l){
-          print('${l.message}');
-          isActiveButton.value = true;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Oops! ❌ Invalid OTP.")),
-          );
-        },
-            (r) async {
-          otpVerifyResponse.value = r;
-          Get.toNamed(Routes.RESET_PASSWORD, arguments: {"userId": otpVerifyResponse.value?.userId});
-          isActiveButton.value = true;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Successful ✅")),
-          );
-
-
-        });
-
+      (l) {
+        debugPrint(l.message);
+        isActiveButton.value = true;
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Oops! ❌ Invalid OTP.")));
+      },
+      (r) async {
+        otpVerifyResponse.value = r;
+        Get.toNamed(
+          Routes.RESET_PASSWORD,
+          arguments: {"userId": otpVerifyResponse.value?.userId},
+        );
+        isActiveButton.value = true;
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Successful ✅")));
+      },
+    );
   }
-
 
   final textControllers = List.generate(6, (_) => TextEditingController());
   final focusNodes = List.generate(6, (_) => FocusNode());
@@ -45,7 +44,7 @@ class OtpVerifyController extends GetxController {
       if (index < 5) {
         focusNodes[index + 1].requestFocus();
       } else {
-        focusNodes[index].unfocus(); // last digit
+        focusNodes[index].unfocus();
       }
     }
   }
@@ -57,7 +56,4 @@ class OtpVerifyController extends GetxController {
       otp[index - 1] = '';
     }
   }
-
-
-
 }

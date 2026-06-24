@@ -15,7 +15,10 @@ class CattleMoreView extends GetView<CattleIndexController> {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         children: [
-          _SimpleMoreTile(title: 'faq_menu'.tr, onTap: () => Get.toNamed(Routes.FAQ)),
+          _SimpleMoreTile(
+            title: 'faq_menu'.tr,
+            onTap: () => Get.toNamed(Routes.FAQ),
+          ),
           const SizedBox(height: 10),
           _SimpleMoreTile(
             title: 'about_app_menu'.tr,
@@ -64,7 +67,10 @@ class _LanguageTile extends StatelessWidget {
             Expanded(
               child: Text(
                 'language'.tr,
-                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             PopupMenuButton<String>(

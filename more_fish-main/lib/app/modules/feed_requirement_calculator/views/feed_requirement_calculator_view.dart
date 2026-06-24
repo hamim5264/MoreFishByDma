@@ -39,30 +39,32 @@ class FeedRequirementCalculatorView
                     fontWeight: FontWeight.w600,
                   ),
                   const SizedBox(height: 8),
-                  Obx(() => Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade400),
+                  Obx(
+                    () => Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.grey.shade400),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: controller.selectedSize.value,
+                          isExpanded: true,
+                          items: controller.fishSizes.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value.tr),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            if (newValue != null) {
+                              controller.selectedSize.value = newValue;
+                            }
+                          },
                         ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: controller.selectedSize.value,
-                            isExpanded: true,
-                            items: controller.fishSizes.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value.tr),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              if (newValue != null) {
-                                controller.selectedSize.value = newValue;
-                              }
-                            },
-                          ),
-                        ),
-                      )),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 16),
                   _numberInputField(
                     controller: controller.bodyWeightController,
@@ -185,9 +187,7 @@ class FeedRequirementCalculatorView
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: AppColors.primary, width: 1.6),

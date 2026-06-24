@@ -51,12 +51,13 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                       decoration: InputDecoration(
                         labelText: 'Phone Number',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       initialCountryCode: 'BD',
                       onChanged: (phone) {
-                        controller.completePhoneNumber.value = phone.completeNumber;
+                        controller.completePhoneNumber.value =
+                            phone.completeNumber;
                       },
                     ),
                     const SizedBox(height: 20),
@@ -91,31 +92,43 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                     Obx(() {
                       return controller.isActiveButton.value
                           ? SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (controller.formKey.currentState!.validate()) {
-                              controller.isActiveButton.value = false;
-                              final phone = controller.completePhoneNumber.value;
-                              final email = controller.emailController.text;
-                              controller.forgotPass(context, email, phone);
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: const Text(
-                            "Continue",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                        ),
-                      )
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (controller.formKey.currentState!
+                                      .validate()) {
+                                    controller.isActiveButton.value = false;
+                                    final phone =
+                                        controller.completePhoneNumber.value;
+                                    final email =
+                                        controller.emailController.text;
+                                    controller.forgotPass(
+                                      context,
+                                      email,
+                                      phone,
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: const Text(
+                                  "Continue",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            )
                           : const Center(child: CircularProgressIndicator());
-                    })
+                    }),
                   ],
                 ),
               ),
@@ -126,6 +139,3 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
     );
   }
 }
-
-
-

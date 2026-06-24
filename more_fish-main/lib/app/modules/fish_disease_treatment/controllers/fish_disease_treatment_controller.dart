@@ -3,14 +3,7 @@ import 'package:get/get.dart';
 import '../../../res/strings/fish_disease_treatment.dart';
 
 class FishDiseaseTreatmentController extends GetxController {
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-
-  var titleList =[
+  var titleList = [
     FishDiseaseTreatmentData.title2,
     FishDiseaseTreatmentData.title3,
     FishDiseaseTreatmentData.title4,
@@ -20,10 +13,9 @@ class FishDiseaseTreatmentController extends GetxController {
     FishDiseaseTreatmentData.title8,
     FishDiseaseTreatmentData.title9,
     FishDiseaseTreatmentData.title10,
-
   ];
 
-  var dataList =[
+  var dataList = [
     FishDiseaseTreatmentData.dataList2,
     FishDiseaseTreatmentData.dataList3,
     FishDiseaseTreatmentData.dataList4,
@@ -33,7 +25,5 @@ class FishDiseaseTreatmentController extends GetxController {
     FishDiseaseTreatmentData.dataList8,
     FishDiseaseTreatmentData.dataList9,
     FishDiseaseTreatmentData.dataList10,
-
   ];
-
 }

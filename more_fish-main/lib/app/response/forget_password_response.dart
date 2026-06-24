@@ -5,21 +5,19 @@ class ForgotPasswordResponse {
   int? statusCode;
   String? message;
 
-  ForgotPasswordResponse({
-    this.success,
-    this.statusCode,
-    this.message,
-  });
+  ForgotPasswordResponse({this.success, this.statusCode, this.message});
 
-  factory ForgotPasswordResponse.fromRawJson(String str) => ForgotPasswordResponse.fromJson(json.decode(str));
+  factory ForgotPasswordResponse.fromRawJson(String str) =>
+      ForgotPasswordResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ForgotPasswordResponse.fromJson(Map<String, dynamic> json) => ForgotPasswordResponse(
-    success: json["success"],
-    statusCode: json["status_code"],
-    message: json["message"],
-  );
+  factory ForgotPasswordResponse.fromJson(Map<String, dynamic> json) =>
+      ForgotPasswordResponse(
+        success: json["success"],
+        statusCode: json["status_code"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,

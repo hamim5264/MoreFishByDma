@@ -10,6 +10,7 @@ import '../controllers/fish_disease_treatment_details_controller.dart';
 class FishDiseaseTreatmentDetailsView
     extends GetView<FishDiseaseTreatmentDetailsController> {
   const FishDiseaseTreatmentDetailsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,39 +28,38 @@ class FishDiseaseTreatmentDetailsView
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: ListView.builder(
-
           itemCount: controller.data.length,
-          itemBuilder: (context, index){
+          itemBuilder: (context, index) {
             return Column(
               children: [
                 controller.data[index] == "Causes:" ||
-                    controller.data[index] == "Symptoms:" ||
-                    controller.data[index] == "Treatment:" ||
-                    controller.data[index] == "Prevention:"
+                        controller.data[index] == "Symptoms:" ||
+                        controller.data[index] == "Treatment:" ||
+                        controller.data[index] == "Prevention:"
                     ? Row(
-                      children: [
-                        Expanded(
-                          child: CommonText(
-                            "${controller.data[index]}",
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            maxLines: 3,
+                        children: [
+                          Expanded(
+                            child: CommonText(
+                              "${controller.data[index]}",
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              maxLines: 3,
+                            ),
                           ),
-                        ),
-                      ],
-                    )
+                        ],
+                      )
                     : Row(
-                      children: [
-                        Expanded(
-                          child: CommonText(
-                            "${controller.data[index]}",
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            maxLines: 20,
+                        children: [
+                          Expanded(
+                            child: CommonText(
+                              "${controller.data[index]}",
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              maxLines: 20,
+                            ),
                           ),
-                        ),
-      ],
-                    ),
+                        ],
+                      ),
               ],
             );
           },

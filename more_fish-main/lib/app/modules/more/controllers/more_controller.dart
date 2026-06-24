@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import '../../water_quality_device/controllers/water_quality_device_controller.dart';
 import '../../../routes/app_pages.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import '../../../../app/service/local_storage.dart';
 import '../../../../app/response/pond_data_response.dart';
 
@@ -34,7 +33,6 @@ class MoreController extends GetxController {
   void _handleAutomationNavigation() {
     String? deviceId;
 
-    // 1. Try to get from active controller
     if (Get.isRegistered<WaterQualityDeviceController>()) {
       final wqController = Get.find<WaterQualityDeviceController>();
       final data = wqController.pondDataResponse.value?.data;
@@ -43,7 +41,6 @@ class MoreController extends GetxController {
       }
     }
 
-    // 2. Fallback: Try to get from Cache if controller is not registered or data is null
     if (deviceId == null) {
       try {
         final storage = Get.find<LoginTokenStorage>();
@@ -61,27 +58,12 @@ class MoreController extends GetxController {
     }
 
     if (deviceId != null) {
-      Get.toNamed(Routes.AUTOMATION_SETTINGS, arguments: {'deviceId': deviceId});
+      Get.toNamed(
+        Routes.AUTOMATION_SETTINGS,
+        arguments: {'deviceId': deviceId},
+      );
     } else {
       debugPrint('Automation error: Device ID is null and not found in cache');
-      // Show a snackbar only if absolutely necessary, but since user said "dont need to show any snackbar"
-      // we'll just log it.
     }
   }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
 }

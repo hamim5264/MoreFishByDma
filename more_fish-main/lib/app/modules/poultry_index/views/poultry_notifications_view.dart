@@ -212,7 +212,7 @@ class PoultryNotificationsView extends GetView<PoultryNotificationsController> {
     borderRadius: BorderRadius.circular(10),
     boxShadow: [
       BoxShadow(
-        color: Colors.blueGrey.withOpacity(0.5),
+        color: Colors.blueGrey.withValues(alpha: 0.5),
         spreadRadius: 1,
         blurRadius: 1,
         offset: const Offset(.2, .2),

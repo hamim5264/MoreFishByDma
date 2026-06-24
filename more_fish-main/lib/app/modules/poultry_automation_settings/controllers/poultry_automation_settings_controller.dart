@@ -19,7 +19,6 @@ class PoultryAutomationSettingsController extends GetxController {
 
   int? farmId;
 
-  // Tracking original values for unsaved changes detection
   bool? _originalEnabled;
   String _originalFanMin = "";
   String _originalFanMax = "";
@@ -27,13 +26,15 @@ class PoultryAutomationSettingsController extends GetxController {
   List<String> _originalSchedules = [];
 
   bool get hasUnsavedChanges {
-    final currentSchedules = lightSchedules.map((s) => "${s.startTime}-${s.endTime}").toList();
-    
+    final currentSchedules = lightSchedules
+        .map((s) => "${s.startTime}-${s.endTime}")
+        .toList();
+
     return isAutomationEnabled.value != _originalEnabled ||
-           fanTempMinController.text != _originalFanMin ||
-           fanTempMaxController.text != _originalFanMax ||
-           foggerHumidityMinController.text != _originalFoggerMin ||
-           !_areListsEqual(currentSchedules, _originalSchedules);
+        fanTempMinController.text != _originalFanMin ||
+        fanTempMaxController.text != _originalFanMax ||
+        foggerHumidityMinController.text != _originalFoggerMin ||
+        !_areListsEqual(currentSchedules, _originalSchedules);
   }
 
   bool _areListsEqual(List<String> a, List<String> b) {
@@ -70,7 +71,8 @@ class PoultryAutomationSettingsController extends GetxController {
           isAutomationEnabled.value = r.data!.isEnabled ?? false;
           fanTempMinController.text = r.data!.fanTempMin?.toString() ?? '';
           fanTempMaxController.text = r.data!.fanTempMax?.toString() ?? '';
-          foggerHumidityMinController.text = r.data!.foggerHumidityMin?.toString() ?? '';
+          foggerHumidityMinController.text =
+              r.data!.foggerHumidityMin?.toString() ?? '';
           lightSchedules.assignAll(r.data!.lightSchedules ?? []);
 
           _captureOriginalState();
@@ -85,7 +87,9 @@ class PoultryAutomationSettingsController extends GetxController {
     _originalFanMin = fanTempMinController.text;
     _originalFanMax = fanTempMaxController.text;
     _originalFoggerMin = foggerHumidityMinController.text;
-    _originalSchedules = lightSchedules.map((s) => "${s.startTime}-${s.endTime}").toList();
+    _originalSchedules = lightSchedules
+        .map((s) => "${s.startTime}-${s.endTime}")
+        .toList();
   }
 
   Future<void> saveSettings() async {
@@ -114,7 +118,8 @@ class PoultryAutomationSettingsController extends GetxController {
           isAutomationEnabled.value = r.data!.isEnabled ?? false;
           fanTempMinController.text = r.data!.fanTempMin?.toString() ?? '';
           fanTempMaxController.text = r.data!.fanTempMax?.toString() ?? '';
-          foggerHumidityMinController.text = r.data!.foggerHumidityMin?.toString() ?? '';
+          foggerHumidityMinController.text =
+              r.data!.foggerHumidityMin?.toString() ?? '';
           lightSchedules.assignAll(r.data!.lightSchedules ?? []);
           _captureOriginalState();
         }
@@ -149,41 +154,17 @@ class PoultryAutomationSettingsController extends GetxController {
     );
   }
 
-  // void _showSnackbar(String title, String message, Color color) {
-  //   Get.snackbar(
-  //     title,
-  //     message,
-  //     snackPosition: SnackPosition.BOTTOM,
-  //     backgroundColor: color,
-  //     colorText: Colors.white,
-  //     margin: const EdgeInsets.all(10),
-  //     borderRadius: 10,
-  //     duration: const Duration(seconds: 3),
-  //   );
-  // }
   void _showSnackbar(String title, String message, Color color) {
-    final context = Get.context;
-
-    if (context == null) return;
-
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: color,
-        duration: const Duration(seconds: 3),
-      ),
+    Get.snackbar(
+      title,
+      message,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: color.withValues(alpha: 0.8),
+      colorText: Colors.white,
+      duration: const Duration(seconds: 3),
     );
   }
-  //
-  // @override
-  // void onClose() {
-  //   fanTempMinController.dispose();
-  //   fanTempMaxController.dispose();
-  //   foggerHumidityMinController.dispose();
-  //   super.onClose();
-  // }
+
   @override
   void onClose() {
     fanTempMinController.dispose();

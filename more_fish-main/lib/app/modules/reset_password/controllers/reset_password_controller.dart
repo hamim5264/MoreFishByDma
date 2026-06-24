@@ -5,7 +5,6 @@ import '../../../response/forget_password_response.dart';
 import '../../../routes/app_pages.dart';
 
 class ResetPasswordController extends GetxController {
-
   final formKey = GlobalKey<FormState>();
   final passwordController = TextEditingController();
   final confirmPassController = TextEditingController();
@@ -16,32 +15,26 @@ class ResetPasswordController extends GetxController {
   var isActiveButton = true.obs;
   var userId = ''.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-
-  }
-
   resetPassword(context, userId, password) async {
-    var response = await authRepository.resetPassword(userId: userId, password: password);
+    var response = await authRepository.resetPassword(
+      userId: userId,
+      password: password,
+    );
     response.fold(
-        (l){
-      print('${l.message}');
-      isActiveButton.value = true;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Oops! ❌ Invalid Credentials")),
-      );
-    },
-        (r) async {
-      forgotPasswordResponse.value = r;
-      Get.offAllNamed(Routes.INDEX);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Successful ✅")),
-      );
-
-
-    });
-
+      (l) {
+        debugPrint(l.message);
+        isActiveButton.value = true;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Oops! ❌ Invalid Credentials")),
+        );
+      },
+      (r) async {
+        forgotPasswordResponse.value = r;
+        Get.offAllNamed(Routes.INDEX);
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Successful ✅")));
+      },
+    );
   }
-
 }

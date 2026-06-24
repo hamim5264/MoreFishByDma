@@ -1,4 +1,3 @@
-// app/modules/poultry_index/views/poultry_live_monitoring_view.dart
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,44 +26,35 @@ class PoultryLiveMonitoringView extends StatelessWidget {
           backgroundColor: const Color(0xffebffff),
           body: Column(
             children: [
-            Obx(
-              () => CommonAppBar(
-                title: 'Poultry Care',
-                cityName: 'Dhaka',
-                date: header.formattedDate.value,
-                time: header.formattedTime.value,
-                temp: header.tempText.value,
-                humidity: header.humidityText.value,
-                logoAssetPath: 'assets/icons/dma_poultry_pulse.png',
-                backgroundColor: const Color(0xffdbcc68),
+              Obx(
+                () => CommonAppBar(
+                  title: 'Poultry Care',
+                  cityName: 'Dhaka',
+                  date: header.formattedDate.value,
+                  time: header.formattedTime.value,
+                  temp: header.tempText.value,
+                  humidity: header.humidityText.value,
+                  logoAssetPath: 'assets/icons/dma_poultry_pulse.png',
+                  backgroundColor: const Color(0xffdbcc68),
+                ),
               ),
-            ),
-            Expanded(
-              // Poultry Pulse live monitoring UI is visible even when a device isn't connected yet.
-              // (No login-gating for now; backend/device integration will be added later.)
-              child: Builder(
-                // builder: (_) {
-                //   final ctrl = Get.put(PoultryLiveMonitoringController());
-                //   WidgetsBinding.instance.addPostFrameCallback((_) {
-                //     ctrl.refreshWhenPageVisible();
-                //   });
-                //   return _LoggedInDashboard(controller: ctrl);
-                // },
-                builder: (_) {
-                  final ctrl = Get.find<PoultryLiveMonitoringController>();
+              Expanded(
+                child: Builder(
+                  builder: (_) {
+                    final ctrl = Get.find<PoultryLiveMonitoringController>();
 
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    ctrl.refreshWhenPageVisible();
-                  });
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      ctrl.refreshWhenPageVisible();
+                    });
 
-                  return _LoggedInDashboard(controller: ctrl);
-                },
+                    return _LoggedInDashboard(controller: ctrl);
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
-    )
     );
   }
 }
@@ -104,7 +94,6 @@ class _LoggedInDashboard extends StatelessWidget {
       return RefreshIndicator(
         onRefresh: () async {
           final refresh = controller.refreshLiveData();
-          // Ensure refresh completes in max 2 seconds
           await Future.any([
             refresh,
             Future.delayed(const Duration(seconds: 2)),
@@ -117,8 +106,6 @@ class _LoggedInDashboard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Header illustration under the Poultry Pulse app bar.
-                // (Removed header illustration as requested.)
                 const SizedBox(height: 10),
                 _DeviceDropdown(controller: controller),
                 const SizedBox(height: 10),
@@ -127,7 +114,7 @@ class _LoggedInDashboard extends StatelessWidget {
                     deviceName: live.deviceId,
                     deviceStatus: live.deviceStatus,
                     timestampIso: live.timestamp,
-                   ),
+                  ),
                 const SizedBox(height: 10),
                 Wrap(
                   spacing: 12,
@@ -148,7 +135,6 @@ class _LoggedInDashboard extends StatelessWidget {
                 const SizedBox(height: 14),
                 _SwitchesSection(controller: controller, live: live),
                 const SizedBox(height: 14),
-                // Temporary note until Poultry Pulse devices/backend are connected.
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
@@ -160,7 +146,10 @@ class _LoggedInDashboard extends StatelessWidget {
                   ),
                   child: Text(
                     'poultry_param_note'.tr,
-                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -228,66 +217,6 @@ class _DeviceDropdown extends StatelessWidget {
   }
 }
 
-// class _DeviceHeader extends StatelessWidget {
-//   const _DeviceHeader({required this.deviceName, required this.timestampIso});
-
-//   final String deviceName;
-//   final String timestampIso;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     String ts = timestampIso;
-
-//     try {
-//       // ✅ Existing parsed time + 6 hours added
-//       final dt = DateTime.parse(timestampIso).toLocal().add(
-//         const Duration(hours: 6),
-//       );
-
-//       ts =
-//           '${dt.day.toString().padLeft(2, '0')} ${_monthName(dt.month)} ${dt.year}   '
-//           '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
-//     } catch (_) {}
-
-//     return Row(
-//       children: [
-//         const Icon(Icons.circle, color: Colors.green, size: 12),
-//         const SizedBox(width: 8),
-//         Expanded(
-//           child: Text(
-//             deviceName,
-//             style: const TextStyle(fontWeight: FontWeight.w600),
-//           ),
-//         ),
-//         Text(
-//           ts,
-//           style: const TextStyle(
-//             fontSize: 12,
-//             color: Colors.black54,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-
-//   static String _monthName(int m) {
-//     const names = [
-//       'Jan',
-//       'Feb',
-//       'Mar',
-//       'Apr',
-//       'May',
-//       'Jun',
-//       'Jul',
-//       'Aug',
-//       'Sep',
-//       'Oct',
-//       'Nov',
-//       'Dec',
-//     ];
-//     return (m >= 1 && m <= 12) ? names[m - 1] : '';
-//   }
-// }
 class _DeviceHeader extends StatelessWidget {
   const _DeviceHeader({
     required this.deviceName,
@@ -304,7 +233,6 @@ class _DeviceHeader extends StatelessWidget {
     String ts = timestampIso;
 
     try {
-      // ✅ API format parse + 6 hours add
       final parsed = DateFormat('dd MMM yyyy hh:mm a').parse(timestampIso);
 
       final dt = parsed.add(const Duration(hours: 6));
@@ -382,7 +310,7 @@ class _SwitchesSection extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -404,7 +332,10 @@ class _SwitchesSection extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   'switch_controls'.tr,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),
@@ -454,9 +385,11 @@ class _SwitchCard extends StatelessWidget {
     return Obx(() {
       final busy = controller.switchBusy[item.switchId] ?? false;
       final value = controller.switchUiState[item.switchId] ?? item.isOn;
-      final bool automationActive = controller.liveData.value?.automationEnabled ?? false;
+      final bool automationActive =
+          controller.liveData.value?.automationEnabled ?? false;
 
-      final bool canInteract = isDeviceOnline && item.isActive && !busy && !automationActive;
+      final bool canInteract =
+          isDeviceOnline && item.isActive && !busy && !automationActive;
 
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -466,13 +399,13 @@ class _SwitchCard extends StatelessWidget {
               : Colors.grey.shade300,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: value ? Colors.green.withOpacity(0.5) : Colors.black12,
+            color: value ? Colors.green.withValues(alpha: 0.5) : Colors.black12,
             width: value ? 1.5 : 1,
           ),
           boxShadow: [
             if (value && isDeviceOnline && !automationActive)
               BoxShadow(
-                color: Colors.green.withOpacity(0.2),
+                color: Colors.green.withValues(alpha: 0.2),
                 blurRadius: 10,
                 spreadRadius: 2,
               ),
@@ -489,7 +422,9 @@ class _SwitchCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: (isDeviceOnline && !automationActive) ? Colors.black : Colors.grey.shade600,
+                      color: (isDeviceOnline && !automationActive)
+                          ? Colors.black
+                          : Colors.grey.shade600,
                     ),
                   ),
                   if (automationActive)
@@ -530,7 +465,7 @@ class _SwitchCard extends StatelessWidget {
         'Automation Active',
         'Manual control is disabled while automation is ON. Turn off automation in Settings to control manually.',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange.withOpacity(0.9),
+        backgroundColor: Colors.orange.withValues(alpha: 0.9),
         colorText: Colors.white,
         margin: const EdgeInsets.all(10),
         borderRadius: 10,
@@ -575,7 +510,7 @@ class _MetricCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
+                  color: Colors.black.withValues(alpha: 0.08),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -643,7 +578,6 @@ Color _metricTextColor(String status) {
   if (normalized == 'perfect') {
     return Colors.green;
   }
-  // Requirements: danger and invalid should be red.
   return Colors.red;
 }
 

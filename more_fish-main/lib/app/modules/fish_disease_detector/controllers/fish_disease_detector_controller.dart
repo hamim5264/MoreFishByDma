@@ -8,9 +8,8 @@ import 'package:more_fish/app/service/service.dart';
 
 class FishDiseaseDetectorController extends GetxController {
   final _loginTokenStorage = Get.find<LoginTokenStorage>();
-  
-  String get _endpoint =>
-      '${ApiService.baseUrl}/devices/fish-disease/detect/';
+
+  String get _endpoint => '${ApiService.baseUrl}/devices/fish-disease/detect/';
 
   final ImagePicker _picker = ImagePicker();
 

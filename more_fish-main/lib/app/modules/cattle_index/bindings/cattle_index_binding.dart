@@ -14,8 +14,6 @@ class CattleIndexBinding extends Bindings {
     Get.lazyPut<CattleNotificationsController>(
       () => CattleNotificationsController(),
     );
-
-    // ✅ Put it immediately so it can start polling/caching in background
     Get.put(CattleLiveMonitoringController(), permanent: true);
   }
 }

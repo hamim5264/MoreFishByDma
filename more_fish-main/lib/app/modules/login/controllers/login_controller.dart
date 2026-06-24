@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// loader removed
 import 'package:get/get.dart';
 import '../../../repo/auth.dart';
 import '../../../response/login_response.dart';
@@ -53,7 +52,6 @@ class LoginController extends GetxController {
     final trimmedEmail = email.toString().trim();
     debugPrint('Poultry live login email: $trimmedEmail');
     debugPrint('Poultry live login endpoint: /auth/login/');
-    // loader removed
 
     try {
       var response = await authRepository.setLogin(
@@ -63,7 +61,7 @@ class LoginController extends GetxController {
 
       await response.fold(
         (l) async {
-          debugPrint('${l.message}');
+          debugPrint(l.message);
           isActiveLoginButton.value = true;
           if (context != null && context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -104,7 +102,6 @@ class LoginController extends GetxController {
             'Saved token in SharedPreferences: ${loginTokenStorage.getMoreFishToken() != null}',
           );
 
-          // Update FCM token after successful login
           final fcmToken = await FcmService.getFcmToken();
           if (fcmToken != null) {
             await authRepository.updateFcmToken(

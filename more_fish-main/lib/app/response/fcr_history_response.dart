@@ -22,14 +22,16 @@ class FcrHistoryResponse {
         statusCode: json["status_code"] ?? 0,
         data: json["data"] == null
             ? []
-            : List<FcrRecord>.from(json["data"].map((x) => FcrRecord.fromJson(x))),
+            : List<FcrRecord>.from(
+                json["data"].map((x) => FcrRecord.fromJson(x)),
+              ),
       );
 
   Map<String, dynamic> toJson() => {
-        "success": success,
-        "status_code": statusCode,
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
-      };
+    "success": success,
+    "status_code": statusCode,
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+  };
 }
 
 class FcrRecord {
@@ -54,26 +56,26 @@ class FcrRecord {
   });
 
   factory FcrRecord.fromJson(Map<String, dynamic> json) => FcrRecord(
-        id: json["id"],
-        assetId: json["asset_id"],
-        assetName: json["asset_name"],
-        feedWeightKg: json["feed_weight_kg"]?.toString(),
-        weightGainedKg: json["weight_gained_kg"]?.toString(),
-        fcr: json["fcr"]?.toDouble(),
-        calculatedAt: json["calculated_at"] == null
-            ? null
-            : DateTime.parse(json["calculated_at"]),
-        notes: json["notes"],
-      );
+    id: json["id"],
+    assetId: json["asset_id"],
+    assetName: json["asset_name"],
+    feedWeightKg: json["feed_weight_kg"]?.toString(),
+    weightGainedKg: json["weight_gained_kg"]?.toString(),
+    fcr: json["fcr"]?.toDouble(),
+    calculatedAt: json["calculated_at"] == null
+        ? null
+        : DateTime.parse(json["calculated_at"]),
+    notes: json["notes"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "asset_id": assetId,
-        "asset_name": assetName,
-        "feed_weight_kg": feedWeightKg,
-        "weight_gained_kg": weightGainedKg,
-        "fcr": fcr,
-        "calculated_at": calculatedAt?.toIso8601String(),
-        "notes": notes,
-      };
+    "id": id,
+    "asset_id": assetId,
+    "asset_name": assetName,
+    "feed_weight_kg": feedWeightKg,
+    "weight_gained_kg": weightGainedKg,
+    "fcr": fcr,
+    "calculated_at": calculatedAt?.toIso8601String(),
+    "notes": notes,
+  };
 }

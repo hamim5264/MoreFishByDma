@@ -63,7 +63,9 @@ class CleanAirProfileView extends GetView<CleanAirProfileController> {
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: Colors.blue.shade50,
-                                          border: Border.all(color: Colors.blue.shade100),
+                                          border: Border.all(
+                                            color: Colors.blue.shade100,
+                                          ),
                                         ),
                                         child: const Icon(
                                           Icons.person,
@@ -113,7 +115,9 @@ class CleanAirProfileView extends GetView<CleanAirProfileController> {
                                             Color(0xffffcdd2),
                                           ],
                                         ),
-                                        border: Border.all(color: Colors.red.shade100),
+                                        border: Border.all(
+                                          color: Colors.red.shade100,
+                                        ),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,

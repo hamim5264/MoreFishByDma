@@ -24,32 +24,27 @@ class ForgotPasswordController extends GetxController {
     super.onClose();
   }
 
-
   forgotPass(context, email, phone) async {
-    var response = await authRepository.forgotPassword(email: email, phone: phone);
+    var response = await authRepository.forgotPassword(
+      email: email,
+      phone: phone,
+    );
     response.fold(
-            (l){
-          debugPrint(l.message);
-          isActiveButton.value = true;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Oops! ❌ Invalid credentials.")),
-          );
-        },
-            (r) async {
-              forgotPasswordResponse.value = r;
-              Get.toNamed(Routes.OTP_VERIFY);
-              isActiveButton.value = true;
-              ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Successful ✅")),
-          );
-
-
-        });
-
+      (l) {
+        debugPrint(l.message);
+        isActiveButton.value = true;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Oops! ❌ Invalid credentials.")),
+        );
+      },
+      (r) async {
+        forgotPasswordResponse.value = r;
+        Get.toNamed(Routes.OTP_VERIFY);
+        isActiveButton.value = true;
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Successful ✅")));
+      },
+    );
   }
-
-
-
 }
-
-

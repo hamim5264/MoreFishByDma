@@ -1,4 +1,3 @@
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +12,7 @@ import '../routes/app_pages.dart';
 import 'local_storage.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'more_fish_notifications',
@@ -23,12 +22,8 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
 );
 
 @pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(
-    RemoteMessage message,
-    ) async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final prefs = await SharedPreferences.getInstance();
   final token = prefs.getString('token');
@@ -50,7 +45,6 @@ Future<void> _firebaseMessagingBackgroundHandler(
   } else if (type == 'pharma' || type == 'clean_air') {
     shouldShow = isValid(pharmaToken);
   } else {
-    // Default to more fish
     shouldShow = isValid(token);
   }
 
@@ -61,22 +55,14 @@ Future<void> _firebaseMessagingBackgroundHandler(
     return;
   }
 
-  debugPrint(
-    "Handling a background message: ${message.messageId}",
-  );
+  debugPrint("Handling a background message: ${message.messageId}");
 
   final title =
-      message.data['title'] ??
-          message.notification?.title ??
-          'New Alert';
+      message.data['title'] ?? message.notification?.title ?? 'New Alert';
 
-  final body =
-      message.data['message'] ??
-          message.notification?.body ??
-          '';
+  final body = message.data['message'] ?? message.notification?.body ?? '';
 
   await flutterLocalNotificationsPlugin.show(
-    //DateTime.now().millisecondsSinceEpoch ~/ 1000,
     DateTime.now().microsecondsSinceEpoch.remainder(1000000),
     title,
     body,
@@ -96,7 +82,6 @@ class FcmService {
   static final FirebaseMessaging _firebaseMessaging =
       FirebaseMessaging.instance;
 
-
   static bool _shouldShowNotification(RemoteMessage message) {
     final storage = Get.find<LoginTokenStorage>();
     final type = message.data['type']?.toString().toLowerCase();
@@ -108,7 +93,6 @@ class FcmService {
     } else if (type == 'pharma' || type == 'clean_air') {
       return storage.hasValidPharmaToken();
     } else {
-      // Default to More Fish (or any notification without a specific type)
       return storage.hasValidMoreFishToken();
     }
   }
@@ -116,24 +100,19 @@ class FcmService {
   static Future<void> initialize() async {
     await _initializeLocalNotifications();
 
-    NotificationSettings settings =
-    await _firebaseMessaging.requestPermission(
+    NotificationSettings settings = await _firebaseMessaging.requestPermission(
       alert: true,
       badge: true,
       sound: true,
     );
 
-    if (settings.authorizationStatus ==
-        AuthorizationStatus.authorized) {
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       debugPrint('User granted permission');
     } else {
-      debugPrint(
-        'User declined or has not accepted permission',
-      );
+      debugPrint('User declined or has not accepted permission');
     }
 
-    await _firebaseMessaging
-        .setForegroundNotificationPresentationOptions(
+    await _firebaseMessaging.setForegroundNotificationPresentationOptions(
       alert: true,
       badge: true,
       sound: true,
@@ -149,144 +128,81 @@ class FcmService {
       _updateTokenOnServer(currentToken);
     }
 
-    FirebaseMessaging.onBackgroundMessage(
-      _firebaseMessagingBackgroundHandler,
-    );
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-    FirebaseMessaging.onMessage.listen(
-          (RemoteMessage message) async {
-        if (!_shouldShowNotification(message)) {
-          debugPrint(
-            'User not logged into this feature. Ignoring notification.',
-          );
-          return;
-        }
-        debugPrint(
-          'Got a message whilst in the foreground!',
-        );
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      if (!_shouldShowNotification(message)) {
+        debugPrint('User not logged into this feature. Ignoring notification.');
+        return;
+      }
+      debugPrint('Got a message whilst in the foreground!');
 
-        debugPrint(
-          'Message data: ${message.data}',
-        );
+      debugPrint('Message data: ${message.data}');
 
-        final title =
-            message.data['title'] ??
-                message.notification?.title ??
-                'New Alert';
+      final title =
+          message.data['title'] ?? message.notification?.title ?? 'New Alert';
 
-        final body =
-            message.data['message'] ??
-                message.notification?.body ??
-                '';
+      final body = message.data['message'] ?? message.notification?.body ?? '';
 
-        _incrementUnreadCount();
+      _incrementUnreadCount();
 
-        await _showLocalNotification(
+      await _showLocalNotification(title, body);
+
+      if (Get.overlayContext != null) {
+        Get.snackbar(
           title,
           body,
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: const Color(0xffd4fcfd).withValues(alpha: 0.9),
+          colorText: Colors.black,
+          duration: const Duration(seconds: 6),
+          onTap: (_) => _handleMessageNavigation(message),
         );
+      }
+    });
 
-        // Get.snackbar(
-        //   title,
-        //   body,
-        //   snackPosition: SnackPosition.TOP,
-        //   backgroundColor:
-        //   const Color(0xffd4fcfd).withOpacity(0.9),
-        //   colorText: Colors.black,
-        //   duration: const Duration(seconds: 6),
-        //   onTap: (_) =>
-        //       _handleMessageNavigation(message),
-        // );
-            if (Get.overlayContext != null) {
-              Get.snackbar(
-                title,
-                body,
-                snackPosition: SnackPosition.TOP,
-                backgroundColor: const Color(0xffd4fcfd).withOpacity(0.9),
-                colorText: Colors.black,
-                duration: const Duration(seconds: 6),
-                onTap: (_) => _handleMessageNavigation(message),
-              );
-            }
-      },
-    );
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      if (!_shouldShowNotification(message)) {
+        return;
+      }
+      debugPrint('A new onMessageOpenedApp event was published!');
 
-    FirebaseMessaging.onMessageOpenedApp.listen(
-          (RemoteMessage message) {
-        if (!_shouldShowNotification(message)) {
-          return;
-        }
-        debugPrint(
-          'A new onMessageOpenedApp event was published!',
-        );
+      _handleMessageNavigation(message);
+    });
 
-        _handleMessageNavigation(message);
-      },
-    );
+    final initialMessage = await _firebaseMessaging.getInitialMessage();
 
-    final initialMessage =
-    await _firebaseMessaging.getInitialMessage();
-
-    // if (initialMessage != null) {
-    //   Future.delayed(
-    //     const Duration(seconds: 1),
-    //         () {
-    //       _handleMessageNavigation(
-    //         initialMessage,
-    //       );
-    //     },
-    //   );
-    // }
     if (initialMessage != null && _shouldShowNotification(initialMessage)) {
-      Future.delayed(
-        const Duration(seconds: 1),
-            () {
-          _handleMessageNavigation(
-            initialMessage,
-          );
-        },
-      );
+      Future.delayed(const Duration(seconds: 1), () {
+        _handleMessageNavigation(initialMessage);
+      });
     }
 
-    _firebaseMessaging.onTokenRefresh.listen(
-          (newToken) {
-        debugPrint(
-          "FCM Token Refreshed: $newToken",
-        );
+    _firebaseMessaging.onTokenRefresh.listen((newToken) {
+      debugPrint("FCM Token Refreshed: $newToken");
 
-        _updateTokenOnServer(newToken);
-      },
-    );
+      _updateTokenOnServer(newToken);
+    });
   }
 
-  static Future<void>
-  _initializeLocalNotifications() async {
-    const androidSettings =
-    AndroidInitializationSettings(
+  static Future<void> _initializeLocalNotifications() async {
+    const androidSettings = AndroidInitializationSettings(
       '@mipmap/launcher_icon',
     );
 
-    const settings =
-    InitializationSettings(
-      android: androidSettings,
-    );
+    const settings = InitializationSettings(android: androidSettings);
 
-    await flutterLocalNotificationsPlugin
-        .initialize(settings);
+    await flutterLocalNotificationsPlugin.initialize(settings);
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin
-    >()
+          AndroidFlutterLocalNotificationsPlugin
+        >()
         ?.createNotificationChannel(channel);
   }
 
-  static Future<void> _showLocalNotification(
-      String title,
-      String body,
-      ) async {
+  static Future<void> _showLocalNotification(String title, String body) async {
     await flutterLocalNotificationsPlugin.show(
-      //DateTime.now().millisecondsSinceEpoch ~/ 1000,
       DateTime.now().microsecondsSinceEpoch.remainder(1000000),
       title,
       body,
@@ -294,8 +210,7 @@ class FcmService {
         android: AndroidNotificationDetails(
           channel.id,
           channel.name,
-          channelDescription:
-          channel.description,
+          channelDescription: channel.description,
           importance: Importance.max,
           priority: Priority.high,
         ),
@@ -304,12 +219,9 @@ class FcmService {
   }
 
   static void _incrementUnreadCount() {
-    final storage =
-    Get.find<LoginTokenStorage>();
+    final storage = Get.find<LoginTokenStorage>();
 
-    storage
-        .unreadNotificationCount
-        .value++;
+    storage.unreadNotificationCount.value++;
   }
 
   static Future<void> clearFcmTokenOnLogout({
@@ -328,89 +240,54 @@ class FcmService {
     );
   }
 
-  static void _updateTokenOnServer(
-      String token,
-      ) {
+  static void _updateTokenOnServer(String token) {
     debugPrint("Sending token to backend: $token");
-    final storage =
-    Get.find<LoginTokenStorage>();
+    final storage = Get.find<LoginTokenStorage>();
 
     final authRepo = AuthRepository();
 
     if (storage.hasValidMoreFishToken()) {
-      authRepo.updateFcmToken(
-        fcmToken: token,
-        isPoultryFlow: false,
-      );
+      authRepo.updateFcmToken(fcmToken: token, isPoultryFlow: false);
     }
 
     if (storage.hasValidPoultryToken()) {
-      authRepo.updateFcmToken(
-        fcmToken: token,
-        isPoultryFlow: true,
-      );
+      authRepo.updateFcmToken(fcmToken: token, isPoultryFlow: true);
     }
 
     if (storage.hasValidCattleToken()) {
-      authRepo.updateFcmToken(
-        fcmToken: token,
-        isCattleFlow: true,
-      );
+      authRepo.updateFcmToken(fcmToken: token, isCattleFlow: true);
     }
 
     if (storage.hasValidPharmaToken()) {
-      authRepo.updateFcmToken(
-        fcmToken: token,
-        isPharmaFlow: true,
-      );
+      authRepo.updateFcmToken(fcmToken: token, isPharmaFlow: true);
     }
   }
 
-  static void _handleMessageNavigation(
-      RemoteMessage message,
-      ) {
-    debugPrint(
-      "Navigating from notification data: ${message.data}",
-    );
+  static void _handleMessageNavigation(RemoteMessage message) {
+    debugPrint("Navigating from notification data: ${message.data}");
 
-    final type = message.data['type']
-        ?.toString()
-        .toLowerCase();
+    final type = message.data['type']?.toString().toLowerCase();
 
     if (type == 'cattle') {
-      Get.toNamed(
-        Routes.CATTLE_INDEX,
-      );
+      Get.toNamed(Routes.CATTLE_INDEX);
     } else if (type == 'poultry') {
-      Get.toNamed(
-        Routes.POULTRY_INDEX,
-      );
-    } else if (type == 'pharma' ||
-        type == 'clean_air') {
-      Get.toNamed(
-        Routes.CLEAN_AIR_INDEX,
-      );
+      Get.toNamed(Routes.POULTRY_INDEX);
+    } else if (type == 'pharma' || type == 'clean_air') {
+      Get.toNamed(Routes.CLEAN_AIR_INDEX);
     } else {
-      Get.toNamed(
-        Routes.NOTIFICATIONS,
-      );
+      Get.toNamed(Routes.NOTIFICATIONS);
     }
   }
 
   static Future<String?> getFcmToken() async {
     try {
-      final token =
-      await _firebaseMessaging.getToken();
+      final token = await _firebaseMessaging.getToken();
 
-      debugPrint(
-        'FCM Token: $token',
-      );
+      debugPrint('FCM Token: $token');
 
       return token;
     } catch (e) {
-      debugPrint(
-        'Error getting FCM token: $e',
-      );
+      debugPrint('Error getting FCM token: $e');
 
       return null;
     }

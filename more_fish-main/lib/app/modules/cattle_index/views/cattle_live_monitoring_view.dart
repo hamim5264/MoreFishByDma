@@ -246,7 +246,9 @@ class _LoggedInDashboard extends StatelessWidget {
     if (n.contains('sound') || n.contains('noise')) {
       return 'assets/icons/poultry_noise.png';
     }
-    if (n.contains('aqi') || n.contains('co')) return 'assets/icons/poultry_co.png';
+    if (n.contains('aqi') || n.contains('co')) {
+      return 'assets/icons/poultry_co.png';
+    }
     return 'assets/icons/cattle_nh3.png';
   }
 
@@ -391,7 +393,7 @@ class _MetricCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Colors.black.withValues(alpha: 0.08),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -446,10 +448,9 @@ class _SwitchTile extends StatelessWidget {
     final bool canToggle =
         isOnline && (switchItem.isActive ?? false) && !automationEnabled;
 
-    //final bool isOn = switchItem.isOn ?? false;
     final bool isOn =
         controller.switchUiState[switchItem.switchId ?? ''] ??
-            (switchItem.isOn ?? false);
+        (switchItem.isOn ?? false);
 
     return Container(
       width: w,
@@ -458,15 +459,15 @@ class _SwitchTile extends StatelessWidget {
         color: canToggle ? Colors.white : Colors.grey.shade200,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isOn ? Colors.green.withOpacity(0.5) : Colors.black12,
+          color: isOn ? Colors.green.withValues(alpha: 0.5) : Colors.black12,
           width: isOn ? 1.5 : 1,
         ),
         boxShadow: [
           if (canToggle)
             BoxShadow(
               color: isOn
-                  ? Colors.green.withOpacity(0.2)
-                  : Colors.black.withOpacity(0.05),
+                  ? Colors.green.withValues(alpha: 0.2)
+                  : Colors.black.withValues(alpha: 0.05),
               blurRadius: isOn ? 8 : 4,
               spreadRadius: isOn ? 2 : 0,
               offset: const Offset(0, 2),
@@ -498,16 +499,11 @@ class _SwitchTile extends StatelessWidget {
               ),
             ),
           const SizedBox(height: 8),
-          // CommonSwitch(
-          //   value: switchItem.isOn ?? false,
-          //   onChanged: canToggle ? onChanged : null,
-          //   activeColor: Colors.green,
-          //   inactiveColor: Colors.red,
-          // ),
+
           Obx(
-                () => CommonSwitch(
+            () => CommonSwitch(
               value:
-              controller.switchUiState[switchItem.switchId ?? ''] ??
+                  controller.switchUiState[switchItem.switchId ?? ''] ??
                   (switchItem.isOn ?? false),
               onChanged: canToggle ? onChanged : null,
               activeColor: Colors.green,

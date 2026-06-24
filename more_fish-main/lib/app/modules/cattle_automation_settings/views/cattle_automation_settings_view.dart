@@ -18,7 +18,7 @@ class CattleAutomationSettingsView
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         if (controller.hasUnsavedChanges) {
           _showUnsavedDialog(context);
@@ -273,6 +273,8 @@ class CattleAutomationSettingsView
         initialTime: const TimeOfDay(hour: 20, minute: 0),
         helpText: "SELECT START TIME");
     if (start == null) return;
+
+    if (!context.mounted) return;
 
     TimeOfDay? end = await showTimePicker(
         context: context,

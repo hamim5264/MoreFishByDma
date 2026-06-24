@@ -1,4 +1,3 @@
-// app/modules/dma_technologies/views/dma_technologies_view.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,9 +19,6 @@ class DmaTechnologiesView extends StatelessWidget {
   }
 }
 
-/// The main DMA Technologies grid content.
-///
-/// Extracted so we can reuse it inside a bottom-nav shell (DMA + Social).
 class DmaTechnologiesGrid extends StatelessWidget {
   const DmaTechnologiesGrid({super.key});
 
@@ -53,7 +49,7 @@ class DmaTechnologiesGrid extends StatelessWidget {
       _DmaTileData(
         title: 'Pharma Care',
         asset: 'assets/icons/dma_pharmaceutical.png',
-      onTap: () => Get.toNamed(Routes.CLEAN_AIR_INDEX),
+        onTap: () => Get.toNamed(Routes.CLEAN_AIR_INDEX),
       ),
       _DmaTileData(
         title: 'Food & Beverage',
@@ -130,8 +126,10 @@ class DmaTechnologiesGrid extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
                 child: Container(
                   width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 16,
+                  ),
                   decoration: BoxDecoration(
                     color: tileBg,
                     borderRadius: BorderRadius.circular(14),
@@ -162,8 +160,11 @@ class DmaTechnologiesGrid extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      const Icon(Icons.arrow_forward_ios,
-                          size: 16, color: Colors.black54),
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                        color: Colors.black54,
+                      ),
                     ],
                   ),
                 ),
@@ -199,6 +200,7 @@ class _DmaTileData {
   final String title;
   final String asset;
   final VoidCallback onTap;
+
   const _DmaTileData({
     required this.title,
     required this.asset,
@@ -209,6 +211,7 @@ class _DmaTileData {
 class _ServiceTile extends StatelessWidget {
   final _DmaTileData data;
   final Color bg;
+
   const _ServiceTile({required this.data, required this.bg});
 
   @override

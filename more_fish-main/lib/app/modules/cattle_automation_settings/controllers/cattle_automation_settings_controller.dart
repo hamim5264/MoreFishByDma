@@ -18,7 +18,6 @@ class CattleAutomationSettingsController extends GetxController {
 
   int? farmId;
 
-  // Tracking original values for unsaved changes detection
   bool? _originalEnabled;
   String _originalFanMin = "";
   String _originalFanMax = "";
@@ -26,13 +25,15 @@ class CattleAutomationSettingsController extends GetxController {
   List<String> _originalSchedules = [];
 
   bool get hasUnsavedChanges {
-    final currentSchedules = lightSchedules.map((s) => "${s.startTime}-${s.endTime}").toList();
-    
+    final currentSchedules = lightSchedules
+        .map((s) => "${s.startTime}-${s.endTime}")
+        .toList();
+
     return isAutomationEnabled.value != _originalEnabled ||
-           fanTempMinController.text != _originalFanMin ||
-           fanTempMaxController.text != _originalFanMax ||
-           foggerHumidityMinController.text != _originalFoggerMin ||
-           !_areListsEqual(currentSchedules, _originalSchedules);
+        fanTempMinController.text != _originalFanMin ||
+        fanTempMaxController.text != _originalFanMax ||
+        foggerHumidityMinController.text != _originalFoggerMin ||
+        !_areListsEqual(currentSchedules, _originalSchedules);
   }
 
   bool _areListsEqual(List<String> a, List<String> b) {
@@ -61,15 +62,16 @@ class CattleAutomationSettingsController extends GetxController {
     isLoading.value = true;
     final response = await _repo.getAutomationSettings(farmId: farmId!);
     response.fold(
-      (l) {
+          (l) {
         debugPrint('Fetch Error: ${l.message}');
       },
-      (r) {
+          (r) {
         if (r.data != null) {
           isAutomationEnabled.value = r.data!.isEnabled ?? false;
           fanTempMinController.text = r.data!.fanTempMin?.toString() ?? '';
           fanTempMaxController.text = r.data!.fanTempMax?.toString() ?? '';
-          foggerHumidityMinController.text = r.data!.foggerHumidityMin?.toString() ?? '';
+          foggerHumidityMinController.text =
+              r.data!.foggerHumidityMin?.toString() ?? '';
           lightSchedules.assignAll(r.data!.lightSchedules ?? []);
 
           _captureOriginalState();
@@ -84,7 +86,9 @@ class CattleAutomationSettingsController extends GetxController {
     _originalFanMin = fanTempMinController.text;
     _originalFanMax = fanTempMaxController.text;
     _originalFoggerMin = foggerHumidityMinController.text;
-    _originalSchedules = lightSchedules.map((s) => "${s.startTime}-${s.endTime}").toList();
+    _originalSchedules = lightSchedules
+        .map((s) => "${s.startTime}-${s.endTime}")
+        .toList();
   }
 
   Future<void> saveSettings() async {
@@ -104,16 +108,17 @@ class CattleAutomationSettingsController extends GetxController {
     );
 
     response.fold(
-      (l) {
+          (l) {
         _showSnackbar('Error', l.message, Colors.redAccent);
       },
-      (r) {
+          (r) {
         _showSnackbar('Success', r.message ?? 'Settings saved', Colors.green);
         if (r.data != null) {
           isAutomationEnabled.value = r.data!.isEnabled ?? false;
           fanTempMinController.text = r.data!.fanTempMin?.toString() ?? '';
           fanTempMaxController.text = r.data!.fanTempMax?.toString() ?? '';
-          foggerHumidityMinController.text = r.data!.foggerHumidityMin?.toString() ?? '';
+          foggerHumidityMinController.text =
+              r.data!.foggerHumidityMin?.toString() ?? '';
           lightSchedules.assignAll(r.data!.lightSchedules ?? []);
           _captureOriginalState();
         }
@@ -133,8 +138,8 @@ class CattleAutomationSettingsController extends GetxController {
     );
 
     response.fold(
-      (l) => _showSnackbar('Error', l.message, Colors.redAccent),
-      (r) => fetchAutomationSettings(),
+          (l) => _showSnackbar('Error', l.message, Colors.redAccent),
+          (r) => fetchAutomationSettings(),
     );
   }
 
@@ -143,24 +148,19 @@ class CattleAutomationSettingsController extends GetxController {
     final response = await _repo.deleteLightSchedule(scheduleId: scheduleId);
 
     response.fold(
-      (l) => _showSnackbar('Error', l.message, Colors.redAccent),
-      (r) => fetchAutomationSettings(),
+          (l) => _showSnackbar('Error', l.message, Colors.redAccent),
+          (r) => fetchAutomationSettings(),
     );
   }
 
   void _showSnackbar(String title, String message, Color color) {
-    final context = Get.context;
-
-    if (context == null) return;
-
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: color,
-        duration: const Duration(seconds: 3),
-      ),
+    Get.snackbar(
+      title,
+      message,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: color.withValues(alpha: 0.8),
+      colorText: Colors.white,
+      duration: const Duration(seconds: 3),
     );
   }
 

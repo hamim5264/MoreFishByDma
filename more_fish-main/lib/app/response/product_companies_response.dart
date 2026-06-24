@@ -13,16 +13,18 @@ class ProductCompaniesResponse {
     required this.data,
   });
 
-  factory ProductCompaniesResponse.fromRawJson(String str) => ProductCompaniesResponse.fromJson(json.decode(str));
+  factory ProductCompaniesResponse.fromRawJson(String str) =>
+      ProductCompaniesResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ProductCompaniesResponse.fromJson(Map<String, dynamic> json) => ProductCompaniesResponse(
-    statusCode: json["status_code"],
-    success: json["success"],
-    message: json["message"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-  );
+  factory ProductCompaniesResponse.fromJson(Map<String, dynamic> json) =>
+      ProductCompaniesResponse(
+        statusCode: json["status_code"],
+        success: json["success"],
+        message: json["message"],
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
     "status_code": statusCode,

@@ -24,7 +24,8 @@ class CattleNotificationsResponse {
         data: json["data"] == null
             ? []
             : List<NotificationData>.from(
-                json["data"]!.map((x) => NotificationData.fromJson(x))),
+                json["data"]!.map((x) => NotificationData.fromJson(x)),
+              ),
       );
 }
 

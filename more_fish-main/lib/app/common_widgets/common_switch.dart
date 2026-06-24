@@ -61,8 +61,6 @@ class _CommonSwitchState extends State<CommonSwitch>
 
   @override
   Widget build(BuildContext context) {
-    final bool isDisabled = widget.onChanged == null;
-
     return GestureDetector(
       onTapDown: _handleTapDown,
       onTapUp: _handleTapUp,
@@ -78,24 +76,24 @@ class _CommonSwitchState extends State<CommonSwitch>
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(24),
             color: widget.value
-                ? widget.activeColor.withOpacity(0.25)
-                : widget.inactiveColor.withOpacity(0.25),
+                ? widget.activeColor.withValues(alpha: 0.25)
+                : widget.inactiveColor.withValues(alpha: 0.25),
             border: Border.all(
               color: widget.value
-                  ? widget.activeColor.withOpacity(0.5)
-                  : widget.inactiveColor.withOpacity(0.5),
+                  ? widget.activeColor.withValues(alpha: 0.5)
+                  : widget.inactiveColor.withValues(alpha: 0.5),
               width: 1.5,
             ),
             boxShadow: [
               if (widget.value)
                 BoxShadow(
-                  color: widget.activeColor.withOpacity(0.3),
+                  color: widget.activeColor.withValues(alpha: 0.3),
                   blurRadius: 10,
                   spreadRadius: 2,
                 ),
               if (!widget.value)
                 BoxShadow(
-                  color: widget.inactiveColor.withOpacity(0.1),
+                  color: widget.inactiveColor.withValues(alpha: 0.1),
                   blurRadius: 4,
                   spreadRadius: 1,
                 ),
@@ -104,8 +102,9 @@ class _CommonSwitchState extends State<CommonSwitch>
           child: AnimatedAlign(
             duration: const Duration(milliseconds: 250),
             curve: Curves.easeInOut,
-            alignment:
-                widget.value ? Alignment.centerRight : Alignment.centerLeft,
+            alignment: widget.value
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               width: 20,
@@ -115,7 +114,7 @@ class _CommonSwitchState extends State<CommonSwitch>
                 color: widget.value ? widget.activeColor : widget.inactiveColor,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withValues(alpha: 0.2),
                     blurRadius: 3,
                     offset: const Offset(0, 1.5),
                   ),

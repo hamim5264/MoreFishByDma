@@ -12,6 +12,7 @@ import '../controllers/feed_management_controller.dart';
 
 class FeedManagementView extends GetView<FeedManagementController> {
   const FeedManagementView({super.key});
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -25,7 +26,7 @@ class FeedManagementView extends GetView<FeedManagementController> {
         backgroundColor: AppColors.backGround,
         body: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Obx(() {
               return CommonAppBar(
                 title: 'আরো মাছ - MoreFish',

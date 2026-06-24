@@ -11,6 +11,7 @@ import '../controllers/high_density_fish_farming_controller.dart';
 class HighDensityFishFarmingView
     extends GetView<HighDensityFishFarmingController> {
   const HighDensityFishFarmingView({super.key});
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -20,29 +21,37 @@ class HighDensityFishFarmingView
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.dark,
       ),
-      child:SafeArea(
+      child: SafeArea(
         child: Scaffold(
           backgroundColor: AppColors.backGround,
           body: Column(
             children: [
-              Obx((){
+              Obx(() {
                 return CommonAppBar(
                   title: 'title'.tr,
                   cityName: "dhaka".tr,
                   date: '${homeController.formattedDate}',
                   time: '${homeController.formattedTime}',
                   temp: '${homeController.weatherData['main']['temp']}°C',
-                  humidity: '${homeController.weatherData['main']['humidity']}%',
+                  humidity:
+                      '${homeController.weatherData['main']['humidity']}%',
                 );
               }),
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   itemCount: controller.titleList.length,
-                  itemBuilder: (context, index){
+                  itemBuilder: (context, index) {
                     return CommonContainer(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                      margin: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 16,
+                      ),
+                      margin: const EdgeInsets.only(
+                        left: 16,
+                        right: 16,
+                        bottom: 16,
+                      ),
                       child: Column(
                         children: [
                           Row(
@@ -59,7 +68,7 @@ class HighDensityFishFarmingView
                               ),
                             ],
                           ),
-                          const SizedBox(height: 5,),
+                          const SizedBox(height: 5),
                           CommonText(
                             controller.dataList[index],
                             fontSize: 16,

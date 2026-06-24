@@ -23,10 +23,8 @@ Future<void> main() async {
   storage.isCattleLoggedIn.value = storage.hasValidCattleToken();
   Get.put(storage);
 
-  // ✅ Proper Firebase initialization (Android + Web)
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  
-  // ✅ Initialize FCM Service
+
   await FcmService.initialize();
   final token = await FcmService.getFcmToken();
 

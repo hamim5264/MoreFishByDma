@@ -13,16 +13,18 @@ class SensorListResponse {
     required this.data,
   });
 
-  factory SensorListResponse.fromRawJson(String str) => SensorListResponse.fromJson(json.decode(str));
+  factory SensorListResponse.fromRawJson(String str) =>
+      SensorListResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory SensorListResponse.fromJson(Map<String, dynamic> json) => SensorListResponse(
-    success: json["success"],
-    statusCode: json["status_code"],
-    message: json["message"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-  );
+  factory SensorListResponse.fromJson(Map<String, dynamic> json) =>
+      SensorListResponse(
+        success: json["success"],
+        statusCode: json["status_code"],
+        message: json["message"],
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,
@@ -36,10 +38,7 @@ class Datum {
   int sensorId;
   String sensorSensorName;
 
-  Datum({
-    required this.sensorId,
-    required this.sensorSensorName,
-  });
+  Datum({required this.sensorId, required this.sensorSensorName});
 
   factory Datum.fromRawJson(String str) => Datum.fromJson(json.decode(str));
 

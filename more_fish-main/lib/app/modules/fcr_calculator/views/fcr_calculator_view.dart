@@ -15,10 +15,7 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backGround,
-      appBar: AppBar(
-        title: Text('fcr_calculator'.tr),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text('fcr_calculator'.tr), centerTitle: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -34,14 +31,19 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
                     isExpanded: true,
                     onChanged: (val) {
                       if (val != null) {
-                        final p = controller.ponds.firstWhere((e) => e.id == val);
+                        final p = controller.ponds.firstWhere(
+                          (e) => e.id == val,
+                        );
                         controller.selectAsset(p.id, p.astName);
                       }
                     },
                     items: controller.ponds.map((p) {
                       return DropdownMenuItem<int>(
                         value: p.id,
-                        child: Text(p.astName, style: const TextStyle(fontWeight: FontWeight.bold)),
+                        child: Text(
+                          p.astName,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       );
                     }).toList(),
                   ),
@@ -226,7 +228,8 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
 
     final spots = history.asMap().entries.map((entry) {
       final record = entry.value;
-      final double x = record.calculatedAt?.millisecondsSinceEpoch.toDouble() ?? 0;
+      final double x =
+          record.calculatedAt?.millisecondsSinceEpoch.toDouble() ?? 0;
       final double y = record.fcr ?? 0;
       return FlSpot(x, y);
     }).toList();
@@ -251,24 +254,32 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
             horizontalInterval: 1,
             verticalInterval: (maxX - minX) / 4,
             getDrawingHorizontalLine: (value) => FlLine(
-              color: Colors.blue.withOpacity(0.1),
+              color: Colors.blue.withValues(alpha: 0.1),
               strokeWidth: 1,
             ),
             getDrawingVerticalLine: (value) => FlLine(
-              color: Colors.blue.withOpacity(0.1),
+              color: Colors.blue.withValues(alpha: 0.1),
               strokeWidth: 1,
             ),
           ),
           titlesData: FlTitlesData(
-            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
                 reservedSize: 40,
                 getTitlesWidget: (value, meta) => Text(
                   value.toStringAsFixed(1),
-                  style: const TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -276,12 +287,18 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
               sideTitles: SideTitles(
                 showTitles: true,
                 getTitlesWidget: (value, meta) {
-                  final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
+                  final date = DateTime.fromMillisecondsSinceEpoch(
+                    value.toInt(),
+                  );
                   return Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
                       DateFormat('MM/dd').format(date),
-                      style: const TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 10,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   );
                 },
@@ -291,7 +308,7 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
           ),
           borderData: FlBorderData(
             show: true,
-            border: Border.all(color: Colors.blue.withOpacity(0.1)),
+            border: Border.all(color: Colors.blue.withValues(alpha: 0.1)),
           ),
           lineBarsData: [
             LineChartBarData(
@@ -302,19 +319,20 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
               isStrokeCapRound: true,
               dotData: FlDotData(
                 show: true,
-                getDotPainter: (spot, percent, barData, index) => FlDotCirclePainter(
-                  radius: 4,
-                  color: Colors.white,
-                  strokeWidth: 3,
-                  strokeColor: const Color(0xff0370c3),
-                ),
+                getDotPainter: (spot, percent, barData, index) =>
+                    FlDotCirclePainter(
+                      radius: 4,
+                      color: Colors.white,
+                      strokeWidth: 3,
+                      strokeColor: const Color(0xff0370c3),
+                    ),
               ),
               belowBarData: BarAreaData(
                 show: true,
                 gradient: LinearGradient(
                   colors: [
-                    const Color(0xff0370c3).withOpacity(0.3),
-                    const Color(0xff0370c3).withOpacity(0.0),
+                    const Color(0xff0370c3).withValues(alpha: 0.3),
+                    const Color(0xff0370c3).withValues(alpha: 0.0),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -357,12 +375,17 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.calendar_today, size: 14, color: Colors.grey),
+                            const Icon(
+                              Icons.calendar_today,
+                              size: 14,
+                              color: Colors.grey,
+                            ),
                             const SizedBox(width: 6),
                             CommonText(
                               record.calculatedAt != null
-                                  ? DateFormat('MMM d, yyyy h:mm a')
-                                      .format(record.calculatedAt!)
+                                  ? DateFormat(
+                                      'MMM d, yyyy h:mm a',
+                                    ).format(record.calculatedAt!)
                                   : '',
                               fontSize: 12,
                               color: Colors.grey.shade700,
@@ -387,7 +410,10 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xffe8f7ff),
                       borderRadius: BorderRadius.circular(8),
@@ -417,9 +443,7 @@ class FcrCalculatorView extends GetView<FcrCalculatorController> {
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       decoration: InputDecoration(
         labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(color: AppColors.primary, width: 1.6),

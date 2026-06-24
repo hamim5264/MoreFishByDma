@@ -7,6 +7,7 @@ import '../controllers/otp_verify_controller.dart';
 
 class OtpVerifyView extends GetView<OtpVerifyController> {
   const OtpVerifyView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +52,7 @@ class OtpVerifyView extends GetView<OtpVerifyController> {
                           width: 45,
                           height: 45,
                           child: Focus(
-                            onKey: (node, event) {
+                            onKeyEvent: (node, event) {
                               if (event.logicalKey.keyLabel == 'Backspace' &&
                                   controller
                                       .textControllers[index]
@@ -98,14 +99,11 @@ class OtpVerifyView extends GetView<OtpVerifyController> {
                                     controller.otpVerification(context, code);
                                   }
                                 },
-                                child: const CommonText(
-                                  'Verify OTP',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.green,
-                                  padding: EdgeInsets.symmetric(vertical: 14),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 14,
+                                  ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -113,6 +111,11 @@ class OtpVerifyView extends GetView<OtpVerifyController> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                ),
+                                child: const CommonText(
+                                  'Verify OTP',
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             )

@@ -17,18 +17,20 @@ class AeratorCommandResponse {
     required this.msg,
   });
 
-  factory AeratorCommandResponse.fromRawJson(String str) => AeratorCommandResponse.fromJson(json.decode(str));
+  factory AeratorCommandResponse.fromRawJson(String str) =>
+      AeratorCommandResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory AeratorCommandResponse.fromJson(Map<String, dynamic> json) => AeratorCommandResponse(
-    success: json["success"],
-    statusCode: json["status_code"],
-    aeratorId: json["aerator_id"],
-    command: json["command"],
-    commandLogId: json["command_log_id"],
-    msg: json["msg"],
-  );
+  factory AeratorCommandResponse.fromJson(Map<String, dynamic> json) =>
+      AeratorCommandResponse(
+        success: json["success"],
+        statusCode: json["status_code"],
+        aeratorId: json["aerator_id"],
+        command: json["command"],
+        commandLogId: json["command_log_id"],
+        msg: json["msg"],
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,

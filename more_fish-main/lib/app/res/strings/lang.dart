@@ -1,4 +1,4 @@
-class LangEng{
+class LangEng {
   static const homeButton1 = "Live Data Monitoring";
   static const homeButton2 = "Pond Management";
   static const homeButton3 = "Feed Management";
@@ -34,11 +34,9 @@ class LangEng{
   static const homeButton32 = "IPRAS Aquaculture System";
   static const homeButton33 = "Fish Production Software";
   static const homeButton34 = "High Density Fish Farming";
-
 }
 
-
-class LangBang{
+class LangBang {
   static const homeButton1 = "সরাসরি তথ্য পর্যবেক্ষণ";
   static const homeButton2 = "পুকুর ব্যবস্থাপনা";
   static const homeButton3 = "খাবার ব্যবস্থাপনা";
@@ -74,5 +72,4 @@ class LangBang{
   static const homeButton32 = "আইপিআরএএস মাছ চাষ পদ্ধতি";
   static const homeButton33 = "মাছ উৎপাদন সফটওয়্যার";
   static const homeButton34 = "উচ্চ ঘনত্বে মাছ চাষ";
-
 }

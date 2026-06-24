@@ -21,7 +21,6 @@ class PoultryNotificationsController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    // ✅ Reset unread count when user opens notifications screen
     Get.find<LoginTokenStorage>().unreadNotificationCount.value = 0;
   }
 

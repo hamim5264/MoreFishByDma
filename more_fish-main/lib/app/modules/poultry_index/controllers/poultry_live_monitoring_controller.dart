@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-// loader removed
 import 'package:get/get.dart';
 import '../../../repo/poultry_api_live_repo.dart';
 import '../../../repo/poultry_live_models.dart';
@@ -174,11 +172,6 @@ class PoultryLiveMonitoringController extends GetxController
       _syncSwitchUiStateWithLiveData();
       await _cacheLiveData(liveData.value);
 
-      // ✅ Update the global header with weather from the current farm dashboard
-      // We need the raw dashboard data for the weather, but PoultryLiveData doesn't have it.
-      // However, we can trigger a targeted refresh in the header if we want, 
-      // or we could have the repo return the weather too.
-      // For now, let's just trigger a header refresh which will pick up the current route.
       if (Get.isRegistered<CattleHeaderController>()) {
         Get.find<CattleHeaderController>().refreshWeather(overrideId: id);
       }
@@ -217,48 +210,6 @@ class PoultryLiveMonitoringController extends GetxController
     );
   }
 
-  // =========================
-  // ✅ UPDATED SWITCH METHOD
-  // =========================
-  // Future<void> onSwitchChanged({
-  //   required PoultrySwitch item,
-  //   required bool nextValue,
-  // }) async {
-  //   if (item.switchId.trim().isEmpty) return;
-  //
-  //   final busy = switchBusy[item.switchId] ?? false;
-  //   if (busy) return;
-  //
-  //   switchBusy[item.switchId] = true;
-  //
-  //   try {
-  //     // loader removed
-  //
-  //     debugPrint(
-  //       'Switch POST: ${item.switchId} -> ${nextValue ? "ON" : "OFF"}',
-  //     );
-  //
-  //     /// STEP 1: POST to backend
-  //     await _repo.setSwitchState(switchId: item.switchId, turnOn: nextValue);
-  //
-  //     /// STEP 2: wait + refresh
-  //     await Future.delayed(const Duration(seconds: 2));
-  //     await refreshLiveData(silent: true);
-  //
-  //     // loader removed
-  //   } catch (e) {
-  //     error.value = e.toString();
-  //     Get.snackbar(
-  //       'Error',
-  //       'Failed to update switch',
-  //       snackPosition: SnackPosition.BOTTOM,
-  //     );
-  //     await refreshLiveData(silent: true);
-  //   } finally {
-  //     switchBusy[item.switchId] = false;
-  //   }
-  // }
-
   Future<void> onSwitchChanged({
     required PoultrySwitch item,
     required bool nextValue,
@@ -270,7 +221,6 @@ class PoultryLiveMonitoringController extends GetxController
 
     switchBusy[item.switchId] = true;
 
-    // ✅ Instant UI update
     switchUiState[item.switchId] = nextValue;
     switchUiState.refresh();
 
@@ -279,32 +229,25 @@ class PoultryLiveMonitoringController extends GetxController
         'Switch POST: ${item.switchId} -> ${nextValue ? "ON" : "OFF"}',
       );
 
-      // Send command immediately
-      await _repo.setSwitchState(
-        switchId: item.switchId,
-        turnOn: nextValue,
-      );
+      await _repo.setSwitchState(switchId: item.switchId, turnOn: nextValue);
 
-      // Refresh silently after backend processes command
       Future.delayed(
         const Duration(seconds: 2),
-            () => refreshLiveData(silent: true),
+        () => refreshLiveData(silent: true),
       );
     } catch (e) {
       error.value = e.toString();
 
-      // ❌ Rollback UI if API fails
       switchUiState[item.switchId] = !nextValue;
       switchUiState.refresh();
 
-      final context = Get.context;
-      if (context != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to update switch'),
-          ),
-        );
-      }
+      Get.snackbar(
+        'Error',
+        'Failed to update switch',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red.withValues(alpha: 0.8),
+        colorText: Colors.white,
+      );
 
       await refreshLiveData(silent: true);
     } finally {
@@ -316,7 +259,6 @@ class PoultryLiveMonitoringController extends GetxController
     _pollTimer?.cancel();
 
     _pollTimer = Timer.periodic(_refreshInterval, (_) {
-      // Only poll if Poultry screen is active
       if (Get.currentRoute.toLowerCase().contains('poultry')) {
         refreshLiveData(silent: true);
       }

@@ -13,22 +13,28 @@ class NotificationResponse {
     this.data,
   });
 
-  factory NotificationResponse.fromRawJson(String str) => NotificationResponse.fromJson(json.decode(str));
+  factory NotificationResponse.fromRawJson(String str) =>
+      NotificationResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory NotificationResponse.fromJson(Map<String, dynamic> json) => NotificationResponse(
-    success: json["success"],
-    statusCode: json["status code"],
-    message: json["message"],
-    data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
-  );
+  factory NotificationResponse.fromJson(Map<String, dynamic> json) =>
+      NotificationResponse(
+        success: json["success"],
+        statusCode: json["status code"],
+        message: json["message"],
+        data: json["data"] == null
+            ? []
+            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,
     "status code": statusCode,
     "message": message,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data": data == null
+        ? []
+        : List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
@@ -103,66 +109,44 @@ class Datum {
     "not_sensor_id": notSensorId,
     "dev_id": devId,
     "not_user_id": notUserId,
-    "not_date": "${notDate!.year.toString().padLeft(4, '0')}-${notDate!.month.toString().padLeft(2, '0')}-${notDate!.day.toString().padLeft(2, '0')}",
+    "not_date":
+        "${notDate!.year.toString().padLeft(4, '0')}-${notDate!.month.toString().padLeft(2, '0')}-${notDate!.day.toString().padLeft(2, '0')}",
     "conf_id": confId,
   };
 }
 
-enum NotColor {
-  // ignore: constant_identifier_names
-  GREEN,
-  // ignore: constant_identifier_names
-  ORANGE
-}
+enum NotColor { GREEN, ORANGE }
 
 final notColorValues = EnumValues({
   "green": NotColor.GREEN,
-  "orange": NotColor.ORANGE
+  "orange": NotColor.ORANGE,
 });
 
-enum NotPond {
-  NAOGAON_01
-}
+enum NotPond { NAOGAON_01 }
 
-final notPondValues = EnumValues({
-  "Naogaon-01": NotPond.NAOGAON_01
-});
+final notPondValues = EnumValues({"Naogaon-01": NotPond.NAOGAON_01});
 
-enum NotUrgency {
-  EMPTY,
-  NOT_URGENCY,
-  PURPLE
-}
+enum NotUrgency { EMPTY, NOT_URGENCY, PURPLE }
 
 final notUrgencyValues = EnumValues({
   "সতর্ক হোন !!!": NotUrgency.EMPTY,
   "সাধারণ।": NotUrgency.NOT_URGENCY,
-  "জরুরি !!!": NotUrgency.PURPLE
+  "জরুরি !!!": NotUrgency.PURPLE,
 });
 
-enum NotWarning {
-  // ignore: constant_identifier_names
-  EMPTY,
-  // ignore: constant_identifier_names
-  NOT_WARNING,
-  // ignore: constant_identifier_names
-  PURPLE
-}
+enum NotWarning { EMPTY, NOT_WARNING, PURPLE }
 
 final notWarningValues = EnumValues({
   "কম:": NotWarning.EMPTY,
   ":": NotWarning.NOT_WARNING,
-  "বেশি:": NotWarning.PURPLE
+  "বেশি:": NotWarning.PURPLE,
 });
 
-enum NotWarningMsg {
-  AMMONIA,
-  DO
-}
+enum NotWarningMsg { AMMONIA, DO }
 
 final notWarningMsgValues = EnumValues({
   "Ammonia": NotWarningMsg.AMMONIA,
-  "DO": NotWarningMsg.DO
+  "DO": NotWarningMsg.DO,
 });
 
 class EnumValues<T> {
@@ -176,5 +160,3 @@ class EnumValues<T> {
     return reverseMap;
   }
 }
-
-

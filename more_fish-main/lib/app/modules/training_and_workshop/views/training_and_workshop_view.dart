@@ -9,6 +9,7 @@ import '../controllers/training_and_workshop_controller.dart';
 
 class TrainingAndWorkshopView extends GetView<TrainingAndWorkshopController> {
   const TrainingAndWorkshopView({super.key});
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -43,11 +44,11 @@ class TrainingAndWorkshopView extends GetView<TrainingAndWorkshopController> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ), ////
+              ),
             ],
           ),
         ),
       ),
     );
   }
-} //
+}

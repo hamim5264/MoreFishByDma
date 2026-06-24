@@ -5,7 +5,9 @@ import 'poultry_live_models.dart';
 
 abstract class PoultryLiveRepository {
   Future<List<PoultryDevice>> getDevices();
+
   Future<PoultryLiveData> getLatestLiveData({required String deviceId});
+
   Future<void> setSwitchState({required String switchId, required bool turnOn});
 
   Future<Either<Failure, PoultryAutomationResponse>> getAutomationSettings({
@@ -26,7 +28,5 @@ abstract class PoultryLiveRepository {
     required String endTime,
   });
 
-  Future<Either<Failure, bool>> deleteLightSchedule({
-    required int scheduleId,
-  });
+  Future<Either<Failure, bool>> deleteLightSchedule({required int scheduleId});
 }

@@ -30,10 +30,10 @@ class CleanerStatusResponse {
       );
 
   Map<String, dynamic> toJson() => {
-        "success": success,
-        "cleaner_id": cleanerId,
-        "is_on": isOn,
-        "last_run_at": lastRunAt,
-        "message": message,
-      };
+    "success": success,
+    "cleaner_id": cleanerId,
+    "is_on": isOn,
+    "last_run_at": lastRunAt,
+    "message": message,
+  };
 }

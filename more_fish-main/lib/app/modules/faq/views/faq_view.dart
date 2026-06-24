@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter/services.dart';
 import 'package:more_fish/app/common_widgets/common_container.dart';
 import 'package:more_fish/app/common_widgets/common_text.dart';
 import 'package:more_fish/app/res/colors/colors.dart';
@@ -12,6 +11,7 @@ import '../controllers/faq_controller.dart';
 
 class FaqView extends GetView<FaqController> {
   const FaqView({super.key});
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -53,9 +53,7 @@ class FaqView extends GetView<FaqController> {
             }
 
             final weather = homeController.weatherData;
-            final main = (weather != null && weather.isNotEmpty)
-                ? weather['main']
-                : null;
+            final main = (weather.isNotEmpty) ? weather['main'] : null;
             final temp = main != null ? (main['temp'] ?? '--') : '--';
             final humidity = main != null ? (main['humidity'] ?? '--') : '--';
 
@@ -77,15 +75,20 @@ class FaqView extends GetView<FaqController> {
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.FAQ_DETAILS, arguments: {
-                      "title": controller.titleList[index],
-                      "data": controller.dataList[index]
-                    });
+                    Get.toNamed(
+                      Routes.FAQ_DETAILS,
+                      arguments: {
+                        "title": controller.titleList[index],
+                        "data": controller.dataList[index],
+                      },
+                    );
                   },
                   child: CommonContainer(
                     margin: const EdgeInsets.only(bottom: 14),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
                     child: Column(
                       children: [
                         CommonText(

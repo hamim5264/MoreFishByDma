@@ -2,7 +2,7 @@ class PoultryLiveData {
   final String deviceId;
   final String deviceStatus;
   final bool isOnline;
-  final String timestamp; // ISO or formatted
+  final String timestamp;
   final double? aqi;
   final double nh3MgL;
   final double temperatureC;
@@ -11,14 +11,11 @@ class PoultryLiveData {
   final double vocMgM3;
   final int co2Ppm;
 
-  /// Methane concentration in ppm (CH4).
   final int ch4Ppm;
 
-  /// Dust particle concentration PM1.0 (µg/m³).
   final int pm1UgM3;
   final int pm25UgM3;
 
-  /// Dust particle concentration PM4.0 (µg/m³).
   final int pm4UgM3;
   final int pm10UgM3;
   final int noiseDb;
@@ -52,12 +49,12 @@ class PoultryLiveData {
   });
 
   factory PoultryLiveData.fromJson(Map<String, dynamic> json) {
-    int _intVal(dynamic v) {
+    int intVal(dynamic v) {
       if (v is num) return v.toInt();
       return int.tryParse('$v') ?? 0;
     }
 
-    bool _boolVal(dynamic v) {
+    bool boolVal(dynamic v) {
       if (v is bool) return v;
       if (v is num) return v != 0;
       final s = v.toString().toLowerCase();
@@ -67,7 +64,7 @@ class PoultryLiveData {
     return PoultryLiveData(
       deviceId: (json['deviceId'] ?? '').toString(),
       deviceStatus: (json['device_status'] ?? '').toString(),
-      isOnline: _boolVal(json['is_online'] ?? false),
+      isOnline: boolVal(json['is_online'] ?? false),
       timestamp: (json['timestamp'] ?? '').toString(),
       aqi: (json['aqi'] is num)
           ? (json['aqi'] as num).toDouble()
@@ -81,20 +78,19 @@ class PoultryLiveData {
       refTemperatureC: (json['ref_temperature'] is num)
           ? (json['ref_temperature'] as num).toDouble()
           : double.tryParse('${json['ref_temperature']}') ?? 0.0,
-      humidityPct: _intVal(json['humidity']),
+      humidityPct: intVal(json['humidity']),
       vocMgM3: (json['voc'] is num)
           ? (json['voc'] as num).toDouble()
           : double.tryParse('${json['voc']}') ?? 0.0,
-      co2Ppm: _intVal(json['co2']),
-      // Backend might send methane as `ch4` or `methane`.
-      ch4Ppm: _intVal(json['ch4'] ?? json['methane']),
-      pm1UgM3: _intVal(json['pm1']),
-      pm25UgM3: _intVal(json['pm25']),
-      pm4UgM3: _intVal(json['pm4']),
-      pm10UgM3: _intVal(json['pm10']),
-      noiseDb: _intVal(json['noise']),
-      lightLux: _intVal(json['lightLux']),
-      automationEnabled: _boolVal(json['automation_enabled'] ?? false),
+      co2Ppm: intVal(json['co2']),
+      ch4Ppm: intVal(json['ch4'] ?? json['methane']),
+      pm1UgM3: intVal(json['pm1']),
+      pm25UgM3: intVal(json['pm25']),
+      pm4UgM3: intVal(json['pm4']),
+      pm10UgM3: intVal(json['pm10']),
+      noiseDb: intVal(json['noise']),
+      lightLux: intVal(json['lightLux']),
+      automationEnabled: boolVal(json['automation_enabled'] ?? false),
       metrics: ((json['metrics'] as List?) ?? const <dynamic>[])
           .whereType<Map>()
           .map(

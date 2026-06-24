@@ -5,8 +5,7 @@ class LoginTokenStorage {
   LoginTokenStorage(this.sharedPreferences);
 
   final SharedPreferences sharedPreferences;
-  
-  // Reactive state for UI updates across different modules
+
   final isCattleLoggedIn = false.obs;
   final unreadNotificationCount = 0.obs;
 
@@ -14,7 +13,7 @@ class LoginTokenStorage {
   static const _pharmaTokenKey = 'pharmaToken';
   static const _poultryTokenKey = 'poultryToken';
   static const _cattleTokenKey = 'cattleToken';
-  
+
   static const _moreFishUserIdKey = 'userId';
   static const _pharmaUserIdKey = 'pharmaUserId';
   static const _poultryUserIdKey = 'poultryUserId';
@@ -68,7 +67,6 @@ class LoginTokenStorage {
     await sharedPreferences.remove(_poultryTokenKey);
   }
 
-  // --- Cattle Care Storage ---
   String? getCattleToken() {
     return _normalizedToken(sharedPreferences.getString(_cattleTokenKey));
   }
@@ -156,7 +154,6 @@ class LoginTokenStorage {
     await sharedPreferences.remove(_poultryUserIdKey);
   }
 
-  // --- Cattle Care User ID ---
   int? getCattleUserId() {
     return sharedPreferences.getInt(_cattleUserIdKey);
   }

@@ -6,23 +6,20 @@ class ProfileResponse {
   String? message;
   Data? data;
 
-  ProfileResponse({
-    this.success,
-    this.statusCode,
-    this.message,
-    this.data,
-  });
+  ProfileResponse({this.success, this.statusCode, this.message, this.data});
 
-  factory ProfileResponse.fromRawJson(String str) => ProfileResponse.fromJson(json.decode(str));
+  factory ProfileResponse.fromRawJson(String str) =>
+      ProfileResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ProfileResponse.fromJson(Map<String, dynamic> json) => ProfileResponse(
-    success: json["success"],
-    statusCode: json["status_code"],
-    message: json["message"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
-  );
+  factory ProfileResponse.fromJson(Map<String, dynamic> json) =>
+      ProfileResponse(
+        success: json["success"],
+        statusCode: json["status_code"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,
@@ -81,11 +78,19 @@ class Data {
     userPhone: json["user_phone"],
     userAddress: json["user_address"],
     userCitizenship: json["user_citizenship"],
-    userEducation: json["user_education"] == null ? [] : List<dynamic>.from(json["user_education"]!.map((x) => x)),
+    userEducation: json["user_education"] == null
+        ? []
+        : List<dynamic>.from(json["user_education"]!.map((x) => x)),
     userOccupation: json["user_occupation"],
-    userLocation: json["user_location"] == null ? [] : List<dynamic>.from(json["user_location"]!.map((x) => x)),
-    userFcm: json["user_fcm"] == null ? null : UserFcm.fromJson(json["user_fcm"]),
-    userOtp: json["user_otp"] == null ? null : UserOtp.fromJson(json["user_otp"]),
+    userLocation: json["user_location"] == null
+        ? []
+        : List<dynamic>.from(json["user_location"]!.map((x) => x)),
+    userFcm: json["user_fcm"] == null
+        ? null
+        : UserFcm.fromJson(json["user_fcm"]),
+    userOtp: json["user_otp"] == null
+        ? null
+        : UserOtp.fromJson(json["user_otp"]),
     companyId: json["company_id"],
   );
 
@@ -99,9 +104,13 @@ class Data {
     "user_phone": userPhone,
     "user_address": userAddress,
     "user_citizenship": userCitizenship,
-    "user_education": userEducation == null ? [] : List<dynamic>.from(userEducation!.map((x) => x)),
+    "user_education": userEducation == null
+        ? []
+        : List<dynamic>.from(userEducation!.map((x) => x)),
     "user_occupation": userOccupation,
-    "user_location": userLocation == null ? [] : List<dynamic>.from(userLocation!.map((x) => x)),
+    "user_location": userLocation == null
+        ? []
+        : List<dynamic>.from(userLocation!.map((x) => x)),
     "user_fcm": userFcm?.toJson(),
     "user_otp": userOtp?.toJson(),
     "company_id": companyId,
@@ -111,39 +120,29 @@ class Data {
 class UserFcm {
   String? token;
 
-  UserFcm({
-    this.token,
-  });
+  UserFcm({this.token});
 
   factory UserFcm.fromRawJson(String str) => UserFcm.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory UserFcm.fromJson(Map<String, dynamic> json) => UserFcm(
-    token: json["token"],
-  );
+  factory UserFcm.fromJson(Map<String, dynamic> json) =>
+      UserFcm(token: json["token"]);
 
-  Map<String, dynamic> toJson() => {
-    "token": token,
-  };
+  Map<String, dynamic> toJson() => {"token": token};
 }
 
 class UserOtp {
   dynamic otp;
 
-  UserOtp({
-    this.otp,
-  });
+  UserOtp({this.otp});
 
   factory UserOtp.fromRawJson(String str) => UserOtp.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory UserOtp.fromJson(Map<String, dynamic> json) => UserOtp(
-    otp: json["otp"],
-  );
+  factory UserOtp.fromJson(Map<String, dynamic> json) =>
+      UserOtp(otp: json["otp"]);
 
-  Map<String, dynamic> toJson() => {
-    "otp": otp,
-  };
+  Map<String, dynamic> toJson() => {"otp": otp};
 }

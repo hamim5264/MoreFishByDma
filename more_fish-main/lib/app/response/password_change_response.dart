@@ -11,15 +11,17 @@ class PasswordChangeResponse {
     required this.message,
   });
 
-  factory PasswordChangeResponse.fromRawJson(String str) => PasswordChangeResponse.fromJson(json.decode(str));
+  factory PasswordChangeResponse.fromRawJson(String str) =>
+      PasswordChangeResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory PasswordChangeResponse.fromJson(Map<String, dynamic> json) => PasswordChangeResponse(
-    status: json["status"],
-    code: json["code"],
-    message: json["message"],
-  );
+  factory PasswordChangeResponse.fromJson(Map<String, dynamic> json) =>
+      PasswordChangeResponse(
+        status: json["status"],
+        code: json["code"],
+        message: json["message"],
+      );
 
   Map<String, dynamic> toJson() => {
     "status": status,

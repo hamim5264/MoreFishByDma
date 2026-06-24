@@ -36,7 +36,9 @@ class DevicesRepository {
         'Content-Type': 'application/json',
       };
 
-      var url = Uri.parse("${ApiService.baseUrl}/devices/fcr/history/?asset_id=$assetId");
+      var url = Uri.parse(
+        "${ApiService.baseUrl}/devices/fcr/history/?asset_id=$assetId",
+      );
       debugPrint('FCR History GET: $url');
 
       var response = await http.get(url, headers: headers);
@@ -44,7 +46,9 @@ class DevicesRepository {
       if (response.statusCode == 200) {
         return Right(FcrHistoryResponse.fromRawJson(response.body));
       } else {
-        return Left(Failure('Failed to fetch FCR history: ${response.statusCode}'));
+        return Left(
+          Failure('Failed to fetch FCR history: ${response.statusCode}'),
+        );
       }
     } catch (e) {
       return Left(Failure('Error: $e'));
@@ -131,7 +135,6 @@ class DevicesRepository {
         'Content-Type': 'application/json',
       };
 
-      // Build URI with optional device_id query parameter
       final base = Uri.parse("${ApiService.baseUrl}/devices/sensor/list");
       final uri = (deviceId == null)
           ? base
@@ -251,7 +254,6 @@ class DevicesRepository {
       final sensorIdStr = sensorId?.toString().trim();
       final typeStr = (type ?? 'daily').toString().trim();
 
-      // Validate required params early
       if (assetIdStr == null ||
           assetIdStr.isEmpty ||
           assetIdStr.toLowerCase() == 'null') {
@@ -266,7 +268,6 @@ class DevicesRepository {
         return Left(Failure('Missing sensor id for graph request'));
       }
 
-      // API expects assst_id, sensor_id and type. Do not send company_id here.
       final baseUri = Uri.parse('${ApiService.baseUrl}/devices/data/graph');
       final uri = baseUri.replace(
         queryParameters: {
@@ -278,7 +279,6 @@ class DevicesRepository {
 
       debugPrint('Graph GET: $uri');
 
-      // Use a client with a timeout and simple retry to tolerate flaky server
       final client = http.Client();
       try {
         const int maxAttempts = 2;
@@ -336,7 +336,9 @@ class DevicesRepository {
         'Content-Type': 'application/json',
       };
 
-      var url = Uri.parse("${ApiService.baseUrl}/devices/aerator-automation/?device_id=$deviceId");
+      var url = Uri.parse(
+        "${ApiService.baseUrl}/devices/aerator-automation/?device_id=$deviceId",
+      );
       debugPrint('Automation Settings GET: $url');
 
       var response = await http.get(url, headers: headers);
@@ -344,7 +346,11 @@ class DevicesRepository {
       if (response.statusCode == 200) {
         return Right(AeratorAutomationResponse.fromRawJson(response.body));
       } else {
-        return Left(Failure('Failed to fetch automation settings: ${response.statusCode}'));
+        return Left(
+          Failure(
+            'Failed to fetch automation settings: ${response.statusCode}',
+          ),
+        );
       }
     } catch (e) {
       return Left(Failure('Error: $e'));
@@ -365,7 +371,9 @@ class DevicesRepository {
         'Content-Type': 'application/json',
       };
 
-      var url = Uri.parse("${ApiService.baseUrl}/devices/aerator-automation/?device_id=$deviceId");
+      var url = Uri.parse(
+        "${ApiService.baseUrl}/devices/aerator-automation/?device_id=$deviceId",
+      );
       debugPrint('Automation Settings POST: $url');
 
       var body = jsonEncode({
@@ -381,7 +389,9 @@ class DevicesRepository {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return Right(AeratorAutomationResponse.fromRawJson(response.body));
       } else {
-        return Left(Failure('Failed to save automation settings: ${response.statusCode}'));
+        return Left(
+          Failure('Failed to save automation settings: ${response.statusCode}'),
+        );
       }
     } catch (e) {
       return Left(Failure('Error: $e'));
@@ -399,7 +409,9 @@ class DevicesRepository {
         'Content-Type': 'application/json',
       };
 
-      var url = Uri.parse("${ApiService.baseUrl}/devices/cleaner/status/?asset_id=$assetId");
+      var url = Uri.parse(
+        "${ApiService.baseUrl}/devices/cleaner/status/?asset_id=$assetId",
+      );
       debugPrint('Cleaner Status GET: $url');
 
       var response = await http.get(url, headers: headers);
@@ -407,7 +419,9 @@ class DevicesRepository {
       if (response.statusCode == 200) {
         return Right(CleanerStatusResponse.fromRawJson(response.body));
       } else {
-        return Left(Failure('Failed to fetch cleaner status: ${response.statusCode}'));
+        return Left(
+          Failure('Failed to fetch cleaner status: ${response.statusCode}'),
+        );
       }
     } catch (e) {
       return Left(Failure('Error: $e'));

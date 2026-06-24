@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../common_widgets/common_alert_dialog.dart';
@@ -25,8 +26,7 @@ class CleanAirNotificationsController extends GetxController {
 
   void checkLogin() {
     loginTokenStorage = Get.find<LoginTokenStorage>();
-    
-    // ✅ Reset unread count when user opens notifications screen
+
     loginTokenStorage.unreadNotificationCount.value = 0;
 
     final token = loginTokenStorage.getPharmaToken();
@@ -76,7 +76,7 @@ class CleanAirNotificationsController extends GetxController {
     );
     response.fold(
       (l) {
-        print(l.message);
+        debugPrint(l.message);
       },
       (r) {
         notificationResponse.value = r;

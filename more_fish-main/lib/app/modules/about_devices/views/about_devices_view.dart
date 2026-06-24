@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter/services.dart';
 import '../../../common_widgets/common_app_bar.dart';
 import '../../../common_widgets/common_container.dart';
 import '../../../common_widgets/common_text.dart';
@@ -12,6 +11,7 @@ import '../controllers/about_devices_controller.dart';
 
 class AboutDevicesView extends GetView<AboutDevicesController> {
   const AboutDevicesView({super.key});
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -53,8 +53,7 @@ class AboutDevicesView extends GetView<AboutDevicesController> {
             }
 
             final weather = homeController.weatherData;
-            final main = (weather != null && weather.isNotEmpty)
-                ? weather['main'] : null;
+            final main = (weather.isNotEmpty) ? weather['main'] : null;
             final temp = main != null ? (main['temp'] ?? '--') : '--';
             final humidity = main != null ? (main['humidity'] ?? '--') : '--';
 
@@ -70,43 +69,52 @@ class AboutDevicesView extends GetView<AboutDevicesController> {
             );
           }),
           Expanded(
-              child: ListView.builder(
-            padding: const EdgeInsets.only(top: 16),
-            itemCount: controller.titleList.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  Get.toNamed(Routes.FAQ_DETAILS, arguments: {
-                    "title": controller.titleList[index],
-                    "data": controller.dataList[index]
-                  });
-                },
-                child: CommonContainer(
-                  margin:
-                      const EdgeInsets.only(left: 16, right: 16, bottom: 14),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CommonText(
-                              controller.titleList[index].tr,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              maxLines: 3,
-                              textAlign: TextAlign.center,
+            child: ListView.builder(
+              padding: const EdgeInsets.only(top: 16),
+              itemCount: controller.titleList.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    Get.toNamed(
+                      Routes.FAQ_DETAILS,
+                      arguments: {
+                        "title": controller.titleList[index],
+                        "data": controller.dataList[index],
+                      },
+                    );
+                  },
+                  child: CommonContainer(
+                    margin: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      bottom: 14,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 16,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CommonText(
+                                controller.titleList[index].tr,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                maxLines: 3,
+                                textAlign: TextAlign.center,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-          )),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

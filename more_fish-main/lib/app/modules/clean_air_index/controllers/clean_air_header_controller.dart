@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 
 import '../../../service/service.dart';
 
-/// Clean Air header values (date/time + simple weather for Dhaka)
 class CleanAirHeaderController extends GetxController {
   final formattedDate = ''.obs;
   final formattedTime = ''.obs;

@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:more_fish/app/common_widgets/common_container.dart';
 import 'package:more_fish/app/common_widgets/common_text.dart';
 
-
 import '../../../res/colors/colors.dart';
 
 import '../controllers/password_change_controller.dart';
@@ -42,7 +41,7 @@ class PasswordChangeView extends GetView<PasswordChangeController> {
                             width: 120,
                           ),
                         ),
-                   const SizedBox(height: 30),
+                        const SizedBox(height: 30),
                         const CommonText(
                           "Change Password",
                           fontSize: 24,
@@ -98,45 +97,58 @@ class PasswordChangeView extends GetView<PasswordChangeController> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Confirm your password';
-                            } else if (value != controller.newPasswordController.text) {
+                            } else if (value !=
+                                controller.newPasswordController.text) {
                               return 'Passwords do not match';
                             }
                             return null;
                           },
                         ),
                         const SizedBox(height: 24),
-                        Obx((){
-                          return controller.isLoading.value == false ?
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              onPressed: () {
-                                controller.isLoading.value = true;
-                                if (controller.formKey.currentState!.validate()) {
-                                  controller.changePass(
-                                    oldPass: controller.oldPasswordController.text,
-                                    newPass: controller.newPasswordController.text,
-                                    context: context,
-                                  );
-                                }
-                              },
-                              child: controller.isLoading.value
-                                  ? const CircularProgressIndicator(color: Colors.white)
-                                  : const Text(
-                                "Submit",
-                                style: TextStyle(fontSize: 18, color: Colors.white),
-                              ),
-                            ),
-                          ) : const CircularProgressIndicator();
-                        })
-                        ,
+                        Obx(() {
+                          return controller.isLoading.value == false
+                              ? SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green,
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 14,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      controller.isLoading.value = true;
+                                      if (controller.formKey.currentState!
+                                          .validate()) {
+                                        controller.changePass(
+                                          oldPass: controller
+                                              .oldPasswordController
+                                              .text,
+                                          newPass: controller
+                                              .newPasswordController
+                                              .text,
+                                          context: context,
+                                        );
+                                      }
+                                    },
+                                    child: controller.isLoading.value
+                                        ? const CircularProgressIndicator(
+                                            color: Colors.white,
+                                          )
+                                        : const Text(
+                                            "Submit",
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                  ),
+                                )
+                              : const CircularProgressIndicator();
+                        }),
                       ],
                     ),
                   ),
@@ -149,4 +161,3 @@ class PasswordChangeView extends GetView<PasswordChangeController> {
     );
   }
 }
-

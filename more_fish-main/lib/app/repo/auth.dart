@@ -196,7 +196,7 @@ class AuthRepository {
         Uri.parse("${ApiService.baseUrl}/auth/user/forgot/password/"),
       );
       request.headers.addAll(ApiService.headers);
-      request.body = jsonEncode({"phone": "${phone}", "email": "${email}"});
+      request.body = jsonEncode({"phone": "$phone", "email": "$email"});
 
       http.StreamedResponse response = await request.send();
 
@@ -217,17 +217,17 @@ class AuthRepository {
   }
 
   Future<Either<Failure, OtpVerifyResponse>> otpVerify({code}) async {
-    print(code);
+    debugPrint(code);
     try {
       var request = http.Request(
         'POST',
         Uri.parse("${ApiService.baseUrl}/auth/user/otp/verify/"),
       );
       request.headers.addAll(ApiService.headers);
-      request.body = jsonEncode({"code": "${code}"});
+      request.body = jsonEncode({"code": "$code"});
       http.StreamedResponse response = await request.send();
 
-      print(response.statusCode);
+      debugPrint(response.statusCode.toString());
 
       if (response.statusCode == 200) {
         var data = await response.stream.bytesToString();
@@ -306,52 +306,7 @@ class AuthRepository {
     }
   }
 
-  // Future<Either<Failure, void>> updateFcmToken({
-  //   required String fcmToken,
-  //   bool isPoultryFlow = false,
-  //   bool isPharmaFlow = false,
-  //   bool isCattleFlow = false,
-  // }) async {
-  //   try {
-  //     final baseUrl = isPoultryFlow
-  //         ? ApiService.poultryBaseUrl
-  //         : isCattleFlow
-  //         ? ApiService.moreFishBaseUrl
-  //         : ApiService.moreFishBaseUrl;
-  //
-  //     final token = isPoultryFlow
-  //         ? loginTokenStorage.getPoultryToken()
-  //         : isPharmaFlow
-  //         ? loginTokenStorage.getPharmaToken()
-  //         : isCattleFlow
-  //         ? loginTokenStorage.getCattleToken()
-  //         : loginTokenStorage.getMoreFishToken();
-  //
-  //     var headers = {
-  //       'Authorization': 'Bearer $token',
-  //       'Content-Type': 'application/json',
-  //     };
-  //
-  //     final response = await http.post(
-  //       Uri.parse("$baseUrl/auth/user/fcm/token/update/"),
-  //       headers: headers,
-  //       body: jsonEncode({"fcm_token": fcmToken}),
-  //     );
-  //
-  //     debugPrint("FCM token update status code: ${response.statusCode}");
-  //
-  //     if (response.statusCode == 200) {
-  //       debugPrint("FCM token updated successfully");
-  //       return Right(null);
-  //     } else {
-  //       return Left(
-  //         Failure('Failed to update FCM token: ${response.statusCode}'),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     return Left(Failure('Error updating FCM token: $e'));
-  //   }
-  // }
+
   Future<Either<Failure, void>> updateFcmToken({
     required String fcmToken,
     bool isPoultryFlow = false,

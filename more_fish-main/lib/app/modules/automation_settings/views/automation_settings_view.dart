@@ -16,7 +16,7 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
 
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         if (controller.hasUnsavedChanges) {
           _showUnsavedDialog(context);
@@ -30,11 +30,10 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
           children: [
             Obx(() {
               final weather = homeController.weatherData;
-              final main =
-                  (weather != null && weather.isNotEmpty) ? weather['main'] : null;
+              final main = (weather.isNotEmpty) ? weather['main'] : null;
               final temp = main != null ? (main['temp'] ?? '--') : '--';
               final humidity = main != null ? (main['humidity'] ?? '--') : '--';
-    
+
               return CommonAppBar(
                 title: 'Automation Settings',
                 cityName: "dhaka".tr,
@@ -53,108 +52,113 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
                   icon: const Icon(Icons.arrow_back, color: Colors.black),
                 ),
                 date: '${homeController.formattedDate}',
-              time: '${homeController.formattedTime}',
-              temp: '$temp°C',
-              humidity: '$humidity%',
-            );
-          }),
-          Expanded(
-            child: Obx(() {
-              if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CommonContainer(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const CommonText(
-                                "Enable Automation",
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              CommonSwitch(
-                                value: controller.isAutomationEnabled.value,
-                                onChanged: (value) {
-                                  controller.isAutomationEnabled.value = value;
-                                },
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          _buildValueField(
-                            label: "DO Min Value",
-                            controller: controller.doMinController,
-                            hint: "e.g. 3.5",
-                          ),
-                          const SizedBox(height: 16),
-                          _buildValueField(
-                            label: "DO Max Value",
-                            controller: controller.doMaxController,
-                            hint: "e.g. 7.0",
-                          ),
-                          const SizedBox(height: 12),
-                          const Text(
-                            "Note: Automation will only be active if settings are saved with values.",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                          const SizedBox(height: 30),
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: controller.isSaving.value
-                                  ? null
-                                  : () => controller.saveSettings(),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xff0370c3),
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                elevation: 4,
-                                shadowColor: Colors.black.withOpacity(0.3),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: controller.isSaving.value
-                                  ? const SizedBox(
-                                      height: 20,
-                                      width: 20,
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 2,
-                                      ),
-                                    )
-                                  : const CommonText(
-                                      "Save Settings",
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                time: '${homeController.formattedTime}',
+                temp: '$temp°C',
+                humidity: '$humidity%',
               );
             }),
-          ),
-        ],
+            Expanded(
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CommonContainer(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const CommonText(
+                                  "Enable Automation",
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                CommonSwitch(
+                                  value: controller.isAutomationEnabled.value,
+                                  onChanged: (value) {
+                                    controller.isAutomationEnabled.value =
+                                        value;
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            _buildValueField(
+                              label: "DO Min Value",
+                              controller: controller.doMinController,
+                              hint: "e.g. 3.5",
+                            ),
+                            const SizedBox(height: 16),
+                            _buildValueField(
+                              label: "DO Max Value",
+                              controller: controller.doMaxController,
+                              hint: "e.g. 7.0",
+                            ),
+                            const SizedBox(height: 12),
+                            const Text(
+                              "Note: Automation will only be active if settings are saved with values.",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: controller.isSaving.value
+                                    ? null
+                                    : () => controller.saveSettings(),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xff0370c3),
+                                  foregroundColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 16,
+                                  ),
+                                  elevation: 4,
+                                  shadowColor: Colors.black.withValues(
+                                    alpha: 0.3,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: controller.isSaving.value
+                                    ? const SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          color: Colors.white,
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                    : const CommonText(
+                                        "Save Settings",
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+            ),
+          ],
+        ),
       ),
-    )
     );
   }
 
@@ -166,11 +170,7 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CommonText(
-          label,
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        ),
+        CommonText(label, fontSize: 16, fontWeight: FontWeight.w600),
         const SizedBox(height: 8),
         TextField(
           controller: controller,
@@ -183,7 +183,10 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 14,
+            ),
           ),
         ),
       ],
@@ -195,7 +198,9 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text("Unsaved Changes"),
-        content: const Text("You have unsaved automation settings. Please save them before leaving or discard changes."),
+        content: const Text(
+          "You have unsaved automation settings. Please save them before leaving or discard changes.",
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -203,8 +208,8 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // close dialog
-              Get.back(); // leave page
+              Navigator.pop(context);
+              Get.back();
             },
             child: const Text("Discard", style: TextStyle(color: Colors.red)),
           ),

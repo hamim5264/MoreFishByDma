@@ -13,16 +13,18 @@ class ProductListResponse {
     required this.success,
   });
 
-  factory ProductListResponse.fromRawJson(String str) => ProductListResponse.fromJson(json.decode(str));
+  factory ProductListResponse.fromRawJson(String str) =>
+      ProductListResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ProductListResponse.fromJson(Map<String, dynamic> json) => ProductListResponse(
-    data: Data.fromJson(json["data"]),
-    statusCode: json["status_code"],
-    message: json["message"],
-    success: json["success"],
-  );
+  factory ProductListResponse.fromJson(Map<String, dynamic> json) =>
+      ProductListResponse(
+        data: Data.fromJson(json["data"]),
+        statusCode: json["status_code"],
+        message: json["message"],
+        success: json["success"],
+      );
 
   Map<String, dynamic> toJson() => {
     "data": data.toJson(),
@@ -103,7 +105,9 @@ class Datum {
     description: json["description"],
     price: json["price"],
     category: Category.fromJson(json["category"]),
-    productimageSet: List<ProductimageSet>.from(json["productimage_set"].map((x) => ProductimageSet.fromJson(x))),
+    productimageSet: List<ProductimageSet>.from(
+      json["productimage_set"].map((x) => ProductimageSet.fromJson(x)),
+    ),
   );
 
   Map<String, dynamic> toJson() => {
@@ -112,7 +116,9 @@ class Datum {
     "description": description,
     "price": price,
     "category": category.toJson(),
-    "productimage_set": List<dynamic>.from(productimageSet.map((x) => x.toJson())),
+    "productimage_set": List<dynamic>.from(
+      productimageSet.map((x) => x.toJson()),
+    ),
   };
 }
 
@@ -127,7 +133,8 @@ class Category {
     required this.categoryImage,
   });
 
-  factory Category.fromRawJson(String str) => Category.fromJson(json.decode(str));
+  factory Category.fromRawJson(String str) =>
+      Category.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
@@ -148,22 +155,15 @@ class ProductimageSet {
   String guid;
   String image;
 
-  ProductimageSet({
-    required this.guid,
-    required this.image,
-  });
+  ProductimageSet({required this.guid, required this.image});
 
-  factory ProductimageSet.fromRawJson(String str) => ProductimageSet.fromJson(json.decode(str));
+  factory ProductimageSet.fromRawJson(String str) =>
+      ProductimageSet.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ProductimageSet.fromJson(Map<String, dynamic> json) => ProductimageSet(
-    guid: json["guid"],
-    image: json["image"],
-  );
+  factory ProductimageSet.fromJson(Map<String, dynamic> json) =>
+      ProductimageSet(guid: json["guid"], image: json["image"]);
 
-  Map<String, dynamic> toJson() => {
-    "guid": guid,
-    "image": image,
-  };
+  Map<String, dynamic> toJson() => {"guid": guid, "image": image};
 }

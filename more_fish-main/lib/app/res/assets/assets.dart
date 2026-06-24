@@ -1,6 +1,4 @@
-
-
-class Assets{
+class Assets {
   var icon1 = "assets/icons/logo_trade_mark.jpg";
   var icon2 = "assets/icons/lang_translate.png";
   var icon3 = "assets/icons/feed_management.png";
@@ -10,5 +8,4 @@ class Assets{
   var icon7 = "assets/icons/lang_translate.png";
   var icon8 = "assets/icons/lang_translate.png";
   var icon9 = "assets/icons/lang_translate.png";
-
 }

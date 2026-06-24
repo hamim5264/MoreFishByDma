@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-/// Social tab entry point.
-///
-/// Shows a placeholder screen since the feature is coming soon.
 class SocialTabView extends StatelessWidget {
   const SocialTabView({super.key});
 

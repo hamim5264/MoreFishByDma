@@ -2,13 +2,6 @@ import 'package:get/get.dart';
 import 'package:more_fish/app/res/strings/high_density_fish_farming.dart';
 
 class HighDensityFishFarmingController extends GetxController {
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-
   var titleList = [
     HighDensityFishFarming.titleText1,
     HighDensityFishFarming.titleText2,
@@ -23,9 +16,7 @@ class HighDensityFishFarmingController extends GetxController {
     HighDensityFishFarming.titleText11,
     HighDensityFishFarming.titleText12,
     HighDensityFishFarming.titleText13,
-
   ];
-
 
   var dataList = [
     HighDensityFishFarming.data1,
@@ -41,10 +32,5 @@ class HighDensityFishFarmingController extends GetxController {
     HighDensityFishFarming.data11,
     HighDensityFishFarming.data12,
     HighDensityFishFarming.data13,
-
-
   ];
-
-
-
 }

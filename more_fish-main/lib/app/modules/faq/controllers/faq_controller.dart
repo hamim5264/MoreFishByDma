@@ -1,9 +1,6 @@
 import 'package:get/get.dart';
 
-
 class FaqController extends GetxController {
-
-
   var titleList = [
     'choose',
     'device',
@@ -30,10 +27,4 @@ class FaqController extends GetxController {
     'faq_data10',
     'faq_data11',
   ];
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
 }

@@ -1,6 +1,4 @@
-
-
-class PondManagementData{
+class PondManagementData {
   static const title1 = "Ideal Water Quality Parameters";
   static final data1 = [];
 
@@ -38,12 +36,17 @@ class PondManagementData{
     title3Value5,
     title3Value6,
   ];
-  static const title3Value1 = "•	Adequate sunlight exposure (minimum 6–8 hours/day)";
-  static const title3Value2 = "•	Prevent falling leaves using nets or shade structures";
-  static const title3Value3 = "•	No external water entry during rains or floods";
-  static const title3Value4 = "•	Raised pond banks to prevent runoff contamination";
+  static const title3Value1 =
+      "•	Adequate sunlight exposure (minimum 6–8 hours/day)";
+  static const title3Value2 =
+      "•	Prevent falling leaves using nets or shade structures";
+  static const title3Value3 =
+      "•	No external water entry during rains or floods";
+  static const title3Value4 =
+      "•	Raised pond banks to prevent runoff contamination";
   static const title3Value5 = "•	Good access roads for transportation";
-  static const title3Value6 = "•	Proper inlet and outlet water control system with filters/screens";
+  static const title3Value6 =
+      "•	Proper inlet and outlet water control system with filters/screens";
 
   static const title4 = "Pond Preparation Guide";
   static final data4 = [
@@ -80,25 +83,33 @@ class PondManagementData{
   ];
 
   static const title4Subtitle1 = "1. Site Selection";
-  static const subtitle1Value1 = "•	Choose an area with a reliable water source (rainwater, stream, borehole)";
-  static const subtitle1Value2 = "•	Avoid flood-prone, industrial, or pesticide-contaminated zones\n";
+  static const subtitle1Value1 =
+      "•	Choose an area with a reliable water source (rainwater, stream, borehole)";
+  static const subtitle1Value2 =
+      "•	Avoid flood-prone, industrial, or pesticide-contaminated zones\n";
 
   static const title4Subtitle2 = "2. Clearing & Cleaning";
-  static const subtitle2Value1 = "•	Remove vegetation, tree stumps, and waste materials";
-  static const subtitle2Value2 = "•	Level the pond bottom for even water distribution\n";
+  static const subtitle2Value1 =
+      "•	Remove vegetation, tree stumps, and waste materials";
+  static const subtitle2Value2 =
+      "•	Level the pond bottom for even water distribution\n";
 
   static const title4Subtitle3 = "3. Soil Testing";
   static const subtitle3Value1 = "•	Check pH (should be 6.5–8.0)";
   static const subtitle3Value2 = "•	Apply lime if the soil is acidic";
-  static const subtitle3Value3 = "•	Lime Dose: 200–500 kg/ha based on soil pH\n";
+  static const subtitle3Value3 =
+      "•	Lime Dose: 200–500 kg/ha based on soil pH\n";
 
   static const title4Subtitle4 = "4. Pond Construction";
   static const subtitle4Value1 = "•	Depth: 1.5–2 meters";
-  static const subtitle4Value2 = "•	Lining (if needed): Clay to prevent leakage";
-  static const subtitle4Value3 = "•	Install inlet and outlet pipes with filters/screens\n";
+  static const subtitle4Value2 =
+      "•	Lining (if needed): Clay to prevent leakage";
+  static const subtitle4Value3 =
+      "•	Install inlet and outlet pipes with filters/screens\n";
 
   static const title4Subtitle5 = "5. Drying & Liming";
-  static const subtitle5Value1 = "•	Sun-dry pond bottom for 7-10 Days (until cracks appear)";
+  static const subtitle5Value1 =
+      "•	Sun-dry pond bottom for 7-10 Days (until cracks appear)";
   static const subtitle5Value2 = "•	Apply lime to disinfect and adjust pH\n";
 
   static const title4Subtitle6 = "6. Fertilization";
@@ -108,15 +119,18 @@ class PondManagementData{
   static const subtitle6Value4 = "o	TSP: 10–20 kg/ha\n";
 
   static const title4Subtitle7 = "7. Water Filling";
-  static const subtitle7Value1 = "•	Fill gradually: 0.5 m initially then wait 2–3 days then fill to full depth";
-  static const subtitle7Value2 = "•	Use filtered water (mesh screen on inlet)\n";
+  static const subtitle7Value1 =
+      "•	Fill gradually: 0.5 m initially then wait 2–3 days then fill to full depth";
+  static const subtitle7Value2 =
+      "•	Use filtered water (mesh screen on inlet)\n";
 
   static const title4Subtitle8 = "8. Aeration (if needed)";
-  static const subtitle8Value1 = "•	Use paddle wheels, diffused aerators, or water pumps to maintain oxygen levels\n";
+  static const subtitle8Value1 =
+      "•	Use paddle wheels, diffused aerators, or water pumps to maintain oxygen levels\n";
 
   static const title4Subtitle9 = "9. Stocking";
-  static const subtitle9Value1 = "•	Introduce healthy fingerlings 1–2 weeks after preparation";
-  static const subtitle9Value2 = "•	Acclimate fish before release to avoid shock\n";
-
-
+  static const subtitle9Value1 =
+      "•	Introduce healthy fingerlings 1–2 weeks after preparation";
+  static const subtitle9Value2 =
+      "•	Acclimate fish before release to avoid shock\n";
 }

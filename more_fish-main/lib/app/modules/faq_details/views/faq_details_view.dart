@@ -9,6 +9,7 @@ import '../controllers/faq_details_controller.dart';
 
 class FaqDetailsView extends GetView<FaqDetailsController> {
   const FaqDetailsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +37,7 @@ class FaqDetailsView extends GetView<FaqDetailsController> {
               color: Colors.blueGrey.shade800,
               textAlign: TextAlign.justify,
             ),
-            const SizedBox(height: 15,),
+            const SizedBox(height: 15),
           ],
         ),
       ),

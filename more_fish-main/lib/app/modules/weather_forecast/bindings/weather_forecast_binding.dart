@@ -5,8 +5,6 @@ import '../controllers/weather_forecast_controller.dart';
 class WeatherForecastBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<WeatherForecastController>(
-      () => WeatherForecastController(),
-    );
+    Get.lazyPut<WeatherForecastController>(() => WeatherForecastController());
   }
 }

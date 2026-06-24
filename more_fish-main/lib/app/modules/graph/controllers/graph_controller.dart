@@ -19,10 +19,10 @@ class GraphController extends GetxController {
   final hasLoaded = false.obs;
   final error = ''.obs;
 
-  var comId;
-  var assetId;
-  var sensorId;
-  var type;
+  dynamic comId;
+  dynamic assetId;
+  dynamic sensorId;
+  dynamic type;
   int? farmId;
   String sensorKey = '';
   String sensorName = '';
@@ -67,7 +67,6 @@ class GraphController extends GetxController {
     isLoading.value = true;
     error.value = '';
 
-    // loader removed
     debugPrint(
       'Graph loading start: flow=${isPoultryFlow ? 'poultry' : 'default'} type=$requestedType',
     );
@@ -122,7 +121,6 @@ class GraphController extends GetxController {
       return;
     }
 
-    // Normalize argument names and types
     comId = map['comId'] ?? map['companyId'] ?? 39;
     assetId = map['assetId']?.toString() ?? map['assst_id']?.toString();
     sensorId = map['sensorId']?.toString() ?? map['sensor_id']?.toString();
@@ -202,7 +200,11 @@ class GraphController extends GetxController {
     await _fetchGraphAndApply(uri, token, 'Cattle');
   }
 
-  Future<void> _fetchGraphAndApply(Uri uri, String token, String flowName) async {
+  Future<void> _fetchGraphAndApply(
+    Uri uri,
+    String token,
+    String flowName,
+  ) async {
     debugPrint('====================================');
     debugPrint('API CALL: GET $flowName Graph Data');
     debugPrint('URL: $uri');
@@ -217,13 +219,15 @@ class GraphController extends GetxController {
       while (attempt < maxAttempts) {
         attempt++;
         try {
-          response = await client.get(
-            uri,
-            headers: {
-              'Authorization': 'Bearer $token',
-              'Content-Type': 'application/json',
-            },
-          ).timeout(const Duration(seconds: 20));
+          response = await client
+              .get(
+                uri,
+                headers: {
+                  'Authorization': 'Bearer $token',
+                  'Content-Type': 'application/json',
+                },
+              )
+              .timeout(const Duration(seconds: 20));
           break;
         } catch (e) {
           debugPrint('$flowName graph request error (attempt $attempt): $e');

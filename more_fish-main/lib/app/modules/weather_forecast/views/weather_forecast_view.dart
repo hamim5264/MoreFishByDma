@@ -46,8 +46,11 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
                   Center(
                     child: Column(
                       children: [
-                        const Icon(Icons.error_outline,
-                            size: 60, color: Colors.red),
+                        const Icon(
+                          Icons.error_outline,
+                          size: 60,
+                          color: Colors.red,
+                        ),
                         const SizedBox(height: 10),
                         CommonText(
                           controller.errorMessage.value,
@@ -55,10 +58,11 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
                           color: Colors.red,
                         ),
                         ElevatedButton(
-                          onPressed: () => controller
-                              .fetchWeatherData(controller.selectedLocation.value),
+                          onPressed: () => controller.fetchWeatherData(
+                            controller.selectedLocation.value,
+                          ),
                           child: const Text('Retry'),
-                        )
+                        ),
                       ],
                     ),
                   )
@@ -75,10 +79,12 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
   }
 
   Widget _buildSearchableDropdown(
-      BuildContext context, TextEditingController textEditingController) {
+    BuildContext context,
+    TextEditingController textEditingController,
+  ) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.8),
+        color: Colors.white.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.blue.shade200),
       ),
@@ -87,21 +93,15 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
           isExpanded: true,
           hint: Text(
             'Select District',
-            style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context).hintColor,
-            ),
+            style: TextStyle(fontSize: 16, color: Theme.of(context).hintColor),
           ),
           items: controller.locations
-              .map((item) => DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(
-                      item,
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ))
+              .map(
+                (item) => DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item, style: const TextStyle(fontSize: 16)),
+                ),
+              )
               .toList(),
           value: controller.selectedLocation.value,
           onChanged: (value) {
@@ -115,12 +115,8 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
             height: 50,
             width: double.infinity,
           ),
-          dropdownStyleData: const DropdownStyleData(
-            maxHeight: 400,
-          ),
-          menuItemStyleData: const MenuItemStyleData(
-            height: 45,
-          ),
+          dropdownStyleData: const DropdownStyleData(maxHeight: 400),
+          menuItemStyleData: const MenuItemStyleData(height: 45),
           dropdownSearchData: DropdownSearchData(
             searchController: textEditingController,
             searchInnerWidgetHeight: 50,
@@ -151,10 +147,11 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
               ),
             ),
             searchMatchFn: (item, searchValue) {
-              return item.value.toString().toLowerCase().contains(searchValue.toLowerCase());
+              return item.value.toString().toLowerCase().contains(
+                searchValue.toLowerCase(),
+              );
             },
           ),
-          //This to clear the search value when you close the menu
           onMenuStateChange: (isOpen) {
             if (!isOpen) {
               textEditingController.clear();
@@ -192,14 +189,18 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
                 height: 100,
                 width: 100,
                 decoration: BoxDecoration(
-                    color: const Color(0xff87CEEB),
-                    borderRadius: BorderRadius.circular(10)),
+                  color: const Color(0xff87CEEB),
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: Image.network(
                   "https://openweathermap.org/img/wn/$icon@4x.png",
                   width: 100,
                   height: 100,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.wb_sunny, size: 60, color: Colors.orange),
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.wb_sunny,
+                    size: 60,
+                    color: Colors.orange,
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -232,7 +233,7 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
             scrollDirection: Axis.horizontal,
             itemCount: controller.forecastData.length > 8
                 ? 8
-                : controller.forecastData.length, // Next 24 hours (8 * 3h)
+                : controller.forecastData.length,
             itemBuilder: (context, index) {
               final forecast = controller.forecastData[index];
               final fTemp = forecast['main']['temp'].toDouble();
@@ -245,7 +246,7 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
                 margin: const EdgeInsets.only(right: 12),
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.8),
+                  color: Colors.white.withValues(alpha: 0.8),
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(color: Colors.blue.shade100),
                 ),
@@ -297,11 +298,11 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.75),
+        color: Colors.white.withValues(alpha: 0.75),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.blueGrey.withOpacity(0.2),
+            color: Colors.blueGrey.withValues(alpha: 0.2),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -311,14 +312,13 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
     );
   }
 
-
   Widget infoCard(String label, String value, IconData icon) {
     return Expanded(
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 6),
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.85),
+          color: Colors.white.withValues(alpha: 0.85),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
@@ -339,11 +339,7 @@ class WeatherForecastView extends GetView<WeatherForecastController> {
               color: Colors.black,
             ),
             const SizedBox(height: 4),
-            CommonText(
-              label,
-              fontSize: 14,
-              color: Colors.grey[600],
-            ),
+            CommonText(label, fontSize: 14, color: Colors.grey[600]),
           ],
         ),
       ),

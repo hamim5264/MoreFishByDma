@@ -12,9 +12,9 @@ import '../controllers/index_controller.dart';
 
 class IndexView extends GetView<IndexController> {
   const IndexView({super.key});
+
   @override
   Widget build(BuildContext context) {
-
     final List<Widget> pages = [
       const HomeView(),
       const NotificationsView(),
@@ -22,22 +22,19 @@ class IndexView extends GetView<IndexController> {
       const MoreView(),
     ];
 
-    return Obx((){
+    return Obx(() {
       return Scaffold(
         body: pages[controller.selectedIndex.value],
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: const Color(0xffebffff),
           currentIndex: controller.selectedIndex.value,
           onTap: (index) {
-            // Block Notifications and Profile tab for logged-out users.
             if ((index == 1 || index == 2) && !controller.isUserLoggedIn) {
               showDialog(
                 context: context,
                 barrierDismissible: true,
-                builder: (context) => WillPopScope(
-                  onWillPop: () async {
-                    return false;
-                  },
+                builder: (context) => PopScope(
+                  canPop: false,
                   child: CommonAlertDialog(
                     notNow: () {
                       Get.back();
@@ -54,15 +51,12 @@ class IndexView extends GetView<IndexController> {
             }
 
             controller.selectedIndex.value = index;
-
           },
           type: BottomNavigationBarType.fixed,
           selectedItemColor: const Color(0xff0370c3),
           unselectedItemColor: Colors.blueGrey.shade300,
           elevation: 4,
-          selectedLabelStyle: const TextStyle(
-            fontWeight: FontWeight.bold
-          ),
+          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
           items: [
             BottomNavigationBarItem(
               icon: const Icon(Icons.home),
@@ -73,7 +67,9 @@ class IndexView extends GetView<IndexController> {
                 children: [
                   const Icon(Icons.notifications),
                   Obx(() {
-                    final count = Get.find<LoginTokenStorage>().unreadNotificationCount.value;
+                    final count = Get.find<LoginTokenStorage>()
+                        .unreadNotificationCount
+                        .value;
                     if (count == 0) return const SizedBox.shrink();
                     return Positioned(
                       right: 0,
@@ -113,7 +109,6 @@ class IndexView extends GetView<IndexController> {
             ),
           ],
         ),
-      
       );
     });
   }

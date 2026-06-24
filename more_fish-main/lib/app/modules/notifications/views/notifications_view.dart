@@ -27,11 +27,11 @@ class NotificationsView extends GetView<NotificationsController> {
             children: [
               Obx(() {
                 final weather = homeController.weatherData;
-                final main = (weather != null && weather.isNotEmpty)
-                    ? weather['main']
-                    : null;
+                final main = (weather.isNotEmpty) ? weather['main'] : null;
                 final temp = main != null ? (main['temp'] ?? '--') : '--';
-                final humidity = main != null ? (main['humidity'] ?? '--') : '--';
+                final humidity = main != null
+                    ? (main['humidity'] ?? '--')
+                    : '--';
 
                 return CommonAppBar(
                   title: 'title'.tr,
@@ -128,9 +128,7 @@ class NotificationsView extends GetView<NotificationsController> {
                             );
                           },
                         )
-                      : Center(
-                          child: Text('no_notifications'.tr),
-                        );
+                      : Center(child: Text('no_notifications'.tr));
                 }),
               ),
             ],
@@ -176,21 +174,6 @@ class NotificationsView extends GetView<NotificationsController> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-
-                    /*Text(
-                        '${controller.formattedDate}',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '${controller.formattedTime}',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),*/
                   ],
                 ),
               ],
@@ -231,7 +214,7 @@ class NotificationsView extends GetView<NotificationsController> {
     borderRadius: BorderRadius.circular(10),
     boxShadow: [
       BoxShadow(
-        color: Colors.blueGrey.withOpacity(0.5),
+        color: Colors.blueGrey.withValues(alpha: 0.5),
         spreadRadius: 1,
         blurRadius: 1,
         offset: const Offset(.2, .2),

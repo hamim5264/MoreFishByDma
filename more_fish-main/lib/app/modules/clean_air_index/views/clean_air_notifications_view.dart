@@ -38,7 +38,7 @@ class CleanAirNotificationsView
                   temp: header.tempText.value,
                   humidity: header.humidityText.value,
                   logoAssetPath: 'assets/icons/dma_pharmaceutical.png',
-                  backgroundColor: const Color(0xff3B73A5)
+                  backgroundColor: const Color(0xff3B73A5),
                 ),
               ),
               Expanded(
@@ -114,7 +114,7 @@ class CleanAirNotificationsView
                                       horizontal: 16,
                                     ),
                                     child: CommonText(
-                                      '${item.notFinal ?? ''}',
+                                      item.notFinal ?? '',
                                       color: Colors.black,
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -149,7 +149,7 @@ class CleanAirNotificationsView
     borderRadius: BorderRadius.circular(10),
     boxShadow: [
       BoxShadow(
-        color: Colors.blueGrey.withOpacity(0.5),
+        color: Colors.blueGrey.withValues(alpha: 0.5),
         spreadRadius: 1,
         blurRadius: 1,
         offset: const Offset(.2, .2),

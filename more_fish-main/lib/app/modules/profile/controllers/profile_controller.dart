@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:more_fish/app/repo/auth.dart';
 import 'package:more_fish/app/response/profile_response.dart';
@@ -13,11 +14,6 @@ class ProfileController extends GetxController {
   final profileResponse = Rxn<ProfileResponse>();
   static const String _cacheProfileKey = 'morefish_profile_cache';
   Timer? _pollingTimer;
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void onReady() {
@@ -59,7 +55,7 @@ class ProfileController extends GetxController {
     var response = await authRepository.getProfile(isPharmaFlow: isPharma);
     response.fold(
       (l) {
-        print('${l.message}');
+        debugPrint(l.message);
       },
       (r) async {
         profileResponse.value = r;

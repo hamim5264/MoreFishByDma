@@ -50,7 +50,6 @@ class PoultryLoginController extends GetxController {
   Future<void> login({required String email, required String password}) async {
     final trimmedEmail = email.trim();
     debugPrint('Poultry login email: $trimmedEmail');
-    // loader removed
 
     try {
       var response = await authRepository.setLogin(
@@ -99,7 +98,6 @@ class PoultryLoginController extends GetxController {
           await loginTokenStorage.setPoultryToken(token);
           await loginTokenStorage.setPoultryUserId(userId);
 
-          // Update FCM token after successful login
           final fcmToken = await FcmService.getFcmToken();
           if (fcmToken != null) {
             await authRepository.updateFcmToken(

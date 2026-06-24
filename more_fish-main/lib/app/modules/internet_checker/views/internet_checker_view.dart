@@ -8,41 +8,41 @@ import '../controllers/internet_checker_controller.dart';
 
 class InternetCheckerView extends GetView<InternetCheckerController> {
   const InternetCheckerView({super.key});
+
   @override
   Widget build(BuildContext context) {
     controller.checkInternet();
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: const SystemUiOverlayStyle(
-          statusBarColor: Color(0xffebffff),
-          statusBarIconBrightness: Brightness.dark,
-          statusBarBrightness: Brightness.dark,
-        ),
-        child: SafeArea(
-          child: Scaffold(
-                body: CommonContainer(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Color(0xffebffff),
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark,
+      ),
+      child: SafeArea(
+        child: Scaffold(
+          body: CommonContainer(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
                     "assets/icons/no_internet.png",
-                  height: 150,
-                  width: 150,
-          
-                ),
-                const SizedBox(height: 20,),
-                const CommonText(
-                  'Sorry, No Internet Connection.',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: Colors.red,
-                ),
-              ],
+                    height: 150,
+                    width: 150,
+                  ),
+                  const SizedBox(height: 20),
+                  const CommonText(
+                    'Sorry, No Internet Connection.',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Colors.red,
+                  ),
+                ],
+              ),
             ),
           ),
-                ),
-                ),
         ),
+      ),
     );
   }
 }

@@ -12,6 +12,7 @@ import '../controllers/aerator_connection_controller.dart';
 
 class AeratorConnectionView extends GetView<AeratorConnectionController> {
   const AeratorConnectionView({super.key});
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -149,106 +150,3 @@ class _AeratorStatusCard extends StatelessWidget {
     );
   }
 }
-/*CommonContainer(
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          CommonText(
-                            'Aerator-1',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          SizedBox(width: 20,),
-                          Switch(
-                            value: controller.isSwitched1.value,
-                            onChanged: (bool value) {
-
-                              controller.isSwitched1.value = value;
-
-                            },
-                            activeColor: Colors.green,
-                            inactiveThumbColor: Colors.red,
-                            inactiveTrackColor: Colors.grey,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20,),
-                    CommonContainer(
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          CommonText(
-                            'Aerator-2',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          SizedBox(width: 20,),
-                          Switch(
-                            value: controller.isSwitched2.value,
-                            onChanged: (bool value) {
-
-                              controller.isSwitched2.value = value;
-
-                            },
-                            activeColor: Colors.green,
-                            inactiveThumbColor: Colors.red,
-                            inactiveTrackColor: Colors.grey,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20,),
-                    CommonContainer(
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          CommonText(
-                            'Aerator-3',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          SizedBox(width: 20,),
-                          Switch(
-                            value: controller.isSwitched3.value,
-                            onChanged: (bool value) {
-
-                              controller.isSwitched3.value = value;
-
-                            },
-                            activeColor: Colors.green,
-                            inactiveThumbColor: Colors.red,
-                            inactiveTrackColor: Colors.grey,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20,),
-                    CommonContainer(
-                      height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          CommonText(
-                            'Aerator-4',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          SizedBox(width: 20,),
-                          Switch(
-                            value: controller.isSwitched4.value,
-                            onChanged: (bool value) {
-
-                              controller.isSwitched4.value = value;
-
-                            },
-                            activeColor: Colors.green,
-                            inactiveThumbColor: Colors.red,
-                            inactiveTrackColor: Colors.grey,
-                          ),
-                        ],
-                      ),
-                    ),*/

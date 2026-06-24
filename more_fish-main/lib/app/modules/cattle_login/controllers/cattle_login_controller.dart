@@ -9,7 +9,6 @@ import '../../cattle_index/controllers/cattle_header_controller.dart';
 import '../../cattle_index/controllers/cattle_live_monitoring_controller.dart';
 
 class CattleLoginController extends GetxController {
-
   final formKey = GlobalKey<FormState>();
 
   final emailController = TextEditingController();
@@ -47,8 +46,7 @@ class CattleLoginController extends GetxController {
       debugPrint(
         'Guard login skipped: token already found in SharedPreferences.',
       );
-      
-      // Use a safer way to navigate back without crashing if snackbars are present
+
       Future.microtask(() {
         if (Get.context != null) {
           Navigator.of(Get.context!).pop(true);
@@ -71,8 +69,8 @@ class CattleLoginController extends GetxController {
       );
 
       await response.fold(
-            (l) async {
-          debugPrint('${l.message}');
+        (l) async {
+          debugPrint(l.message);
           isActiveLoginButton.value = true;
           if (context != null && context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -84,7 +82,7 @@ class CattleLoginController extends GetxController {
             );
           }
         },
-            (r) async {
+        (r) async {
           loginResponse.value = r;
 
           final token = loginResponse.value?.data?.token;
@@ -107,30 +105,26 @@ class CattleLoginController extends GetxController {
             return;
           }
 
-          // ✅ Store Cattle-specific session separately
           await loginTokenStorage.setCattleToken(token);
           await loginTokenStorage.setCattleUserId(userId);
           loginTokenStorage.isCattleLoggedIn.value = true;
-          
-          // Clear any stale cattle controllers to ensure fresh state after login
+
           if (Get.isRegistered<CattleHeaderController>()) {
             await Get.delete<CattleHeaderController>();
           }
           if (Get.isRegistered<CattleLiveMonitoringController>()) {
             await Get.delete<CattleLiveMonitoringController>();
           }
-          
-          // Re-initialize if opened from guard to avoid "Controller not found" in CattleHomeView
+
           if (_openedFromGuard) {
             Get.put(CattleHeaderController(), permanent: true);
             Get.put(CattleLiveMonitoringController(), permanent: true);
           }
-          
+
           debugPrint(
             'Saved Cattle token in SharedPreferences: ${loginTokenStorage.getCattleToken() != null}',
           );
 
-          // Update FCM token after successful login with Cattle Flow enabled
           final fcmToken = await FcmService.getFcmToken();
           if (fcmToken != null) {
             await authRepository.updateFcmToken(
@@ -139,9 +133,7 @@ class CattleLoginController extends GetxController {
             );
           }
 
-          // ✅ Navigation logic updated for stability
           if (_openedFromGuard) {
-            // Using standard Navigator pop to avoid GetX snackbar collisions
             if (Get.context != null) {
               Navigator.of(Get.context!).pop(true);
             } else {
@@ -158,5 +150,4 @@ class CattleLoginController extends GetxController {
       isActiveLoginButton.value = true;
     }
   }
-
 }

@@ -31,7 +31,6 @@ class CleanAirLiveMonitoringController extends GetxController {
   var isFetching = false.obs;
   var commandInProgress = false.obs;
   var busyAeratorPks = <int>{}.obs;
-  bool _firstFetch = true;
 
   var aeratorIds = <int>[].obs;
 
@@ -40,10 +39,15 @@ class CleanAirLiveMonitoringController extends GetxController {
   String get _cacheAeratorKey => '${cachePrefix}_aerator_cache';
 
   String get _cachePondListKey => '${cachePrefix}_pond_list_cache';
+
   String get _cachePondDataKey => '${cachePrefix}_pond_data_cache';
+
   String get _cacheSensorListKey => '${cachePrefix}_sensor_list_cache';
+
   String get _cacheCompanyListKey => '${cachePrefix}_company_list_cache';
+
   String get _cacheSelectedAstIdKey => '${cachePrefix}_selected_ast_id';
+
   String get _cacheSelectedAstNameKey => '${cachePrefix}_selected_ast_name';
 
   @override
@@ -83,7 +87,7 @@ class CleanAirLiveMonitoringController extends GetxController {
   Future<void> _bootstrap() async {
     await _loadCachedState();
     pondList();
-    CompanyList();
+    companyList();
     _startPolling();
     _startAeratorPolling();
   }
@@ -114,7 +118,7 @@ class CleanAirLiveMonitoringController extends GetxController {
   pondList() async {
     debugPrint('[API] getPondList() requested');
     var response = await devicesRepository.getPondList(isPharmaFlow: true);
-    response.fold((l) => print("${l.message}"), (r) {
+    response.fold((l) => debugPrint(l.message), (r) {
       debugPrint('[API] getPondList() success -> ponds: ${r.data.length}');
       pondListResponse.value = r;
       _cachePondList(r);
@@ -140,9 +144,8 @@ class CleanAirLiveMonitoringController extends GetxController {
     response.fold(
       (l) {
         debugPrint('[API] getPondData() failed -> ${l.message}');
-        print("${l.message}");
+        debugPrint(l.message);
         isFetching.value = false;
-        _firstFetch = false;
       },
       (r) {
         debugPrint('[API] getPondData() success');
@@ -161,7 +164,7 @@ class CleanAirLiveMonitoringController extends GetxController {
 
         try {
           final deviceId = r.data.devices[0].deviceId;
-          if (deviceId != null && deviceId.toString().isNotEmpty) {
+          if (deviceId.toString().isNotEmpty) {
             debugPrint('[Flow] sensorList() triggered -> device_id: $deviceId');
             sensorList(deviceId: deviceId);
           }
@@ -170,7 +173,6 @@ class CleanAirLiveMonitoringController extends GetxController {
         }
 
         isFetching.value = false;
-        _firstFetch = false;
       },
     );
   }
@@ -185,7 +187,7 @@ class CleanAirLiveMonitoringController extends GetxController {
     response.fold(
       (l) {
         debugPrint('[API] getSensorList() failed -> ${l.message}');
-        print("${l.message}");
+        debugPrint(l.message);
       },
       (r) {
         debugPrint('[API] getSensorList() success');
@@ -195,13 +197,13 @@ class CleanAirLiveMonitoringController extends GetxController {
     );
   }
 
-  CompanyList() async {
+  companyList() async {
     debugPrint('[API] getCompanyList() requested');
     var response = await devicesRepository.getCompanyList(isPharmaFlow: true);
     response.fold(
       (l) {
         debugPrint('[API] getCompanyList() failed -> ${l.message}');
-        print("${l.message}");
+        debugPrint(l.message);
       },
       (r) {
         debugPrint(
@@ -474,11 +476,7 @@ class CleanAirLiveMonitoringController extends GetxController {
         aeratorCommandResponse.value = r;
 
         try {
-          Get.snackbar(
-            'Success',
-            r.msg ?? 'Command sent successfully',
-            snackPosition: SnackPosition.BOTTOM,
-          );
+          Get.snackbar('Success', r.msg, snackPosition: SnackPosition.BOTTOM);
         } catch (_) {}
 
         pondData(id: selectedAstId.value);

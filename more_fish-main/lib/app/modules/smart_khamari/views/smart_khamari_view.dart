@@ -9,6 +9,7 @@ import '../controllers/smart_khamari_controller.dart';
 
 class SmartKhamariView extends GetView<SmartKhamariController> {
   const SmartKhamariView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,16 +18,13 @@ class SmartKhamariView extends GetView<SmartKhamariController> {
         backgroundColor: const Color(0xffd4fcfd),
         title: const Text(
           'Smart Khamari',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         itemCount: controller.dataList.length,
-        itemBuilder: (context, index){
+        itemBuilder: (context, index) {
           return CommonContainer(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             margin: const EdgeInsets.only(bottom: 12),
@@ -46,25 +44,26 @@ class SmartKhamariView extends GetView<SmartKhamariController> {
                   ],
                 ),
 
-                controller.dataList[index].isEmpty ? const SizedBox() :
-                Column(
-                  children: [
-                    const SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: CommonText(
-                            controller.dataList[index],
-                            fontSize: 16,
-                            maxLines: 15,
-                            fontWeight: FontWeight.w400,
+                controller.dataList[index].isEmpty
+                    ? const SizedBox()
+                    : Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: CommonText(
+                                  controller.dataList[index],
+                                  fontSize: 16,
+                                  maxLines: 15,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                        ],
+                      ),
               ],
             ),
           );

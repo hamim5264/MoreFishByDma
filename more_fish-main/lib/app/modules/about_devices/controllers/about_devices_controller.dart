@@ -1,29 +1,6 @@
 import 'package:get/get.dart';
 
-
 class AboutDevicesController extends GetxController {
-
-
-  /*var titleList = [
-    AboutDevice.titleText1,
-    AboutDevice.titleText2,
-    AboutDevice.titleText3,
-    AboutDevice.titleText4,
-    AboutDevice.titleText5,
-    AboutDevice.titleText6,
-    AboutDevice.titleText7,
-    AboutDevice.titleText8,
-    AboutDevice.titleText9,
-    AboutDevice.titleText10,
-    AboutDevice.titleText11,
-    AboutDevice.titleText12,
-    AboutDevice.titleText13,
-    AboutDevice.titleText14,
-    AboutDevice.titleText15,
-    AboutDevice.titleText16,
-  ];*/
-
-
   var titleList = [
     "more_fish",
     'core_problem',
@@ -44,7 +21,6 @@ class AboutDevicesController extends GetxController {
     "mortality",
     "reduced_losses",
     "feed_conversion",
-
   ];
 
   var dataList = [
@@ -64,13 +40,4 @@ class AboutDevicesController extends GetxController {
     'about_device_data15',
     'about_device_data16',
   ];
-
-
-
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
 }

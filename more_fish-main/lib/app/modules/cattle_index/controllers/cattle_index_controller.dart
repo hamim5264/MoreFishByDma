@@ -41,7 +41,6 @@ class CattleIndexController extends GetxController {
 
   void checkLogin() {
     final loginTokenStorage = Get.find<LoginTokenStorage>();
-    // ✅ Check specifically for Cattle token
     if (loginTokenStorage.hasValidCattleToken()) {
       isLoggedIn.value = loginTokenStorage.getCattleToken()!;
     } else {

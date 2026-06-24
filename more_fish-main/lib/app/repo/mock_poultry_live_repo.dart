@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:dartz/dartz.dart';
 import 'poultry_live_models.dart';
 import 'poultry_live_repo.dart';
@@ -6,8 +5,6 @@ import '../response/poultry_automation_response.dart';
 import '../service/failure.dart';
 
 class MockPoultryLiveRepository implements PoultryLiveRepository {
-  final _rand = Random();
-
   @override
   Future<List<PoultryDevice>> getDevices() async {
     await Future.delayed(const Duration(milliseconds: 200));
@@ -50,19 +47,21 @@ class MockPoultryLiveRepository implements PoultryLiveRepository {
     required int farmId,
   }) async {
     await Future.delayed(const Duration(milliseconds: 200));
-    return Right(PoultryAutomationResponse(
-      success: true,
-      data: PoultryAutomationData(
-        id: 1,
-        farm: farmId,
-        isEnabled: false,
-        fanTempMin: 20.0,
-        fanTempMax: 35.0,
-        foggerHumidityMin: 40.0,
-        lightSchedules: [],
-        updatedAt: DateTime.now(),
+    return Right(
+      PoultryAutomationResponse(
+        success: true,
+        data: PoultryAutomationData(
+          id: 1,
+          farm: farmId,
+          isEnabled: false,
+          fanTempMin: 20.0,
+          fanTempMax: 35.0,
+          foggerHumidityMin: 40.0,
+          lightSchedules: [],
+          updatedAt: DateTime.now(),
+        ),
       ),
-    ));
+    );
   }
 
   @override
@@ -74,19 +73,21 @@ class MockPoultryLiveRepository implements PoultryLiveRepository {
     double? foggerHumidityMin,
   }) async {
     await Future.delayed(const Duration(milliseconds: 200));
-    return Right(PoultryAutomationResponse(
-      success: true,
-      data: PoultryAutomationData(
-        id: 1,
-        farm: farmId,
-        isEnabled: isEnabled,
-        fanTempMin: fanTempMin ?? 20.0,
-        fanTempMax: fanTempMax ?? 35.0,
-        foggerHumidityMin: foggerHumidityMin ?? 40.0,
-        lightSchedules: [],
-        updatedAt: DateTime.now(),
+    return Right(
+      PoultryAutomationResponse(
+        success: true,
+        data: PoultryAutomationData(
+          id: 1,
+          farm: farmId,
+          isEnabled: isEnabled,
+          fanTempMin: fanTempMin ?? 20.0,
+          fanTempMax: fanTempMax ?? 35.0,
+          foggerHumidityMin: foggerHumidityMin ?? 40.0,
+          lightSchedules: [],
+          updatedAt: DateTime.now(),
+        ),
       ),
-    ));
+    );
   }
 
   @override

@@ -37,16 +37,16 @@ class NotificationsRepository {
       request.headers.addAll(headers);
 
       http.StreamedResponse response = await request.send();
-      print(response.statusCode);
+      debugPrint(response.statusCode.toString());
       if (response.statusCode == 200) {
-        print(response.statusCode);
+        debugPrint(response.statusCode.toString());
         var data = await response.stream.bytesToString();
         NotificationResponse notificationResponse =
             NotificationResponse.fromRawJson(data);
         return Right(notificationResponse);
       }
       if (response.statusCode == 201) {
-        print(response.statusCode);
+        debugPrint(response.statusCode.toString());
         var data = await response.stream.bytesToString();
         debugPrint("======================================================1");
         NotificationResponse notificationResponse =

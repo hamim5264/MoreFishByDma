@@ -4,11 +4,6 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import '../../social/views/social_tab_view.dart';
 import 'dma_technologies_view.dart';
 
-/// DMA Technologies page shell with bottom navigation.
-///
-/// Tabs:
-/// 1) DMA (the existing grid)
-/// 2) Social (Firebase Auth)
 class DmaTechnologiesShellView extends StatefulWidget {
   const DmaTechnologiesShellView({super.key});
 
@@ -35,7 +30,7 @@ class _DmaTechnologiesShellViewState extends State<DmaTechnologiesShellView> {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.12),
+              color: Colors.black.withValues(alpha: 0.12),
               blurRadius: 20,
               spreadRadius: 2,
               offset: const Offset(0, 8),

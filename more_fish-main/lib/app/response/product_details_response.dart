@@ -11,15 +11,17 @@ class ProductDetailsResponse {
     required this.success,
   });
 
-  factory ProductDetailsResponse.fromRawJson(String str) => ProductDetailsResponse.fromJson(json.decode(str));
+  factory ProductDetailsResponse.fromRawJson(String str) =>
+      ProductDetailsResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ProductDetailsResponse.fromJson(Map<String, dynamic> json) => ProductDetailsResponse(
-    data: Data.fromJson(json["data"]),
-    statusCode: json["status_code"],
-    success: json["success"],
-  );
+  factory ProductDetailsResponse.fromJson(Map<String, dynamic> json) =>
+      ProductDetailsResponse(
+        data: Data.fromJson(json["data"]),
+        statusCode: json["status_code"],
+        success: json["success"],
+      );
 
   Map<String, dynamic> toJson() => {
     "data": data.toJson(),
@@ -56,8 +58,14 @@ class Data {
     name: json["name"],
     description: json["description"],
     price: json["price"],
-    productimageSet: List<ProductimageSet>.from(json["productimage_set"].map((x) => ProductimageSet.fromJson(x))),
-    productspecificationsSet: List<ProductspecificationsSet>.from(json["productspecifications_set"].map((x) => ProductspecificationsSet.fromJson(x))),
+    productimageSet: List<ProductimageSet>.from(
+      json["productimage_set"].map((x) => ProductimageSet.fromJson(x)),
+    ),
+    productspecificationsSet: List<ProductspecificationsSet>.from(
+      json["productspecifications_set"].map(
+        (x) => ProductspecificationsSet.fromJson(x),
+      ),
+    ),
     category: Category.fromJson(json["category"]),
   );
 
@@ -66,8 +74,12 @@ class Data {
     "name": name,
     "description": description,
     "price": price,
-    "productimage_set": List<dynamic>.from(productimageSet.map((x) => x.toJson())),
-    "productspecifications_set": List<dynamic>.from(productspecificationsSet.map((x) => x.toJson())),
+    "productimage_set": List<dynamic>.from(
+      productimageSet.map((x) => x.toJson()),
+    ),
+    "productspecifications_set": List<dynamic>.from(
+      productspecificationsSet.map((x) => x.toJson()),
+    ),
     "category": category.toJson(),
   };
 }
@@ -83,7 +95,8 @@ class Category {
     required this.categoryImage,
   });
 
-  factory Category.fromRawJson(String str) => Category.fromJson(json.decode(str));
+  factory Category.fromRawJson(String str) =>
+      Category.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
@@ -104,43 +117,35 @@ class ProductimageSet {
   String guid;
   String image;
 
-  ProductimageSet({
-    required this.guid,
-    required this.image,
-  });
+  ProductimageSet({required this.guid, required this.image});
 
-  factory ProductimageSet.fromRawJson(String str) => ProductimageSet.fromJson(json.decode(str));
+  factory ProductimageSet.fromRawJson(String str) =>
+      ProductimageSet.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ProductimageSet.fromJson(Map<String, dynamic> json) => ProductimageSet(
-    guid: json["guid"],
-    image: json["image"],
-  );
+  factory ProductimageSet.fromJson(Map<String, dynamic> json) =>
+      ProductimageSet(guid: json["guid"], image: json["image"]);
 
-  Map<String, dynamic> toJson() => {
-    "guid": guid,
-    "image": image,
-  };
+  Map<String, dynamic> toJson() => {"guid": guid, "image": image};
 }
 
 class ProductspecificationsSet {
   String guid;
   String specification;
 
-  ProductspecificationsSet({
-    required this.guid,
-    required this.specification,
-  });
+  ProductspecificationsSet({required this.guid, required this.specification});
 
-  factory ProductspecificationsSet.fromRawJson(String str) => ProductspecificationsSet.fromJson(json.decode(str));
+  factory ProductspecificationsSet.fromRawJson(String str) =>
+      ProductspecificationsSet.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory ProductspecificationsSet.fromJson(Map<String, dynamic> json) => ProductspecificationsSet(
-    guid: json["guid"],
-    specification: json["specification"],
-  );
+  factory ProductspecificationsSet.fromJson(Map<String, dynamic> json) =>
+      ProductspecificationsSet(
+        guid: json["guid"],
+        specification: json["specification"],
+      );
 
   Map<String, dynamic> toJson() => {
     "guid": guid,

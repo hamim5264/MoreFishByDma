@@ -12,6 +12,7 @@ import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -28,19 +29,19 @@ class ProfileView extends GetView<ProfileController> {
             children: [
               Obx(() {
                 final weather = homeController.weatherData;
-                final main = (weather != null && weather.isNotEmpty)
-                    ? weather['main']
-                    : null;
+                final main = (weather.isNotEmpty) ? weather['main'] : null;
                 final temp = main != null ? (main['temp'] ?? '--') : '--';
-                final humidity = main != null ? (main['humidity'] ?? '--') : '--';
+                final humidity = main != null
+                    ? (main['humidity'] ?? '--')
+                    : '--';
 
                 final isPharma = controller.activeMode.value == 'pharma';
 
                 return CommonAppBar(
                   title: isPharma ? 'pharma_care'.tr : 'title'.tr,
                   cityName: "dhaka".tr,
-                  logoAssetPath: isPharma 
-                      ? 'assets/icons/dma_pharmaceutical.png' 
+                  logoAssetPath: isPharma
+                      ? 'assets/icons/dma_pharmaceutical.png'
                       : 'assets/icons/dma_more_fish.png',
                   backgroundColor: isPharma ? const Color(0xffe0f2f1) : null,
                   date: '${homeController.formattedDate}',
@@ -72,7 +73,9 @@ class ProfileView extends GetView<ProfileController> {
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: Colors.blue.shade50,
-                                          border: Border.all(color: Colors.blue.shade100),
+                                          border: Border.all(
+                                            color: Colors.blue.shade100,
+                                          ),
                                         ),
                                         child: const Icon(
                                           Icons.person,
@@ -124,7 +127,7 @@ class ProfileView extends GetView<ProfileController> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                              Text(
+                                            Text(
                                               "change_password".tr,
                                               style: const TextStyle(
                                                 color: Colors.black,
@@ -143,13 +146,16 @@ class ProfileView extends GetView<ProfileController> {
                                     child: InkWell(
                                       onTap: () async {
                                         await FcmService.clearFcmTokenOnLogout();
-                                        
-                                        // Clear both possible sessions handled by this view
-                                        await controller.loginTokenStorage.clearMoreFishSession();
-                                        await controller.loginTokenStorage.clearPharmaSession();
+
+                                        await controller.loginTokenStorage
+                                            .clearMoreFishSession();
+                                        await controller.loginTokenStorage
+                                            .clearPharmaSession();
 
                                         controller.isLoggedIn.value = '';
-                                        Get.offAllNamed(Routes.DMA_TECHNOLOGIES);
+                                        Get.offAllNamed(
+                                          Routes.DMA_TECHNOLOGIES,
+                                        );
                                       },
                                       child: CommonContainer(
                                         height: 50,
@@ -164,12 +170,14 @@ class ProfileView extends GetView<ProfileController> {
                                             Color(0xffffcdd2),
                                           ],
                                         ),
-                                        border: Border.all(color: Colors.red.shade100),
+                                        border: Border.all(
+                                          color: Colors.red.shade100,
+                                        ),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
-                                              Text(
+                                            Text(
                                               "logout".tr,
                                               style: TextStyle(
                                                 color: Colors.red.shade700,

@@ -11,7 +11,6 @@ import '../controllers/pond_management_table_controller.dart';
 class PondManagementTableView extends GetView<PondManagementTableController> {
   const PondManagementTableView({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -22,19 +21,20 @@ class PondManagementTableView extends GetView<PondManagementTableController> {
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.dark,
       ),
-      child:SafeArea(
+      child: SafeArea(
         child: Scaffold(
           backgroundColor: AppColors.backGround,
           body: Column(
             children: [
-              Obx((){
+              Obx(() {
                 return CommonAppBar(
                   title: 'title'.tr,
                   cityName: "dhaka".tr,
                   date: '${homeController.formattedDate}',
                   time: '${homeController.formattedTime}',
                   temp: '${homeController.weatherData['main']['temp']}°C',
-                  humidity: '${homeController.weatherData['main']['humidity']}%',
+                  humidity:
+                      '${homeController.weatherData['main']['humidity']}%',
                 );
               }),
               Expanded(
@@ -44,12 +44,15 @@ class PondManagementTableView extends GetView<PondManagementTableController> {
                     child: Column(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 12,
+                          ),
                           decoration: boxDecoration(),
                           child: Column(
                             children: [
                               title(text: PondManagementData.title1),
-                              const SizedBox(height: 10,),
+                              const SizedBox(height: 10),
                               Table(
                                 border: TableBorder.all(),
                                 columnWidths: const {
@@ -58,65 +61,90 @@ class PondManagementTableView extends GetView<PondManagementTableController> {
                                 },
                                 children: [
                                   TableRow(
-                                    decoration: BoxDecoration(color: Colors.grey[300]),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                    ),
                                     children: [
                                       tableCell("Parameter", isHeader: true),
                                       tableCell("Ideal Range", isHeader: true),
                                     ],
                                   ),
-                                  TableRow(children: [
-                                    tableCell("Water Depth"),
-                                    tableCell("1.5-2 meter"),
-                                  ]),
-                                  TableRow(children: [
-                                    tableCell("Water Color"),
-                                    tableCell("Light green / Light brown"),
-
-                                  ]),
-                                  TableRow(children: [
-                                    tableCell("Water pH"),
-                                    tableCell("7.0–8.5"),
-                                  ]),
-                                  TableRow(children: [
-                                    tableCell("Soil pH"),
-                                    tableCell("6.5–8.0"),
-                                  ]),
-                                  TableRow(children: [
-                                    tableCell("Dissolved Oxygen (DO)"),
-                                    tableCell(">5 mg/L"),
-                                  ]),
-                                  TableRow(children: [
-                                    tableCell("Temperature"),
-                                    tableCell("25–30°C"),
-                                  ]),
-                                  TableRow(children: [
-                                    tableCell("Ammonia (NH₃)"),
-                                    tableCell("≤0.25 mg/L"),
-                                  ]),
-                                  TableRow(children: [
-                                    tableCell("Transparency"),
-                                    tableCell("25–40 cm (Secchi disk)"),
-                                  ]),
-                                  TableRow(children: [
-                                    tableCell("Total Dissolved Solids (TDS)"),
-                                    tableCell("100–500 mg/L (freshwater)\n"
-                                        "1000–5000 mg/L (salt water)"),
-                                  ]),
-                                  TableRow(children: [
-                                    tableCell("Hardness"),
-                                    tableCell("50–150 mg/L"),
-                                  ]),
-                                  TableRow(children: [
-                                    tableCell("Alkalinity"),
-                                    tableCell("50–150 mg/L"),
-                                  ]),
+                                  TableRow(
+                                    children: [
+                                      tableCell("Water Depth"),
+                                      tableCell("1.5-2 meter"),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      tableCell("Water Color"),
+                                      tableCell("Light green / Light brown"),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      tableCell("Water pH"),
+                                      tableCell("7.0–8.5"),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      tableCell("Soil pH"),
+                                      tableCell("6.5–8.0"),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      tableCell("Dissolved Oxygen (DO)"),
+                                      tableCell(">5 mg/L"),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      tableCell("Temperature"),
+                                      tableCell("25–30°C"),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      tableCell("Ammonia (NH₃)"),
+                                      tableCell("≤0.25 mg/L"),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      tableCell("Transparency"),
+                                      tableCell("25–40 cm (Secchi disk)"),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      tableCell("Total Dissolved Solids (TDS)"),
+                                      tableCell(
+                                        "100–500 mg/L (freshwater)\n"
+                                        "1000–5000 mg/L (salt water)",
+                                      ),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      tableCell("Hardness"),
+                                      tableCell("50–150 mg/L"),
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      tableCell("Alkalinity"),
+                                      tableCell("50–150 mg/L"),
+                                    ],
+                                  ),
                                 ],
                               ),
-                              const SizedBox(height: 10,),
+                              const SizedBox(height: 10),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 12,),
+                        const SizedBox(height: 12),
                       ],
                     ),
                   ),
@@ -129,8 +157,7 @@ class PondManagementTableView extends GetView<PondManagementTableController> {
     );
   }
 
-
-  title({text}){
+  title({text}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -148,7 +175,7 @@ class PondManagementTableView extends GetView<PondManagementTableController> {
     );
   }
 
-  section({text}){
+  section({text}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 2),
       child: Row(
@@ -166,7 +193,7 @@ class PondManagementTableView extends GetView<PondManagementTableController> {
     );
   }
 
-  section2({text}){
+  section2({text}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 2),
       child: Row(
@@ -184,7 +211,7 @@ class PondManagementTableView extends GetView<PondManagementTableController> {
     );
   }
 
-  subSection({text}){
+  subSection({text}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 2),
       child: Row(
@@ -215,23 +242,20 @@ class PondManagementTableView extends GetView<PondManagementTableController> {
     );
   }
 
-  boxDecoration(){
+  boxDecoration() {
     return BoxDecoration(
       gradient: const LinearGradient(
-        colors: [
-          Color(0xffebffff), // Start color
-          Colors.white,      // End color
-        ],
-        begin: Alignment.topLeft,   // Gradient start position
-        end: Alignment.bottomRight, // Gradient end position
+        colors: [Color(0xffebffff), Colors.white],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
       ),
       borderRadius: BorderRadius.circular(10),
       boxShadow: [
         BoxShadow(
-          color: Colors.blueGrey.withOpacity(0.5),  // Shadow color with opacity
-          spreadRadius: 1,   // How much the shadow spreads
-          blurRadius: 1,     // How blurry the shadow is
-          offset: const Offset(.2, .2), // Position of shadow: (x, y)
+          color: Colors.blueGrey.withValues(alpha: 0.5),
+          spreadRadius: 1,
+          blurRadius: 1,
+          offset: const Offset(.2, .2),
         ),
       ],
     );

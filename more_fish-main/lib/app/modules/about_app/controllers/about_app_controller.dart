@@ -1,15 +1,7 @@
 import 'package:get/get.dart';
 
-
-
 class AboutAppController extends GetxController {
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  var titleList =[
+  var titleList = [
     'about_app',
     'monitoring',
     'food index',
@@ -20,8 +12,7 @@ class AboutAppController extends GetxController {
     'technology',
   ].obs;
 
-
-  var dataList =[
+  var dataList = [
     'about_app_data1',
     'about_app_data2',
     'about_app_data3',
@@ -31,5 +22,4 @@ class AboutAppController extends GetxController {
     'about_app_data7',
     'about_app_data8',
   ].obs;
-
 }

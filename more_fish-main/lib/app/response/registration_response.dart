@@ -13,16 +13,18 @@ class RegistrationResponse {
     required this.data,
   });
 
-  factory RegistrationResponse.fromRawJson(String str) => RegistrationResponse.fromJson(json.decode(str));
+  factory RegistrationResponse.fromRawJson(String str) =>
+      RegistrationResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory RegistrationResponse.fromJson(Map<String, dynamic> json) => RegistrationResponse(
-    success: json["success"],
-    statusCode: json["status_code"],
-    message: json["message"],
-    data: Data.fromJson(json["data"]),
-  );
+  factory RegistrationResponse.fromJson(Map<String, dynamic> json) =>
+      RegistrationResponse(
+        success: json["success"],
+        statusCode: json["status_code"],
+        message: json["message"],
+        data: Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,

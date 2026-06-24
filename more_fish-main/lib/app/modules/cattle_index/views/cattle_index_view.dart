@@ -19,7 +19,6 @@ class CattleIndexView extends GetView<CattleIndexController> {
   Widget build(BuildContext context) {
     final header = Get.find<CattleHeaderController>();
 
-
     const pages = [
       CattleHomeView(),
       CattleNotificationsView(),
@@ -48,26 +47,27 @@ class CattleIndexView extends GetView<CattleIndexController> {
               showDialog(
                 context: context,
                 barrierDismissible: true,
-                builder: (context) => WillPopScope(
-                  onWillPop: () async => false,
+                builder: (context) => PopScope(
+                  canPop: false,
                   child: CommonAlertDialog(
                     notNow: () {
                       Get.back();
                     },
                     login: () async {
-                      Get.back(); // Close dialog
+                      Get.back();
                       final result = await Get.toNamed(
                         Routes.CATTLE_LOGIN,
                         arguments: {'fromGuard': true},
                       );
-                      
-                      // ✅ Always refresh state after returning from login
+
                       controller.checkLogin();
                       if (result == true) {
                         controller.selectedIndex.value = index;
-                        // ✅ Refresh monitoring data if it has been instantiated
-                        if (Get.isRegistered<CattleLiveMonitoringController>()) {
-                          Get.find<CattleLiveMonitoringController>().refreshLiveData();
+                        if (Get.isRegistered<
+                          CattleLiveMonitoringController
+                        >()) {
+                          Get.find<CattleLiveMonitoringController>()
+                              .refreshLiveData();
                         }
                       }
                     },
@@ -84,13 +84,18 @@ class CattleIndexView extends GetView<CattleIndexController> {
           elevation: 4,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
           items: [
-            BottomNavigationBarItem(icon: const Icon(Icons.home), label: 'home'.tr),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.home),
+              label: 'home'.tr,
+            ),
             BottomNavigationBarItem(
               icon: Stack(
                 children: [
                   const Icon(Icons.notifications),
                   Obx(() {
-                    final count = Get.find<LoginTokenStorage>().unreadNotificationCount.value;
+                    final count = Get.find<LoginTokenStorage>()
+                        .unreadNotificationCount
+                        .value;
                     if (count == 0) return const SizedBox.shrink();
                     return Positioned(
                       right: 0,
@@ -120,8 +125,14 @@ class CattleIndexView extends GetView<CattleIndexController> {
               ),
               label: 'notifications'.tr,
             ),
-            BottomNavigationBarItem(icon: const Icon(Icons.person), label: 'profile'.tr),
-            BottomNavigationBarItem(icon: const Icon(Icons.menu), label: 'more'.tr),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.person),
+              label: 'profile'.tr,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Icons.menu),
+              label: 'more'.tr,
+            ),
           ],
         );
       }),
@@ -194,7 +205,7 @@ class _GlobalCattleHeader extends StatelessWidget {
                         Obx(
                           () => header.sunlight.value.isNotEmpty
                               ? Text(
-                                  "sunlight".tr + ": ${header.sunlight.value.tr}",
+                                  "${"sunlight".tr}: ${header.sunlight.value.tr}",
                                   style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
