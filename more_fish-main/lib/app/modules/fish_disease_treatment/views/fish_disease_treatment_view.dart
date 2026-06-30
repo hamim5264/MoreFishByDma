@@ -13,6 +13,17 @@ import '../controllers/fish_disease_treatment_controller.dart';
 class FishDiseaseTreatmentView extends GetView<FishDiseaseTreatmentController> {
   const FishDiseaseTreatmentView({super.key});
 
+  String _toBanglaNumber(String input) {
+    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+    String result = input;
+    for (int i = 0; i < englishDigits.length; i++) {
+      result = result.replaceAll(englishDigits[i], banglaDigits[i]);
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -28,13 +39,25 @@ class FishDiseaseTreatmentView extends GetView<FishDiseaseTreatmentController> {
           children: [
             const SizedBox(height: 20),
             Obx(() {
+              final weather = homeController.weatherData;
+              final main = (weather.isNotEmpty) ? weather['main'] : null;
+              final temp = main != null ? (main['temp'] ?? '--') : '--';
+              final humidity = main != null ? (main['humidity'] ?? '--') : '--';
+
+              final tempVal = Get.locale?.languageCode == 'bn'
+                  ? _toBanglaNumber('$temp')
+                  : '$temp';
+              final humidityVal = Get.locale?.languageCode == 'bn'
+                  ? _toBanglaNumber('$humidity')
+                  : '$humidity';
+
               return CommonAppBar(
-                title: 'title'.tr,
+                title: 'fish_disease_treatment'.tr,
                 cityName: "dhaka".tr,
-                date: '${homeController.formattedDate}',
-                time: '${homeController.formattedTime}',
-                temp: '${homeController.weatherData['main']['temp']}°C',
-                humidity: '${homeController.weatherData['main']['humidity']}%',
+                date: homeController.formattedDate.value,
+                time: homeController.formattedTime.value,
+                temp: '$tempVal${'°C'.tr}',
+                humidity: '$humidityVal%',
               );
             }),
             Expanded(
@@ -63,7 +86,7 @@ class FishDiseaseTreatmentView extends GetView<FishDiseaseTreatmentController> {
                         bottom: 14,
                       ),
                       child: CommonText(
-                        controller.titleList[index],
+                        controller.titleList[index].toString().tr,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                         color: Colors.black,

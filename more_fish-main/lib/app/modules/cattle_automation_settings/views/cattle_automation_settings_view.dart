@@ -12,6 +12,17 @@ class CattleAutomationSettingsView
     extends GetView<CattleAutomationSettingsController> {
   const CattleAutomationSettingsView({super.key});
 
+  String _toBanglaNumber(String input) {
+    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+    String result = input;
+    for (int i = 0; i < englishDigits.length; i++) {
+      result = result.replaceAll(englishDigits[i], banglaDigits[i]);
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     final header = Get.find<CattleHeaderController>();
@@ -37,8 +48,8 @@ class CattleAutomationSettingsView
           body: Column(
             children: [
               Obx(() => CommonAppBar(
-                    title: 'Automation Settings',
-                    cityName: header.district.value,
+                    title: 'automation_settings_menu'.tr,
+                    cityName: header.district.value.tr,
                     leading: IconButton(
                       onPressed: () {
                         if (controller.hasUnsavedChanges) {
@@ -95,8 +106,8 @@ class CattleAutomationSettingsView
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const CommonText(
-            "Enable Automation",
+          CommonText(
+            "enable_automation".tr,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -117,11 +128,11 @@ class CattleAutomationSettingsView
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.cyclone, color: Colors.blue),
-              SizedBox(width: 8),
-              CommonText("Fan Control (Temp based)",
+              const Icon(Icons.cyclone, color: Colors.blue),
+              const SizedBox(width: 8),
+              CommonText("Fan Control (Temp based)".tr,
                   fontSize: 16, fontWeight: FontWeight.bold),
             ],
           ),
@@ -130,7 +141,7 @@ class CattleAutomationSettingsView
             children: [
               Expanded(
                 child: _buildValueField(
-                  label: "Min Temp (°C)",
+                  label: "Min Temp (°C)".tr,
                   controller: controller.fanTempMinController,
                   hint: "20.0",
                 ),
@@ -138,7 +149,7 @@ class CattleAutomationSettingsView
               const SizedBox(width: 16),
               Expanded(
                 child: _buildValueField(
-                  label: "Max Temp (°C)",
+                  label: "Max Temp (°C)".tr,
                   controller: controller.fanTempMaxController,
                   hint: "35.0",
                 ),
@@ -156,17 +167,17 @@ class CattleAutomationSettingsView
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.water_drop, color: Colors.cyan),
-              SizedBox(width: 8),
-              CommonText("Fogger Control (Humidity based)",
+              const Icon(Icons.water_drop, color: Colors.cyan),
+              const SizedBox(width: 8),
+              CommonText("Fogger Control (Humidity based)".tr,
                   fontSize: 16, fontWeight: FontWeight.bold),
             ],
           ),
           const SizedBox(height: 16),
           _buildValueField(
-            label: "Min Humidity (%)",
+            label: "Min Humidity (%)".tr,
             controller: controller.foggerHumidityMinController,
             hint: "40.0",
           ),
@@ -184,11 +195,11 @@ class CattleAutomationSettingsView
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.lightbulb, color: Colors.orangeAccent),
-                  SizedBox(width: 8),
-                  CommonText("Light Schedules",
+                  const Icon(Icons.lightbulb, color: Colors.orangeAccent),
+                  const SizedBox(width: 8),
+                  CommonText("Light Schedules".tr,
                       fontSize: 16, fontWeight: FontWeight.bold),
                 ],
               ),
@@ -200,21 +211,26 @@ class CattleAutomationSettingsView
           ),
           const SizedBox(height: 8),
           if (controller.lightSchedules.isEmpty)
-            const Center(
+            Center(
               child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CommonText("No schedules added", color: Colors.grey),
+                padding: const EdgeInsets.all(8.0),
+                child: CommonText("No schedules added".tr, color: Colors.grey),
               ),
             ),
-          ...controller.lightSchedules.map((s) => ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: CommonText("${s.startTime} - ${s.endTime}",
-                    fontWeight: FontWeight.w600),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete_outline, color: Colors.red),
-                  onPressed: () => controller.deleteLightSchedule(s.id!),
-                ),
-              )),
+          ...controller.lightSchedules.map((s) {
+            String timeRange = "${s.startTime} - ${s.endTime}";
+            if (Get.locale?.languageCode == 'bn') {
+              timeRange = _toBanglaNumber(timeRange);
+            }
+            return ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: CommonText(timeRange, fontWeight: FontWeight.w600),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete_outline, color: Colors.red),
+                onPressed: () => controller.deleteLightSchedule(s.id!),
+              ),
+            );
+          }),
         ],
       ),
     );
@@ -224,17 +240,19 @@ class CattleAutomationSettingsView
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: controller.isSaving.value ? null : () => controller.saveSettings(),
+        onPressed:
+            controller.isSaving.value ? null : () => controller.saveSettings(),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.green,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
         child: controller.isSaving.value
             ? const CircularProgressIndicator()
-            : const CommonText("Save Automation Settings",
-                fontWeight: FontWeight.bold, fontSize: 16),
+            : CommonText("Save Automation Settings".tr,
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
       ),
     );
   }
@@ -260,7 +278,8 @@ class CattleAutomationSettingsView
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: Colors.black12),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           ),
         ),
       ],
@@ -271,7 +290,7 @@ class CattleAutomationSettingsView
     TimeOfDay? start = await showTimePicker(
         context: context,
         initialTime: const TimeOfDay(hour: 20, minute: 0),
-        helpText: "SELECT START TIME");
+        helpText: "SELECT START TIME".tr);
     if (start == null) return;
 
     if (!context.mounted) return;
@@ -279,11 +298,13 @@ class CattleAutomationSettingsView
     TimeOfDay? end = await showTimePicker(
         context: context,
         initialTime: const TimeOfDay(hour: 8, minute: 0),
-        helpText: "SELECT END TIME");
+        helpText: "SELECT END TIME".tr);
     if (end == null) return;
 
-    final startStr = "${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')}:00";
-    final endStr = "${end.hour.toString().padLeft(2, '0')}:${end.minute.toString().padLeft(2, '0')}:00";
+    final startStr =
+        "${start.hour.toString().padLeft(2, '0')}:${start.minute.toString().padLeft(2, '0')}:00";
+    final endStr =
+        "${end.hour.toString().padLeft(2, '0')}:${end.minute.toString().padLeft(2, '0')}:00";
 
     controller.addLightSchedule(startStr, endStr);
   }
@@ -292,16 +313,17 @@ class CattleAutomationSettingsView
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Unsaved Changes"),
-        content: const Text("You have unsaved settings. Save or discard?"),
+        title: Text("Unsaved Changes".tr),
+        content: Text("You have unsaved settings. Save or discard?".tr),
         actions: [
-          TextButton(onPressed: () => Get.back(), child: const Text("Discard")),
+          TextButton(
+              onPressed: () => Get.back(), child: Text("Discard".tr)),
           ElevatedButton(
               onPressed: () {
                 Get.back();
                 controller.saveSettings();
               },
-              child: const Text("Save")),
+              child: Text("Save".tr)),
         ],
       ),
     );

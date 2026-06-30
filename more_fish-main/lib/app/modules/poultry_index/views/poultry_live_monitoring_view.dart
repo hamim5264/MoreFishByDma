@@ -11,6 +11,17 @@ import '../controllers/poultry_header_controller.dart';
 class PoultryLiveMonitoringView extends StatelessWidget {
   const PoultryLiveMonitoringView({super.key});
 
+  String _toBanglaNumber(String input) {
+    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+    String result = input;
+    for (int i = 0; i < englishDigits.length; i++) {
+      result = result.replaceAll(englishDigits[i], banglaDigits[i]);
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     final header = Get.find<PoultryHeaderController>();
@@ -28,8 +39,8 @@ class PoultryLiveMonitoringView extends StatelessWidget {
             children: [
               Obx(
                 () => CommonAppBar(
-                  title: 'Poultry Care',
-                  cityName: 'Dhaka',
+                  title: 'poultry_care'.tr,
+                  cityName: 'dhaka'.tr,
                   date: header.formattedDate.value,
                   time: header.formattedTime.value,
                   temp: header.tempText.value,
@@ -47,7 +58,10 @@ class PoultryLiveMonitoringView extends StatelessWidget {
                       ctrl.refreshWhenPageVisible();
                     });
 
-                    return _LoggedInDashboard(controller: ctrl);
+                    return _LoggedInDashboard(
+                      controller: ctrl,
+                      toBangla: _toBanglaNumber,
+                    );
                   },
                 ),
               ),
@@ -60,9 +74,10 @@ class PoultryLiveMonitoringView extends StatelessWidget {
 }
 
 class _LoggedInDashboard extends StatelessWidget {
-  const _LoggedInDashboard({required this.controller});
+  const _LoggedInDashboard({required this.controller, required this.toBangla});
 
   final PoultryLiveMonitoringController controller;
+  final String Function(String) toBangla;
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +129,7 @@ class _LoggedInDashboard extends StatelessWidget {
                     deviceName: live.deviceId,
                     deviceStatus: live.deviceStatus,
                     timestampIso: live.timestamp,
+                    toBangla: toBangla,
                   ),
                 const SizedBox(height: 10),
                 Wrap(
@@ -125,15 +141,19 @@ class _LoggedInDashboard extends StatelessWidget {
                           onTap: () => controller.openSensorGraph(metric),
                           iconAsset: _metricIconAsset(metric.name),
                           iconData: _dynamicMetricIcon(metric.name),
-                          title: metric.title,
-                          value: _formatDynamicMetricValue(metric),
+                          title: metric.title.tr,
+                          value: _formatDynamicMetricValue(metric, toBangla),
                           statusColor: _metricTextColor(metric.dangerStatus),
                         ),
                       )
                       .toList(),
                 ),
                 const SizedBox(height: 14),
-                _SwitchesSection(controller: controller, live: live),
+                _SwitchesSection(
+                  controller: controller,
+                  live: live,
+                  toBangla: toBangla,
+                ),
                 const SizedBox(height: 14),
                 Container(
                   padding: const EdgeInsets.symmetric(
@@ -145,7 +165,7 @@ class _LoggedInDashboard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(
-                    'poultry_param_note'.tr,
+                    'Note: The parameters are changeable according to installation of device.'.tr,
                     style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
@@ -222,11 +242,13 @@ class _DeviceHeader extends StatelessWidget {
     required this.deviceName,
     required this.deviceStatus,
     required this.timestampIso,
+    required this.toBangla,
   });
 
   final String deviceName;
   final String deviceStatus;
   final String timestampIso;
+  final String Function(String) toBangla;
 
   @override
   Widget build(BuildContext context) {
@@ -237,9 +259,15 @@ class _DeviceHeader extends StatelessWidget {
 
       final dt = parsed.add(const Duration(hours: 6));
 
-      ts =
-          '${dt.day.toString().padLeft(2, '0')} ${_monthName(dt.month)} ${dt.year}   '
-          '${DateFormat('h:mm a').format(dt)}';
+      final datePart =
+          '${dt.day.toString().padLeft(2, '0')} ${_monthName(dt.month)} ${dt.year}';
+      final timePart = DateFormat('h:mm a').format(dt);
+
+      if (Get.locale?.languageCode == 'bn') {
+        ts = '${toBangla(datePart)}   ${toBangla(timePart)}';
+      } else {
+        ts = '$datePart   $timePart';
+      }
     } catch (e) {
       debugPrint('Time parse error: $e');
     }
@@ -289,10 +317,15 @@ class _DeviceHeader extends StatelessWidget {
 }
 
 class _SwitchesSection extends StatelessWidget {
-  const _SwitchesSection({required this.controller, required this.live});
+  const _SwitchesSection({
+    required this.controller,
+    required this.live,
+    required this.toBangla,
+  });
 
   final PoultryLiveMonitoringController controller;
   final PoultryLiveData? live;
+  final String Function(String) toBangla;
 
   @override
   Widget build(BuildContext context) {
@@ -331,7 +364,7 @@ class _SwitchesSection extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'switch_controls'.tr,
+                  'Switch Controls'.tr,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
@@ -356,6 +389,7 @@ class _SwitchesSection extends StatelessWidget {
                           controller: controller,
                           item: item,
                           isDeviceOnline: isOnline,
+                          toBangla: toBangla,
                         ),
                       ),
                     )
@@ -374,11 +408,13 @@ class _SwitchCard extends StatelessWidget {
     required this.controller,
     required this.item,
     required this.isDeviceOnline,
+    required this.toBangla,
   });
 
   final PoultryLiveMonitoringController controller;
   final PoultrySwitch item;
   final bool isDeviceOnline;
+  final String Function(String) toBangla;
 
   @override
   Widget build(BuildContext context) {
@@ -390,6 +426,16 @@ class _SwitchCard extends StatelessWidget {
 
       final bool canInteract =
           isDeviceOnline && item.isActive && !busy && !automationActive;
+
+      String name = item.switchName.isEmpty ? item.switchId : item.switchName;
+      if (Get.locale?.languageCode == 'bn') {
+        name = toBangla(
+          name
+              .replaceAll('Aerator', 'এয়ারেটর')
+              .replaceAll('Feeder', 'ফিডার')
+              .replaceAll('Fan', 'ফ্যান'),
+        );
+      }
 
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -418,7 +464,7 @@ class _SwitchCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.switchName.isEmpty ? item.switchId : item.switchName,
+                    name,
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
@@ -529,15 +575,17 @@ class _MetricCard extends StatelessWidget {
                     color: Colors.black87,
                   ),
                 const SizedBox(height: 6),
-                Text(
-                  value,
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: statusColor,
+                FittedBox(
+                  child: Text(
+                    value,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: statusColor,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -561,12 +609,24 @@ class _MetricCard extends StatelessWidget {
   }
 }
 
-String _formatDynamicMetricValue(PoultrySensorMetric metric) {
+String _formatDynamicMetricValue(
+  PoultrySensorMetric metric,
+  String Function(String) toBangla,
+) {
   final unit = metric.unit.trim();
   final value = metric.value;
-  final formatted = value % 1 == 0
+  String formatted = value % 1 == 0
       ? value.toStringAsFixed(0)
       : value.toStringAsFixed(2);
+
+  if (Get.locale?.languageCode == 'bn') {
+    formatted = toBangla(formatted);
+    if (unit.isEmpty || unit.toLowerCase() == 'null') {
+      return formatted;
+    }
+    return '$formatted ${unit.tr}';
+  }
+
   if (unit.isEmpty || unit.toLowerCase() == 'null') {
     return formatted;
   }

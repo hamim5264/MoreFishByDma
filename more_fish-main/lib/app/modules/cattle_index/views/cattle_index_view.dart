@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:more_fish/app/service/local_storage.dart';
 
 import '../../../common_widgets/common_alert_dialog.dart';
+import '../../../common_widgets/common_text.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/cattle_index_controller.dart';
 import '../controllers/cattle_header_controller.dart';
@@ -145,11 +146,55 @@ class _GlobalCattleHeader extends StatelessWidget {
 
   final CattleHeaderController header;
 
+  String _toBanglaNumber(String input) {
+    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+    const monthMap = {
+      'Jan': 'জানুয়ারি',
+      'Feb': 'ফেব্রুয়ারি',
+      'Mar': 'মার্চ',
+      'Apr': 'এপ্রিল',
+      'May': 'মে',
+      'Jun': 'জুন',
+      'Jul': 'জুলাই',
+      'Aug': 'আগস্ট',
+      'Sep': 'সেপ্টেম্বর',
+      'Oct': 'অক্টোবর',
+      'Nov': 'নভেম্বর',
+      'Dec': 'ডিসেম্বর',
+    };
+
+    const dayNightMap = {
+      'AM': 'পূর্বাহ্ন',
+      'PM': 'অপরাহ্ন',
+    };
+
+    String result = input;
+
+    // Replace months
+    monthMap.forEach((en, bn) {
+      result = result.replaceAll(en, bn);
+    });
+
+    // Replace AM/PM
+    dayNightMap.forEach((en, bn) {
+      result = result.replaceAll(en, bn);
+    });
+
+    // Replace digits
+    for (int i = 0; i < englishDigits.length; i++) {
+      result = result.replaceAll(englishDigits[i], banglaDigits[i]);
+    }
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-      height: 120,
+      padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
+      constraints: const BoxConstraints(minHeight: 125),
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border(bottom: BorderSide(color: Colors.black12)),
@@ -158,6 +203,7 @@ class _GlobalCattleHeader extends StatelessWidget {
         bottom: false,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               flex: 3,
@@ -192,7 +238,7 @@ class _GlobalCattleHeader extends StatelessWidget {
                         ),
                         Obx(
                           () => Text(
-                            header.description.value.toLowerCase().tr,
+                            header.description.value.trim().tr,
                             style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
@@ -205,7 +251,7 @@ class _GlobalCattleHeader extends StatelessWidget {
                         Obx(
                           () => header.sunlight.value.isNotEmpty
                               ? Text(
-                                  "${"sunlight".tr}: ${header.sunlight.value.tr}",
+                                  "${"Sunlight".tr}: ${header.sunlight.value.trim().tr}",
                                   style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -214,6 +260,8 @@ class _GlobalCattleHeader extends StatelessWidget {
                                 )
                               : const SizedBox.shrink(),
                         ),
+                        const SizedBox(height: 4),
+                        const _LanguageButton(),
                       ],
                     ),
                   ),
@@ -228,60 +276,137 @@ class _GlobalCattleHeader extends StatelessWidget {
                 children: [
                   FittedBox(
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Obx(
-                          () => Text(
-                            header.tempText.value,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            CommonText(
+                              'Air Temp'.tr,
+                              fontSize: 9,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black54,
                             ),
-                          ),
+                            Obx(() {
+                              String temp = header.tempText.value;
+                              if (Get.locale?.languageCode == 'bn') {
+                                temp = _toBanglaNumber(temp);
+                              }
+                              return Text(
+                                temp,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              );
+                            }),
+                          ],
                         ),
-                        const Text(
-                          "  |  ",
-                          style: TextStyle(color: Colors.black26),
-                        ),
-                        Obx(
-                          () => Text(
-                            header.humidityText.value,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+                        const SizedBox(width: 10),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            CommonText(
+                              'Humidity'.tr,
+                              fontSize: 9,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black54,
                             ),
-                          ),
+                            Obx(() {
+                              String humidity = header.humidityText.value;
+                              if (Get.locale?.languageCode == 'bn') {
+                                humidity = _toBanglaNumber(humidity);
+                              }
+                              return Text(
+                                humidity,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              );
+                            }),
+                          ],
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Obx(
-                    () => Text(
-                      header.formattedDate.value,
+                  Obx(() {
+                    String date = header.formattedDate.value;
+                    if (Get.locale?.languageCode == 'bn') {
+                      date = _toBanglaNumber(date);
+                    }
+                    return Text(
+                      date,
                       style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                         color: Colors.black87,
                       ),
-                    ),
-                  ),
-                  Obx(
-                    () => Text(
-                      header.formattedTime.value,
+                    );
+                  }),
+                  Obx(() {
+                    String time = header.formattedTime.value;
+                    if (Get.locale?.languageCode == 'bn') {
+                      time = _toBanglaNumber(time);
+                    }
+                    return Text(
+                      time,
                       style: const TextStyle(
                         fontSize: 10,
                         color: Colors.black54,
                         fontWeight: FontWeight.w500,
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ],
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LanguageButton extends StatelessWidget {
+  const _LanguageButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      onSelected: (value) {
+        if (value == 'bn') {
+          Get.updateLocale(const Locale('bn', 'BD'));
+          return;
+        }
+        Get.updateLocale(const Locale('en', 'US'));
+      },
+      itemBuilder: (context) => [
+        PopupMenuItem<String>(value: 'en', child: Text('english'.tr)),
+        PopupMenuItem<String>(value: 'bn', child: Text('bangla'.tr)),
+      ],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      offset: const Offset(0, 30),
+      child: Container(
+        height: 24,
+        width: 60,
+        decoration: BoxDecoration(
+          color: const Color(0xff8beeef),
+          borderRadius: BorderRadius.circular(100),
+          border: Border.all(color: Colors.black12),
+        ),
+        child: Center(
+          child: Text(
+            (Get.locale?.languageCode ?? 'en') == 'bn' ? 'bangla'.tr : 'Eng',
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
         ),
       ),
     );

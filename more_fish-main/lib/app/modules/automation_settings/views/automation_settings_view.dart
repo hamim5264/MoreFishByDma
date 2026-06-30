@@ -10,6 +10,17 @@ import '../controllers/automation_settings_controller.dart';
 class AutomationSettingsView extends GetView<AutomationSettingsController> {
   const AutomationSettingsView({super.key});
 
+  String _toBanglaNumber(String input) {
+    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+    String result = input;
+    for (int i = 0; i < englishDigits.length; i++) {
+      result = result.replaceAll(englishDigits[i], banglaDigits[i]);
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.find<HomeController>();
@@ -34,8 +45,15 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
               final temp = main != null ? (main['temp'] ?? '--') : '--';
               final humidity = main != null ? (main['humidity'] ?? '--') : '--';
 
+              final tempVal = Get.locale?.languageCode == 'bn'
+                  ? _toBanglaNumber('$temp')
+                  : '$temp';
+              final humidityVal = Get.locale?.languageCode == 'bn'
+                  ? _toBanglaNumber('$humidity')
+                  : '$humidity';
+
               return CommonAppBar(
-                title: 'Automation Settings',
+                title: 'automation_settings_menu'.tr,
                 cityName: "dhaka".tr,
                 leading: IconButton(
                   onPressed: () {
@@ -51,10 +69,10 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
                   },
                   icon: const Icon(Icons.arrow_back, color: Colors.black),
                 ),
-                date: '${homeController.formattedDate}',
-                time: '${homeController.formattedTime}',
-                temp: '$temp°C',
-                humidity: '$humidity%',
+                date: homeController.formattedDate.value,
+                time: homeController.formattedTime.value,
+                temp: '$tempVal${'°C'.tr}',
+                humidity: '$humidityVal%',
               );
             }),
             Expanded(
@@ -75,10 +93,12 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const CommonText(
-                                  "Enable Automation",
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                                Expanded(
+                                  child: CommonText(
+                                    "enable_automation".tr,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 CommonSwitch(
                                   value: controller.isAutomationEnabled.value,
@@ -91,20 +111,20 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
                             ),
                             const SizedBox(height: 20),
                             _buildValueField(
-                              label: "DO Min Value",
+                              label: "do_min_value".tr,
                               controller: controller.doMinController,
                               hint: "e.g. 3.5",
                             ),
                             const SizedBox(height: 16),
                             _buildValueField(
-                              label: "DO Max Value",
+                              label: "do_max_value".tr,
                               controller: controller.doMaxController,
                               hint: "e.g. 7.0",
                             ),
                             const SizedBox(height: 12),
-                            const Text(
-                              "Note: Automation will only be active if settings are saved with values.",
-                              style: TextStyle(
+                            Text(
+                              "automation_note".tr,
+                              style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,
                                 fontStyle: FontStyle.italic,
@@ -140,8 +160,8 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
                                           strokeWidth: 2,
                                         ),
                                       )
-                                    : const CommonText(
-                                        "Save Settings",
+                                    : CommonText(
+                                        "save_settings".tr,
                                         color: Colors.white,
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -197,21 +217,19 @@ class AutomationSettingsView extends GetView<AutomationSettingsController> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Unsaved Changes"),
-        content: const Text(
-          "You have unsaved automation settings. Please save them before leaving or discard changes.",
-        ),
+        title: Text("unsaved_changes".tr),
+        content: Text("unsaved_changes_msg".tr),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Stay"),
+            child: Text("stay".tr),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context);
               Get.back();
             },
-            child: const Text("Discard", style: TextStyle(color: Colors.red)),
+            child: Text("discard".tr, style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),

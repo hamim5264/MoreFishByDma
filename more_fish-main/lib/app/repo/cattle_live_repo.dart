@@ -22,7 +22,7 @@ abstract class CattleLiveRepository {
 }
 
 class CattleLiveDataRepository {
-  static const Duration _timeout = Duration(seconds: 15);
+  static const Duration _timeout = Duration(seconds: 30);
 
   Future<Either<Failure, CattleFarmListResponse>> getFarmList() async {
     final storage = Get.find<LoginTokenStorage>();

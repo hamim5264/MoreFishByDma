@@ -11,6 +11,34 @@ import '../../water_quality_device/controllers/water_quality_device_controller.d
 class NanoBubbleView extends GetView<WaterQualityDeviceController> {
   const NanoBubbleView({super.key});
 
+  String _formatSensorValue({
+    required String? sensorName,
+    required String? rawValue,
+  }) {
+    final parsedValue = double.tryParse(rawValue ?? '');
+    if (parsedValue == null) return Get.locale?.languageCode == 'bn' ? '০' : '0';
+
+    final displayValue = parsedValue;
+    String valueString = displayValue.toStringAsFixed(2);
+
+    if (Get.locale?.languageCode == 'bn') {
+      return _toBanglaNumber(valueString);
+    }
+
+    return valueString;
+  }
+
+  String _toBanglaNumber(String input) {
+    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+    String result = input;
+    for (int i = 0; i < englishDigits.length; i++) {
+      result = result.replaceAll(englishDigits[i], banglaDigits[i]);
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
@@ -34,6 +62,18 @@ class NanoBubbleView extends GetView<WaterQualityDeviceController> {
           children: [
             const SizedBox(height: 40),
             Obx(() {
+              final weather = homeController.weatherData;
+              final main = (weather.isNotEmpty) ? weather['main'] : null;
+              final temp = main != null ? (main['temp'] ?? '--') : '--';
+              final humidity = main != null ? (main['humidity'] ?? '--') : '--';
+
+              final tempVal = Get.locale?.languageCode == 'bn'
+                  ? _toBanglaNumber('$temp')
+                  : '$temp';
+              final humidityVal = Get.locale?.languageCode == 'bn'
+                  ? _toBanglaNumber('$humidity')
+                  : '$humidity';
+
               return CommonAppBar(
                 leading: IconButton(
                   icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -41,11 +81,10 @@ class NanoBubbleView extends GetView<WaterQualityDeviceController> {
                 ),
                 title: 'nano_bubble_aeration_system'.tr,
                 cityName: "dhaka".tr,
-                date: '${homeController.formattedDate}',
-                time: '${homeController.formattedTime}',
-                temp: '${homeController.weatherData['main']?['temp'] ?? ''}°C',
-                humidity:
-                    '${homeController.weatherData['main']?['humidity'] ?? ''}%',
+                date: homeController.formattedDate.value,
+                time: homeController.formattedTime.value,
+                temp: '$tempVal${'°C'.tr}',
+                humidity: '$humidityVal%',
               );
             }),
             Expanded(
@@ -84,33 +123,38 @@ class NanoBubbleView extends GetView<WaterQualityDeviceController> {
                                   width: 80,
                                 ),
                                 const SizedBox(height: 16),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CommonText(
-                                      double.tryParse(
-                                            doSensor.lastValue,
-                                          )?.toStringAsFixed(2) ??
-                                          '0.00',
-                                      fontSize: 40,
-                                      fontWeight: FontWeight.bold,
-                                      color: doSensor.dangerStatus == "perfect"
-                                          ? const Color(0xff00cc00)
-                                          : Colors.red,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    CommonText(
-                                      doSensor.sensorUnit,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w500,
-                                      color: doSensor.dangerStatus == "perfect"
-                                          ? const Color(0xff00cc00)
-                                          : Colors.red,
-                                    ),
-                                  ],
+                                FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CommonText(
+                                        _formatSensorValue(
+                                          sensorName: doSensor.sensorName,
+                                          rawValue: doSensor.lastValue,
+                                        ),
+                                        fontSize: 40,
+                                        fontWeight: FontWeight.bold,
+                                        color:
+                                            doSensor.dangerStatus == "perfect"
+                                                ? const Color(0xff00cc00)
+                                                : Colors.red,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      CommonText(
+                                        doSensor.sensorUnit.trim().tr,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w500,
+                                        color:
+                                            doSensor.dangerStatus == "perfect"
+                                                ? const Color(0xff00cc00)
+                                                : Colors.red,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 CommonText(
-                                  doSensor.sensorName,
+                                  doSensor.sensorName.trim().tr,
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -120,12 +164,12 @@ class NanoBubbleView extends GetView<WaterQualityDeviceController> {
                           const SizedBox(height: 24),
                         ],
                         if (aerators.isNotEmpty) ...[
-                          const Align(
+                          Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
-                              padding: EdgeInsets.only(left: 8, bottom: 12),
+                              padding: const EdgeInsets.only(left: 8, bottom: 12),
                               child: CommonText(
-                                "Aerators Control",
+                                "switch_controls".tr,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -163,7 +207,19 @@ class NanoBubbleView extends GetView<WaterQualityDeviceController> {
                                         ),
                                         const SizedBox(width: 12),
                                         CommonText(
-                                          aerator.aeratorName,
+                                          Get.locale?.languageCode == 'bn'
+                                              ? _toBanglaNumber(
+                                                aerator.aeratorName
+                                                    .replaceAll(
+                                                      'Aerator',
+                                                      'এয়ারেটর',
+                                                    )
+                                                    .replaceAll(
+                                                      'Aerator'.toLowerCase(),
+                                                      'এয়ারেটর',
+                                                    ),
+                                              )
+                                              : aerator.aeratorName,
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                         ),

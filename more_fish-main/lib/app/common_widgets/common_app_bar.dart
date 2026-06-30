@@ -38,11 +38,56 @@ class CommonAppBar extends StatelessWidget {
   final List<Widget>? actions;
   final Widget? leading;
 
+  String _toBanglaNumber(String input) {
+    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+    const monthMap = {
+      'Jan': 'জানুয়ারি',
+      'Feb': 'ফেব্রুয়ারি',
+      'Mar': 'মার্চ',
+      'Apr': 'এপ্রিল',
+      'May': 'মে',
+      'Jun': 'জুন',
+      'Jul': 'জুলাই',
+      'Aug': 'আগস্ট',
+      'Sep': 'সেপ্টেম্বর',
+      'Oct': 'অক্টোবর',
+      'Nov': 'নভেম্বর',
+      'Dec': 'ডিসেম্বর',
+    };
+
+    const dayNightMap = {
+      'AM': 'পূর্বাহ্ন',
+      'PM': 'অপরাহ্ন',
+    };
+
+    String result = input;
+
+    // Replace months
+    monthMap.forEach((en, bn) {
+      result = result.replaceAll(en, bn);
+    });
+
+    // Replace AM/PM
+    dayNightMap.forEach((en, bn) {
+      result = result.replaceAll(en, bn);
+    });
+
+    // Replace digits
+    for (int i = 0; i < englishDigits.length; i++) {
+      result = result.replaceAll(englishDigits[i], banglaDigits[i]);
+    }
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     final storage = Get.find<LoginTokenStorage>();
 
     return Obx(() {
+      final bool isBangla = Get.locale?.languageCode == 'bn';
       final bool loggedIn = storage.isCattleLoggedIn.value;
 
       String finalCityName = cityName;
@@ -59,6 +104,18 @@ class CommonAppBar extends StatelessWidget {
           finalHumidity = cattleHeader.humidityText.value;
           finalDescription = cattleHeader.description.value;
           finalSunlight = cattleHeader.sunlight.value;
+        }
+      }
+
+      String? displayDate = date;
+      String? displayTime = time;
+
+      if (isBangla) {
+        if (displayDate != null) displayDate = _toBanglaNumber(displayDate);
+        if (displayTime != null) displayTime = _toBanglaNumber(displayTime);
+        if (finalTemp != null) finalTemp = _toBanglaNumber(finalTemp);
+        if (finalHumidity != null) {
+          finalHumidity = _toBanglaNumber(finalHumidity);
         }
       }
 
@@ -102,7 +159,7 @@ class CommonAppBar extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            title,
+                            title.tr,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -112,18 +169,18 @@ class CommonAppBar extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 2),
-                          if (date != null && date!.isNotEmpty)
+                          if (displayDate != null && displayDate.isNotEmpty)
                             Text(
-                              date!,
+                              displayDate,
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
                                 color: textColor ?? Colors.black87,
                               ),
                             ),
-                          if (time != null && time!.isNotEmpty)
+                          if (displayTime != null && displayTime.isNotEmpty)
                             Text(
-                              time!,
+                              displayTime,
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.w500,
@@ -180,7 +237,7 @@ class CommonAppBar extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               CommonText(
-                                tempLabel ?? 'air_temp'.tr,
+                                (tempLabel ?? 'Air Temp').tr,
                                 fontSize: 9,
                                 fontWeight: FontWeight.w500,
                                 color: textColor ?? Colors.black54,
@@ -198,7 +255,7 @@ class CommonAppBar extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               CommonText(
-                                humidityLabel ?? 'humidity'.tr,
+                                (humidityLabel ?? 'Humidity').tr,
                                 fontSize: 9,
                                 fontWeight: FontWeight.w500,
                                 color: textColor ?? Colors.black54,
@@ -218,7 +275,7 @@ class CommonAppBar extends StatelessWidget {
                         finalDescription.isNotEmpty) ...[
                       const SizedBox(height: 2),
                       CommonText(
-                        finalDescription.tr,
+                        finalDescription.trim().tr,
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                         color: Colors.blueGrey,
@@ -227,7 +284,7 @@ class CommonAppBar extends StatelessWidget {
                     ],
                     if (finalSunlight != null && finalSunlight.isNotEmpty)
                       CommonText(
-                        "${'sunlight'.tr}: ${finalSunlight.tr}",
+                        "${'Sunlight'.tr}: ${finalSunlight.trim().tr}",
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
                         color: Colors.orange,

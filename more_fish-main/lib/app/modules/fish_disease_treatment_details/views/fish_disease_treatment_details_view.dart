@@ -18,7 +18,7 @@ class FishDiseaseTreatmentDetailsView
       appBar: AppBar(
         backgroundColor: const Color(0xffcbffff),
         title: Text(
-          controller.title,
+          (controller.title).tr,
           style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -30,17 +30,18 @@ class FishDiseaseTreatmentDetailsView
         child: ListView.builder(
           itemCount: controller.data.length,
           itemBuilder: (context, index) {
+            final String itemText = controller.data[index].toString();
             return Column(
               children: [
-                controller.data[index] == "Causes:" ||
-                        controller.data[index] == "Symptoms:" ||
-                        controller.data[index] == "Treatment:" ||
-                        controller.data[index] == "Prevention:"
+                itemText == "Causes:" ||
+                        itemText == "Symptoms:" ||
+                        itemText == "Treatment:" ||
+                        itemText == "Prevention:"
                     ? Row(
                         children: [
                           Expanded(
                             child: CommonText(
-                              "${controller.data[index]}",
+                              itemText.tr,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               maxLines: 3,
@@ -52,7 +53,7 @@ class FishDiseaseTreatmentDetailsView
                         children: [
                           Expanded(
                             child: CommonText(
-                              "${controller.data[index]}",
+                              itemText.tr,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               maxLines: 20,

@@ -12,6 +12,17 @@ import 'package:intl/intl.dart';
 class CattleLiveMonitoringView extends StatelessWidget {
   const CattleLiveMonitoringView({super.key});
 
+  String _toBanglaNumber(String input) {
+    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+    String result = input;
+    for (int i = 0; i < englishDigits.length; i++) {
+      result = result.replaceAll(englishDigits[i], banglaDigits[i]);
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     final header = Get.find<CattleHeaderController>();
@@ -29,8 +40,8 @@ class CattleLiveMonitoringView extends StatelessWidget {
           children: [
             Obx(
               () => CommonAppBar(
-                title: 'Cattle Care',
-                cityName: 'Dhaka',
+                title: 'cattle_care'.tr,
+                cityName: 'dhaka'.tr,
                 date: header.formattedDate.value,
                 time: header.formattedTime.value,
                 logoAssetPath: 'assets/icons/dma_cattle_care.png',
@@ -59,7 +70,7 @@ class CattleLiveMonitoringView extends StatelessWidget {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            ctrl.error.value,
+                            ctrl.error.value.tr,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 16,
@@ -87,7 +98,10 @@ class CattleLiveMonitoringView extends StatelessWidget {
                   );
                 }
 
-                return _LoggedInDashboard(controller: ctrl);
+                return _LoggedInDashboard(
+                  controller: ctrl,
+                  toBangla: _toBanglaNumber,
+                );
               }),
             ),
           ],
@@ -98,9 +112,10 @@ class CattleLiveMonitoringView extends StatelessWidget {
 }
 
 class _LoggedInDashboard extends StatelessWidget {
-  const _LoggedInDashboard({required this.controller});
+  const _LoggedInDashboard({required this.controller, required this.toBangla});
 
   final CattleLiveMonitoringController controller;
+  final String Function(String) toBangla;
 
   @override
   Widget build(BuildContext context) {
@@ -126,6 +141,7 @@ class _LoggedInDashboard extends StatelessWidget {
                     lastSync: dashboard.device!.sensors?.isNotEmpty == true
                         ? dashboard.device!.sensors!.first.dataTime ?? '--'
                         : '--',
+                    toBangla: toBangla,
                   ),
                   const SizedBox(height: 10),
                 ],
@@ -135,12 +151,16 @@ class _LoggedInDashboard extends StatelessWidget {
                     spacing: 12,
                     runSpacing: 12,
                     children: dashboard.device!.sensors!.map((sensor) {
+                      String val = sensor.lastValue ?? '0';
+                      if (Get.locale?.languageCode == 'bn') {
+                        val = toBangla(val);
+                      }
                       return InkWell(
                         onTap: () => controller.openSensorGraph(sensor),
                         child: _MetricCard(
                           iconAsset: _getSensorIcon(sensor.name),
-                          title: _getSensorDisplayName(sensor.name),
-                          value: '${sensor.lastValue} ${sensor.unit}',
+                          title: _getSensorDisplayName(sensor.name).tr,
+                          value: '$val ${sensor.unit?.tr ?? ''}',
                           isDanger:
                               sensor.dangerStatus?.toLowerCase() == 'danger',
                         ),
@@ -148,12 +168,12 @@ class _LoggedInDashboard extends StatelessWidget {
                     }).toList(),
                   )
                 else if (dashboard != null)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 40),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 40),
                     child: Center(
                       child: Text(
-                        'No sensors found for this device.',
-                        style: TextStyle(color: Colors.grey, fontSize: 16),
+                        'no_data'.tr,
+                        style: const TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                     ),
                   ),
@@ -163,7 +183,7 @@ class _LoggedInDashboard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        'switch_controls'.tr,
+                        'Switch Controls'.tr,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -264,7 +284,7 @@ class _LoggedInDashboard extends StatelessWidget {
     if (n == 'methane_ppm' || n == 'ch4') return 'Methane (CH4)';
     if (n == 'aqi') return 'AQI';
     if (n == 'sound_db') return 'Sound';
-    if (n == 'light_intensity') return 'Light intensity';
+    if (n == 'light_intensity') return 'light_intensity';
     return n.toUpperCase().replaceAll('_', ' ');
   }
 }
@@ -323,11 +343,13 @@ class _DeviceHeader extends StatelessWidget {
     required this.deviceName,
     required this.deviceStatus,
     required this.lastSync,
+    required this.toBangla,
   });
 
   final String deviceName;
   final String deviceStatus;
   final String lastSync;
+  final String Function(String) toBangla;
 
   @override
   Widget build(BuildContext context) {
@@ -337,6 +359,10 @@ class _DeviceHeader extends StatelessWidget {
       DateTime dateTime = format.parse(lastSync);
       DateTime updatedTime = dateTime.add(const Duration(hours: 6));
       displayTime = format.format(updatedTime);
+
+      if (Get.locale?.languageCode == 'bn') {
+        displayTime = toBangla(displayTime);
+      }
     } catch (e) {
       displayTime = lastSync;
     }
@@ -405,13 +431,15 @@ class _MetricCard extends StatelessWidget {
           children: [
             Image.asset(iconAsset, height: 56, fit: BoxFit.contain),
             const SizedBox(height: 6),
-            Text(
-              value,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: isDanger ? Colors.red : Colors.green,
+            FittedBox(
+              child: Text(
+                value,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: isDanger ? Colors.red : Colors.green,
+                ),
               ),
             ),
             const SizedBox(height: 4),
@@ -452,6 +480,15 @@ class _SwitchTile extends StatelessWidget {
         controller.switchUiState[switchItem.switchId ?? ''] ??
         (switchItem.isOn ?? false);
 
+    String name = switchItem.switchName ?? 'Unknown';
+    if (Get.locale?.languageCode == 'bn') {
+      name = name
+          .replaceAll('Fan', 'ফ্যান')
+          .replaceAll('Light', 'আলো')
+          .replaceAll('Aerator', 'এয়ারেটর')
+          .replaceAll('Feeder', 'ফিডার');
+    }
+
     return Container(
       width: w,
       padding: const EdgeInsets.all(10),
@@ -478,7 +515,7 @@ class _SwitchTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            switchItem.switchName ?? 'Unknown',
+            name,
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 13,

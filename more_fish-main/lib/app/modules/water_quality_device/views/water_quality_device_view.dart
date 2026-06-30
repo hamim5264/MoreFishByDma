@@ -20,11 +20,27 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
     required String? rawValue,
   }) {
     final parsedValue = double.tryParse(rawValue ?? '');
-    if (parsedValue == null) return '0';
+    if (parsedValue == null) return Get.locale?.languageCode == 'bn' ? '০' : '0';
 
     final displayValue = parsedValue;
+    String valueString = displayValue.toStringAsFixed(2);
 
-    return displayValue.toStringAsFixed(2);
+    if (Get.locale?.languageCode == 'bn') {
+      return _toBanglaNumber(valueString);
+    }
+
+    return valueString;
+  }
+
+  String _toBanglaNumber(String input) {
+    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+    String result = input;
+    for (int i = 0; i < englishDigits.length; i++) {
+      result = result.replaceAll(englishDigits[i], banglaDigits[i]);
+    }
+    return result;
   }
 
   Widget _getSensorIconWidget(String? sensorName, String? sensorIconFromApi) {
@@ -133,13 +149,20 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                     ? (main['humidity'] ?? '--')
                     : '--';
 
+                final tempVal = Get.locale?.languageCode == 'bn'
+                    ? _toBanglaNumber('$temp')
+                    : '$temp';
+                final humidityVal = Get.locale?.languageCode == 'bn'
+                    ? _toBanglaNumber('$humidity')
+                    : '$humidity';
+
                 return CommonAppBar(
                   title: 'title'.tr,
                   cityName: "dhaka".tr,
                   date: '${homeController.formattedDate}',
                   time: '${homeController.formattedTime}',
-                  temp: '$temp°C',
-                  humidity: '$humidity%',
+                  temp: '$tempVal${'°C'.tr}',
+                  humidity: '$humidityVal%',
                 );
               }),
               Expanded(
@@ -503,75 +526,82 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                       Expanded(
                                                         child: Column(
                                                           children: [
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                CommonText(
-                                                                  sensorData.dangerStatus ==
-                                                                          "invalid"
-                                                                      ? "no_data"
-                                                                            .tr
-                                                                      : _formatSensorValue(
-                                                                          sensorName:
-                                                                              sensorData.sensorName,
-                                                                          rawValue:
-                                                                              sensorData.lastValue,
-                                                                        ),
-                                                                  fontSize:
-                                                                      sensorData
-                                                                              .dangerStatus ==
-                                                                          "invalid"
-                                                                      ? 16
-                                                                      : 20,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color:
-                                                                      sensorData
-                                                                              .dangerStatus ==
-                                                                          "perfect"
-                                                                      ? const Color(
-                                                                          0xff00cc00,
-                                                                        )
-                                                                      : Colors
-                                                                            .red,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                ),
-                                                                const SizedBox(
-                                                                  width: 3,
-                                                                ),
-                                                                CommonText(
-                                                                  sensorData.dangerStatus ==
-                                                                          "invalid"
-                                                                      ? ""
-                                                                      : sensorData
-                                                                            .sensorUnit,
-                                                                  fontSize: 20,
-                                                                  color:
-                                                                      sensorData
-                                                                              .dangerStatus ==
-                                                                          "perfect"
-                                                                      ? const Color(
-                                                                          0xff00cc00,
-                                                                        )
-                                                                      : Colors
-                                                                            .red,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                ),
-                                                              ],
+                                                            FittedBox(
+                                                              fit: BoxFit.scaleDown,
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  CommonText(
+                                                                    sensorData.dangerStatus ==
+                                                                            "invalid"
+                                                                        ? "no_data"
+                                                                              .tr
+                                                                        : _formatSensorValue(
+                                                                            sensorName:
+                                                                                sensorData.sensorName,
+                                                                            rawValue:
+                                                                                sensorData.lastValue,
+                                                                          ),
+                                                                    fontSize:
+                                                                        sensorData
+                                                                                .dangerStatus ==
+                                                                            "invalid"
+                                                                        ? 16
+                                                                        : 20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color:
+                                                                        sensorData
+                                                                                .dangerStatus ==
+                                                                            "perfect"
+                                                                        ? const Color(
+                                                                            0xff00cc00,
+                                                                          )
+                                                                        : Colors
+                                                                              .red,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 3,
+                                                                  ),
+                                                                  CommonText(
+                                                                    sensorData.dangerStatus ==
+                                                                            "invalid"
+                                                                        ? ""
+                                                                        : sensorData
+                                                                              .sensorUnit
+                                                                              .trim()
+                                                                              .tr,
+                                                                    fontSize: 20,
+                                                                    color:
+                                                                        sensorData
+                                                                                .dangerStatus ==
+                                                                            "perfect"
+                                                                        ? const Color(
+                                                                            0xff00cc00,
+                                                                          )
+                                                                        : Colors
+                                                                              .red,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
                                                             CommonText(
                                                               sensorData
-                                                                  .sensorName,
+                                                                  .sensorName
+                                                                  .trim()
+                                                                  .tr,
                                                               fontSize: 18,
                                                               fontWeight:
                                                                   FontWeight
@@ -694,8 +724,21 @@ class WaterQualityDeviceView extends GetView<WaterQualityDeviceController> {
                                                                       .start,
                                                               children: [
                                                                 CommonText(
-                                                                  aerator
-                                                                      .aeratorName,
+                                                                  Get.locale?.languageCode ==
+                                                                          'bn'
+                                                                      ? _toBanglaNumber(
+                                                                          aerator.aeratorName
+                                                                              .replaceAll(
+                                                                                'Aerator',
+                                                                                'এয়ারেটর',
+                                                                              )
+                                                                              .replaceAll(
+                                                                                'Aerator'.toLowerCase(),
+                                                                                'এয়ারেটর',
+                                                                              ),
+                                                                        )
+                                                                      : aerator
+                                                                          .aeratorName,
                                                                   fontSize: 20,
                                                                   fontWeight:
                                                                       FontWeight

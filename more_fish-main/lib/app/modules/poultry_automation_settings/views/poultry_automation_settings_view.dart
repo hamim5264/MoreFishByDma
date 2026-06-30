@@ -11,6 +11,30 @@ class PoultryAutomationSettingsView
     extends GetView<PoultryAutomationSettingsController> {
   const PoultryAutomationSettingsView({super.key});
 
+  String _toBanglaNumber(String input) {
+    const englishDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+
+    const dayNightMap = {
+      'AM': 'পূর্বাহ্ন',
+      'PM': 'অপরাহ্ন',
+    };
+
+    String result = input;
+
+    // Replace AM/PM
+    dayNightMap.forEach((en, bn) {
+      result = result.replaceAll(en, bn);
+    });
+
+    // Replace digits
+    for (int i = 0; i < englishDigits.length; i++) {
+      result = result.replaceAll(englishDigits[i], banglaDigits[i]);
+    }
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     final header = Get.find<PoultryHeaderController>();
@@ -31,8 +55,8 @@ class PoultryAutomationSettingsView
           children: [
             Obx(
               () => CommonAppBar(
-                title: 'Automation Settings',
-                cityName: 'Dhaka',
+                title: 'automation_settings_menu'.tr,
+                cityName: 'dhaka'.tr,
                 leading: IconButton(
                   onPressed: () {
                     if (controller.hasUnsavedChanges) {
@@ -89,8 +113,8 @@ class PoultryAutomationSettingsView
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const CommonText(
-            "Enable Automation",
+          CommonText(
+            "enable_automation".tr,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -111,12 +135,12 @@ class PoultryAutomationSettingsView
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.cyclone, color: Colors.blue),
-              SizedBox(width: 8),
+              const Icon(Icons.cyclone, color: Colors.blue),
+              const SizedBox(width: 8),
               CommonText(
-                "Fan Control (Temp based)",
+                "fan_control_temp".tr,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -127,7 +151,7 @@ class PoultryAutomationSettingsView
             children: [
               Expanded(
                 child: _buildValueField(
-                  label: "Min Temp (°C)",
+                  label: "min_temp_c".tr,
                   controller: controller.fanTempMinController,
                   hint: "20.0",
                 ),
@@ -135,7 +159,7 @@ class PoultryAutomationSettingsView
               const SizedBox(width: 16),
               Expanded(
                 child: _buildValueField(
-                  label: "Max Temp (°C)",
+                  label: "max_temp_c".tr,
                   controller: controller.fanTempMaxController,
                   hint: "35.0",
                 ),
@@ -153,12 +177,12 @@ class PoultryAutomationSettingsView
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.water_drop, color: Colors.cyan),
-              SizedBox(width: 8),
+              const Icon(Icons.water_drop, color: Colors.cyan),
+              const SizedBox(width: 8),
               CommonText(
-                "Fogger Control (Humidity based)",
+                "fogger_control_humidity".tr,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -166,7 +190,7 @@ class PoultryAutomationSettingsView
           ),
           const SizedBox(height: 16),
           _buildValueField(
-            label: "Min Humidity (%)",
+            label: "min_humidity_percent".tr,
             controller: controller.foggerHumidityMinController,
             hint: "40.0",
           ),
@@ -184,12 +208,12 @@ class PoultryAutomationSettingsView
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.lightbulb, color: Colors.orangeAccent),
-                  SizedBox(width: 8),
+                  const Icon(Icons.lightbulb, color: Colors.orangeAccent),
+                  const SizedBox(width: 8),
                   CommonText(
-                    "Light Schedules",
+                    "light_schedules".tr,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -203,24 +227,30 @@ class PoultryAutomationSettingsView
           ),
           const SizedBox(height: 8),
           if (controller.lightSchedules.isEmpty)
-            const Center(
+            Center(
               child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CommonText("No schedules added", color: Colors.grey),
+                padding: const EdgeInsets.all(8.0),
+                child: CommonText("no_schedules_added".tr, color: Colors.grey),
               ),
             ),
           ...controller.lightSchedules.map(
-            (s) => ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: CommonText(
-                "${s.startTime} - ${s.endTime}",
-                fontWeight: FontWeight.w600,
-              ),
-              trailing: IconButton(
-                icon: const Icon(Icons.delete_outline, color: Colors.red),
-                onPressed: () => controller.deleteLightSchedule(s.id!),
-              ),
-            ),
+            (s) {
+              String timeRange = "${s.startTime} - ${s.endTime}";
+              if (Get.locale?.languageCode == 'bn') {
+                timeRange = _toBanglaNumber(timeRange);
+              }
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: CommonText(
+                  timeRange,
+                  fontWeight: FontWeight.w600,
+                ),
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  onPressed: () => controller.deleteLightSchedule(s.id!),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -244,8 +274,8 @@ class PoultryAutomationSettingsView
         ),
         child: controller.isSaving.value
             ? const CircularProgressIndicator()
-            : const CommonText(
-                "Save Automation Settings",
+            : CommonText(
+                "save_automation_settings".tr,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -288,7 +318,7 @@ class PoultryAutomationSettingsView
     TimeOfDay? start = await showTimePicker(
       context: context,
       initialTime: const TimeOfDay(hour: 20, minute: 0),
-      helpText: "SELECT START TIME",
+      helpText: "select_start_time".tr,
     );
     if (start == null) return;
 
@@ -297,7 +327,7 @@ class PoultryAutomationSettingsView
     TimeOfDay? end = await showTimePicker(
       context: context,
       initialTime: const TimeOfDay(hour: 8, minute: 0),
-      helpText: "SELECT END TIME",
+      helpText: "select_end_time".tr,
     );
     if (end == null) return;
 
@@ -313,16 +343,16 @@ class PoultryAutomationSettingsView
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Unsaved Changes"),
-        content: const Text("You have unsaved settings. Save or discard?"),
+        title: Text("unsaved_changes".tr),
+        content: Text("unsaved_settings_msg".tr),
         actions: [
-          TextButton(onPressed: () => Get.back(), child: const Text("Discard")),
+          TextButton(onPressed: () => Get.back(), child: Text("discard".tr)),
           ElevatedButton(
             onPressed: () {
               Get.back();
               controller.saveSettings();
             },
-            child: const Text("Save"),
+            child: Text("save".tr),
           ),
         ],
       ),

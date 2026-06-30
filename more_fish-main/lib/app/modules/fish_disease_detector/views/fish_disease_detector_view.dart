@@ -26,7 +26,11 @@ class FishDiseaseDetectorView extends GetView<FishDiseaseDetectorController> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                height: 260,
+                constraints: const BoxConstraints(
+                  minHeight: 260,
+                  maxHeight: 450,
+                ),
+                width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
@@ -43,8 +47,7 @@ class FishDiseaseDetectorView extends GetView<FishDiseaseDetectorController> {
                         borderRadius: BorderRadius.circular(12),
                         child: Image.file(
                           File(controller.selectedImage.value!.path),
-                          fit: BoxFit.cover,
-                          width: double.infinity,
+                          fit: BoxFit.contain,
                         ),
                       ),
               ),
