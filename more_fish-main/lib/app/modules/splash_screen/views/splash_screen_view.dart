@@ -13,23 +13,36 @@ class SplashScreenView extends StatefulWidget {
   State<SplashScreenView> createState() => _SplashScreenViewState();
 }
 
-class _SplashScreenViewState extends State<SplashScreenView> {
+class _SplashScreenViewState extends State<SplashScreenView>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutBack,
+    );
+    _controller.forward();
     _startSplashTimer();
   }
 
   void _startSplashTimer() {
-    _timer = Timer(const Duration(seconds: 3), () {
+    _timer = Timer(const Duration(seconds: 4), () {
       Get.offAllNamed(Routes.DMA_TECHNOLOGIES);
     });
   }
 
   @override
   void dispose() {
+    _controller.dispose();
     _timer?.cancel();
     super.dispose();
   }
@@ -50,32 +63,31 @@ class _SplashScreenViewState extends State<SplashScreenView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CommonContainer(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(
-                    "assets/icons/DMA Logo.png",
-                    height: 100,
-                    width: 100,
-                  ),
+              ScaleTransition(
+                scale: _animation,
+                child: Image.asset(
+                  "assets/icons/DMA Logo.png",
+                  height: 180,
+                  width: 180,
                 ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 20),
               Text(
                 'dma_technologies'.tr,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: Color(0xff0370c3),
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 8),
               const Text(
-                'Intelligent Solutions For Acquaculture',
+                'Harmonising Nature With Technology',
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.deepOrange,
+                  color: Colors.green,
                 ),
               ),
             ],
